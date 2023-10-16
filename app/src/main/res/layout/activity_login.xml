@@ -8,21 +8,37 @@
     android:paddingVertical="100dp"
     tools:context=".view.LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="224dp"
+        android:layout_height="210dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logofitlife365" />
+
     <TextView
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginTop="100dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="14sp"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="279dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:text="Nombre de usuario" />
 
     <EditText
         android:id="@+id/et_username"
         android:layout_width="305dp"
         android:layout_height="48dp"
+        android:layout_marginTop="12dp"
         android:autofillHints="username"
         android:backgroundTint="#9C27B0"
         android:gravity="start"
@@ -30,25 +46,29 @@
         android:inputType="textPersonName"
         android:textAlignment="viewStart"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="@id/tv_username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.613"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_username" />
 
     <TextView
         android:id="@+id/tv_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
 
         android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_username"
-        tools:layout_editor_absoluteX="49dp"
         tools:text="Contraseña" />
 
     <EditText
         android:id="@+id/et_password"
         android:layout_width="305dp"
         android:layout_height="48dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:autofillHints="password"
         android:backgroundTint="#9C27B0"
         android:gravity="start"
@@ -56,36 +76,28 @@
         android:inputType="textPassword"
         android:textAlignment="viewStart"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/et_username"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/tv_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_password" />
 
     <Button
         android:id="@+id/bt_register"
         android:layout_width="265dp"
         android:layout_height="42dp"
-        android:layout_marginTop="52dp"
-        android:backgroundTint="#9C27B0"
 
+        android:layout_marginTop="37dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#9C27B0"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password"
-        tools:text="Confirmar" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="267dp"
-        android:layout_height="219dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/logofitlife365" />
+        tools:text="Confirmar" />
 
     <TextView
         android:id="@+id/textView3"
@@ -94,10 +106,10 @@
         android:text="INICIAR SESIÓN"
         android:textAllCaps="true"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.357" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
