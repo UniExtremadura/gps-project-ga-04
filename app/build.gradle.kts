@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "es.unex.giiis.fitlife365"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "es.unex.giiis.fitlife365"

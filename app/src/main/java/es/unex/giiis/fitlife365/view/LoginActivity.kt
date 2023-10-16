@@ -10,11 +10,11 @@ import es.unex.giiis.fitlife365.R
 class LoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.mainScreen)
+        setContentView(R.layout.main_screen)
 
         val btnIniciarSesion = findViewById<Button>(R.id.iniciarSesionButton)
         val btnRegistrarse = findViewById<Button>(R.id.registrateButton)
-
+        /*
         btnIniciarSesion.setOnClickListener {
             // Navegar a la pantalla de inicio de sesión
             val intent = Intent(this, IniciarSesionActivity::class.java)
@@ -25,6 +25,6 @@ class LoginActivity : Activity() {
             // Navegar a la pantalla de registro
             val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
-        }
+        }*/
     }
 }

@@ -12,7 +12,7 @@
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_string"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="14sp"
         tools:layout_editor_absoluteX="49dp"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/password_string"
+
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/et_username"
         tools:layout_editor_absoluteX="49dp"
@@ -67,7 +67,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="52dp"
         android:backgroundTint="#9C27B0"
-        android:text="@string/tv_register"
+
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
