@@ -18,7 +18,7 @@
         tools:srcCompat="@drawable/logofitlife365" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/iniciarSesionButton"
         android:layout_width="146dp"
         android:layout_height="56dp"
         android:text="Iniciar Sesión"
@@ -29,7 +29,7 @@
         app:layout_constraintVertical_bias="0.566" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/registrateButton"
         android:layout_width="128dp"
         android:layout_height="59dp"
         android:backgroundTint="#AC90DD"
