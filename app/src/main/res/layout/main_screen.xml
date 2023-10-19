@@ -24,22 +24,22 @@
         android:text="Iniciar Sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.566" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.213" />
 
     <Button
         android:id="@+id/registrateButton"
-        android:layout_width="128dp"
-        android:layout_height="59dp"
-        android:backgroundTint="#AC90DD"
+        android:layout_width="139dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#9C27B0"
         android:text="Regístrate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.669"
+        app:layout_constraintTop_toBottomOf="@+id/iniciarSesionButton"
+        app:layout_constraintVertical_bias="0.095"
         app:strokeColor="#FAFAFA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
