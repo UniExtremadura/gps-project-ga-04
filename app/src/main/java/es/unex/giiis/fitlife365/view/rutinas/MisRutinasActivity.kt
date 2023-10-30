@@ -1,4 +1,4 @@
-package es.unex.giiis.fitlife365.view
+package es.unex.giiis.fitlife365.view.rutinas
 
 import android.app.Activity
 import android.content.Intent

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.view.LoginRegister.IniciarSesionActivity
+import es.unex.giiis.fitlife365.view.LoginRegister.RegistroActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
