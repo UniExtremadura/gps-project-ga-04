@@ -10,4 +10,6 @@ class IniciarSesionActivity : Activity() {
         // Cargar el diseño de activity_login.xml en es.unex.giiis.fitlife365.view.IniciarSesionActivity
         setContentView(R.layout.activity_login)
     }
+
+
 }
