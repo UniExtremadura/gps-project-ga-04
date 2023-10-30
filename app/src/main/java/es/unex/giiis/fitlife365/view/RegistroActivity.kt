@@ -8,17 +8,17 @@ import es.unex.giiis.fitlife365.R
 
 class RegistroActivity : Activity() {
 
-    val btnContinuar = findViewById<Button>(R.id.idContinuarRegistro)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        val btnContinuar = findViewById<Button>(R.id.idContinuarRegistro)
+
         btnContinuar.setOnClickListener {
-            // Navegar a la pantalla de inicio de sesión
+            // Navegar a la pantalla deseada, por ejemplo:
             val intent = Intent(this, MisRutinasActivity::class.java)
             startActivity(intent)
         }
     }
-
-
 }
+
