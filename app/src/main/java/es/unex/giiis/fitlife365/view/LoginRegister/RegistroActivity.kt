@@ -55,6 +55,7 @@ class RegistroActivity : Activity() {
 
             // Si todos los campos están llenos y el email es válido, continuar con la acción
             val intent = Intent(this, MisRutinasActivity::class.java)
+            intent.putExtra("username", registerUsername.text.toString())
             startActivity(intent)
         }
     }
