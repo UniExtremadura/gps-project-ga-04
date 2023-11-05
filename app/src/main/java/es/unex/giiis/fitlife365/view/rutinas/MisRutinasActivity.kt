@@ -47,6 +47,11 @@ class MisRutinasActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 // Define acciones al hacer clic en los elementos del menú
+                // Ir a la pantalla de ajustes
+                R.id.menu_settings -> {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                }
             }
             true
         }
