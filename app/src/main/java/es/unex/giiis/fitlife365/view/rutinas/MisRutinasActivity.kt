@@ -1,9 +1,7 @@
 package es.unex.giiis.fitlife365.view.rutinas
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
