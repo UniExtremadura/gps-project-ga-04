@@ -41,7 +41,7 @@
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonContinuar"
             android:layout_width="142dp"
             android:layout_height="60dp"
             android:layout_below="@+id/buttonCrearRutina"
@@ -55,10 +55,10 @@
             android:id="@+id/button2"
             android:layout_width="142dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/button"
+            android:layout_below="@+id/buttonContinuar"
             android:layout_marginStart="-144dp"
             android:layout_marginTop="32dp"
-            android:layout_toEndOf="@+id/button"
+            android:layout_toEndOf="@+id/buttonContinuar"
             android:backgroundTint="#653BB9"
             android:text="Rutina 2" />
 

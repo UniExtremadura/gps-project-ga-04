@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.view.SettingsActivity
+import es.unex.giiis.fitlife365.view.SettingsFragment
 
 class MisRutinasActivity : AppCompatActivity() {
 

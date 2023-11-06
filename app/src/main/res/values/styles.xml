@@ -8,7 +8,7 @@
     </style>
 
     <!-- Estilo para el tema oscuro -->
-    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
         <!-- Definir atributos específicos para el tema oscuro -->
         <!-- Otros atributos -->
     </style>
