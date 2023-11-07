@@ -1,4 +1,4 @@
-package es.unex.giiis.fitlife365.view
+package es.unex.giiis.fitlife365.view.LoginRegister
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.view.rutinas.MisRutinasActivity
 
 class RegistroActivity : Activity() {
 
@@ -55,6 +55,7 @@ class RegistroActivity : Activity() {
 
             // Si todos los campos están llenos y el email es válido, continuar con la acción
             val intent = Intent(this, MisRutinasActivity::class.java)
+            intent.putExtra("username", registerUsername.text.toString())
             startActivity(intent)
         }
     }
