@@ -8,12 +8,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.home.MisRutinasActivity
 
-class IniciarSesionActivity : Activity() {
+class IniciarSesionActivity : AppCompatActivity() {
 
     private lateinit var btnIniciarSesion: Button
     private lateinit var etUsername: EditText
@@ -62,10 +63,6 @@ class IniciarSesionActivity : Activity() {
                     return@setOnClickListener
                 }
                 navigateToMisRutinas(User(etUsername.text.toString(), etPassword.text.toString()))
-            }
-
-            textViewRegister.setOnClickListener {
-                navigateToRegister()
             }
         }
     }
