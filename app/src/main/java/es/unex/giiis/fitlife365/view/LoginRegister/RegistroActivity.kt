@@ -1,6 +1,7 @@
 package es.unex.giiis.fitlife365.view.LoginRegister
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -10,8 +11,12 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.view.rutinas.MisRutinasActivity
+import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
+import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
+import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.home.MisRutinasActivity
 
 class RegistroActivity : Activity() {
 
@@ -21,10 +26,23 @@ class RegistroActivity : Activity() {
     private lateinit var registerEmail: EditText
     private lateinit var registerConfirmPassword: EditText
     private lateinit var checkBoxPassword: CheckBox
+    private lateinit var binding: ActivityRegisterBinding
+
+    companion object {
+        const val USERNAME = "USERNAME"
+        const val PASSWORD = "PASSWORD"
+        const val EMAIL = "EMAIL"
+
+        fun start(context: Context, responseLuncher: ActivityResultLauncher<Intent>) {
+            val intent = Intent(context, RegistroActivity::class.java)
+            responseLuncher.launch(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         btnContinuar = findViewById(R.id.idContinuarRegistro)
         registerUsername = findViewById(R.id.registerUsername)
@@ -33,31 +51,7 @@ class RegistroActivity : Activity() {
         registerConfirmPassword = findViewById(R.id.registerConfirmPassword)
         checkBoxPassword = findViewById(R.id.checkBoxPassword)
 
-        // Listener del CheckBox
-        checkBoxPassword.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                // Mostrar texto de las contraseñas
-                registerPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                registerConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-            } else {
-                // Ocultar texto de las contraseñas
-                registerPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-                registerConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-            }
-        }
-
-        btnContinuar.setOnClickListener {
-            // Realizar la validación de los campos antes de continuar
-            if (!validateFields()) {
-                showToast("Por favor, completa todos los campos correctamente.")
-                return@setOnClickListener
-            }
-
-            // Si todos los campos están llenos y el email es válido, continuar con la acción
-            val intent = Intent(this, MisRutinasActivity::class.java)
-            intent.putExtra("username", registerUsername.text.toString())
-            startActivity(intent)
-        }
+        setUpListeners()
     }
 
     private fun validateFields() : Boolean {
@@ -93,4 +87,39 @@ class RegistroActivity : Activity() {
         val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
         toast.show()
     }
+
+    fun setUpListeners() {
+        with (binding) {
+            // Listener del CheckBox
+            checkBoxPassword.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    // Mostrar texto de las contraseñas
+                    registerPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    registerConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                } else {
+                    // Ocultar texto de las contraseñas
+                    registerPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    registerConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                }
+            }
+
+            btnContinuar.setOnClickListener {
+                // Realizar la validación de los campos antes de continuar
+                if (!validateFields()) {
+                    showToast("Por favor, completa todos los campos correctamente.")
+                    return@setOnClickListener
+                }
+                navigateToLogin(User(registerUsername.text.toString(), registerPassword.text.toString()))
+            }
+        }
+    }
+
+    private fun navigateToLogin(user: User) {
+        val intent = Intent(this, IniciarSesionActivity::class.java).apply {
+            putExtra(USERNAME, user.name)
+            putExtra(PASSWORD, user.password)
+        }
+        startActivity(intent)
+    }
+
 }

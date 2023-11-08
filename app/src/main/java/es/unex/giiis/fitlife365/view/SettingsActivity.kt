@@ -12,21 +12,9 @@ import es.unex.giiis.fitlife365.R
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationRecyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
-
-        drawerLayout = findViewById(R.id.drawer_layout)
-        navigationRecyclerView = findViewById(R.id.navigation_recycler_view)
-
-        // Configurar el Navigation Drawer
-        val toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        // Configurar el RecyclerView
 
 
         supportFragmentManager.beginTransaction()
