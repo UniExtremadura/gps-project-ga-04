@@ -21,6 +21,7 @@ class MisRutinasActivity : AppCompatActivity() {
     private lateinit var usernameText: TextView
     private lateinit var binding: ActivityMyroutinesBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
+    private lateinit var entrenadorPersonalFragment: PersonalTrainer
     private lateinit var buttonContinuar: Button
     private lateinit var button2: Button
     private lateinit var button3: Button
@@ -85,6 +86,8 @@ class MisRutinasActivity : AppCompatActivity() {
 
     fun setUpUI() {
         crearRutinaFragment = CrearRutinaFragment()
+        entrenadorPersonalFragment = PersonalTrainer() // Inicializa el fragmento "Entrenador Personal"
+
     }
 
     fun setUpListeners() {
@@ -95,6 +98,9 @@ class MisRutinasActivity : AppCompatActivity() {
             bottomNavigation.setOnItemSelectedListener{
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
+                    R.id.nav_personal_trainer -> setCurrentFragment(entrenadorPersonalFragment) // Agrega el caso para "Entrenador Personal"
+
+
                 }
                 true
             }
