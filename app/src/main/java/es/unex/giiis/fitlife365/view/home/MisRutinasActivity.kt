@@ -23,6 +23,7 @@ class MisRutinasActivity : AppCompatActivity() {
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var entrenadorPersonalFragment: PersonalTrainer
     private lateinit var buttonContinuar: Button
+    private lateinit var buttonCrearRutina : Button
     private lateinit var button2: Button
     private lateinit var button3: Button
     private lateinit var button4: Button
@@ -52,6 +53,7 @@ class MisRutinasActivity : AppCompatActivity() {
         val user = intent.getSerializableExtra(LOGIN_USER) as User
         usernameText.text = user.name
 
+        buttonCrearRutina = findViewById(R.id.buttonCrearRutina)
         buttonContinuar = findViewById(R.id.buttonContinuar)
         button2 = findViewById(R.id.button2)
         button3 = findViewById(R.id.button3)
@@ -60,13 +62,6 @@ class MisRutinasActivity : AppCompatActivity() {
         imageView5 = findViewById(R.id.imageView5)
         imageView6 = findViewById(R.id.imageView6)
         imageView7 = findViewById(R.id.imageView7)
-
-        // Asigna OnClickListener a las imágenes de papelera para eliminar la rutina correspondiente
-        imageView7.setOnClickListener { eliminarRutina(buttonContinuar) }
-        imageView5.setOnClickListener { eliminarRutina(button2) }
-        imageView4.setOnClickListener { eliminarRutina(button3) }
-        imageView6.setOnClickListener { eliminarRutina(button4) }
-
 
         setUpUI()
         setUpListeners()
@@ -95,6 +90,9 @@ class MisRutinasActivity : AppCompatActivity() {
             usernameText.setOnClickListener {
                 navigateToSettings()
             }
+            buttonCrearRutina.setOnClickListener {
+                navigateToCreateRoutine()
+            }
             bottomNavigation.setOnItemSelectedListener{
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
@@ -104,7 +102,18 @@ class MisRutinasActivity : AppCompatActivity() {
                 }
                 true
             }
+            imageView7.setOnClickListener { eliminarRutina(buttonContinuar) }
+            imageView5.setOnClickListener { eliminarRutina(button2) }
+            imageView4.setOnClickListener { eliminarRutina(button3) }
+            imageView6.setOnClickListener { eliminarRutina(button4) }
         }
+    }
+
+    private fun navigateToCreateRoutine() {
+        val user = intent.getSerializableExtra(LOGIN_USER) as User
+        val intent = Intent(this, CrearRutinaActivity::class.java)
+        intent.putExtra(LOGIN_USER, user)
+        startActivity(intent)
     }
 
     private fun navigateToSettings() {
