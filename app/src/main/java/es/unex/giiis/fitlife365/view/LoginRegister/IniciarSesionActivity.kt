@@ -9,25 +9,35 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.utils.CredentialCheck
 import es.unex.giiis.fitlife365.view.home.MisRutinasActivity
+import kotlinx.coroutines.launch
 
 class IniciarSesionActivity : AppCompatActivity() {
+
+    private lateinit var db: FitLife365Database
 
     private lateinit var btnIniciarSesion: Button
     private lateinit var etUsername: EditText
     private lateinit var etPassword: EditText
     private lateinit var textViewRegister: TextView
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var btnRegistro: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        db = FitLife365Database.getInstance(applicationContext)!!
+
         btnIniciarSesion = binding.buttonContinuar
+        btnRegistro = binding.registrateButton2
         etUsername = binding.etUsername
         etPassword = binding.etPassword
         textViewRegister = binding.textView3
@@ -42,10 +52,9 @@ class IniciarSesionActivity : AppCompatActivity() {
         // Verificar si todos los campos tienen contenido
         val allFieldsNotEmpty = username.isNotEmpty() && password.isNotEmpty()
         if (!allFieldsNotEmpty) {
+            showToast("Por favor, completa todos los campos correctamente.")
             return false
         }
-
-        // Verificar cualquier otra validación necesaria
 
         return true
     }
@@ -59,12 +68,33 @@ class IniciarSesionActivity : AppCompatActivity() {
         with (binding) {
             btnIniciarSesion.setOnClickListener {
                 if (!validateFields()) {
-                    showToast("Por favor, completa todos los campos correctamente.")
                     return@setOnClickListener
                 }
-                navigateToMisRutinas(User(etUsername.text.toString(), etPassword.text.toString()))
+                checkLogin()
+            }
+            btnRegistro.setOnClickListener {
+                navigateToRegister()
             }
         }
+    }
+
+    private fun checkLogin(){
+        val check = CredentialCheck.login(binding.etUsername.text.toString(), binding.etPassword.text.toString())
+        if (!check.fail){
+            lifecycleScope.launch{
+                val user = db?.userDao()?.findByName(binding.etUsername.text.toString())
+                if (user != null) {
+                    val check = CredentialCheck.passwordOk(binding.etPassword.text.toString(), user.password)
+                    if (check.fail)
+                        showToast(check.msg)
+                    else navigateToMisRutinas(user!!)
+                }
+                else
+                    showToast("Invalid username")
+            }
+        }
+        else
+            showToast(check.msg)
     }
 
     private fun navigateToMisRutinas(user: User) {
