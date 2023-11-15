@@ -31,7 +31,6 @@ class RegistroActivity : Activity() {
     companion object {
         const val USERNAME = "USERNAME"
         const val PASSWORD = "PASSWORD"
-        const val EMAIL = "EMAIL"
 
         fun start(context: Context, responseLuncher: ActivityResultLauncher<Intent>) {
             val intent = Intent(context, RegistroActivity::class.java)
