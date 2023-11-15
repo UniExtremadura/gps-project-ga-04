@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.home.MisRutinasActivity.Companion.LOGIN_USER
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+const val ARG_PARAM1 = "param1"
+const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -69,9 +67,14 @@ class CrearRutinaFragment : Fragment() {
 
         // Establece el OnClickListener
         btnAceptar.setOnClickListener {
-            // Redirige a MisRutinasActivity
-            val intent = Intent(activity, MisRutinasActivity::class.java)
-            startActivity(intent)
+            val misRutinasFragment = MisRutinasFragment()
+
+            // Realiza la transacción del fragmento
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_containerHome, misRutinasFragment)
+                addToBackStack(null) // Esto agrega la transacción a la pila de retroceso, permitiendo retroceder al fragmento anterior
+                commit()
+            }
         }
 
         return view

@@ -17,11 +17,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".view.home.CrearRutinaActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".view.home.MisRutinasActivity"
+            android:name=".view.home.HomeActivity"
             android:exported="true">
         </activity>
         <activity

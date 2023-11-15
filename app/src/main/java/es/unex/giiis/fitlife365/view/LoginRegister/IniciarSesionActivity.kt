@@ -1,21 +1,18 @@
 package es.unex.giiis.fitlife365.view.LoginRegister
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.CredentialCheck
-import es.unex.giiis.fitlife365.view.home.MisRutinasActivity
+import es.unex.giiis.fitlife365.view.home.HomeActivity
 import kotlinx.coroutines.launch
 
 class IniciarSesionActivity : AppCompatActivity() {
@@ -87,7 +84,7 @@ class IniciarSesionActivity : AppCompatActivity() {
                     val check = CredentialCheck.passwordOk(binding.etPassword.text.toString(), user.password)
                     if (check.fail)
                         showToast(check.msg)
-                    else navigateToMisRutinas(user!!)
+                    else navigateToHomeActivity(user!!)
                 }
                 else
                     showToast("Invalid username")
@@ -97,8 +94,8 @@ class IniciarSesionActivity : AppCompatActivity() {
             showToast(check.msg)
     }
 
-    private fun navigateToMisRutinas(user: User) {
-        MisRutinasActivity.start(this, user)
+    private fun navigateToHomeActivity(user: User) {
+        HomeActivity.start(this, user)
     }
 
     private fun navigateToRegister() {
