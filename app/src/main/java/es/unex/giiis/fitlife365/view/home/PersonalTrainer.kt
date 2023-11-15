@@ -1,79 +1,76 @@
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+package es.unex.giiis.fitlife365.view.home
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.TimePicker
+import androidx.fragment.app.Fragment
 import es.unex.giiis.fitlife365.R
-import kotlinx.android.synthetic.main.fragment_personal_trainer.*
-import java.util.Calendar
 
-class PersonalTrainerFragment : Fragment() {
-    private var selectedDay: String = ""
-    private var selectedTime: String = ""
+class PersonalTrainer : Fragment() {
+
+    private lateinit var timePicker: TimePicker
+    private lateinit var datePicker: DatePicker
+    private lateinit var buttonDia: Button
+    private lateinit var buttonHora: Button
+    private lateinit var buttonGuardarDia: Button
+    private lateinit var buttonContactar: Button
+
+    private var selectedYear: Int = 0
+    private var selectedMonth: Int = 0
+    private var selectedDay: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.personal_trainer, container, false)
-    }
+        val view = inflater.inflate(R.layout.personal_trainer, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        timePicker = view.findViewById(R.id.timePicker)
+        datePicker = view.findViewById(R.id.datePicker)
+        buttonDia = view.findViewById(R.id.button6)
+        buttonHora = view.findViewById(R.id.button7)
+        buttonGuardarDia = view.findViewById(R.id.buttonGuardarDia)
+        buttonContactar = view.findViewById(R.id.button8)
 
-        // Configurar OnClickListener para el botón de día
-        button6.setOnClickListener {
-            showDatePicker()
+        // Configura el evento de selección de hora
+        timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+            // Puedes almacenar la hora y el minuto seleccionados o realizar alguna acción
         }
 
-        // Configurar OnClickListener para el botón de hora
-        button7.setOnClickListener {
-            showTimePicker()
+        // Configura el evento de selección de fecha
+        datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
+            // Puedes almacenar el año, mes y día seleccionados
+            selectedYear = year
+            selectedMonth = monthOfYear
+            selectedDay = dayOfMonth
         }
-    }
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        // Configura el evento para mostrar el TimePicker
+        buttonHora.setOnClickListener {
+            timePicker.visibility = View.VISIBLE
+            datePicker.visibility = View.GONE
+        }
 
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                // Al seleccionar una fecha, actualiza la variable selectedDay
-                selectedDay = "$dayOfMonth/${monthOfYear + 1}/$year"
-                // Actualiza la etiqueta de día para mostrar la fecha seleccionada
-                textViewDay.text = selectedDay
-            },
-            year,
-            month,
-            day
-        )
+        // Configura el evento para mostrar el DatePicker
+        buttonDia.setOnClickListener {
+            datePicker.visibility = View.VISIBLE
+            timePicker.visibility = View.GONE
+        }
 
-        datePickerDialog.show()
-    }
+        // Configura el evento para guardar el día seleccionado
+        buttonGuardarDia.setOnClickListener {
+            // Puedes realizar alguna acción con el día seleccionado (selectedYear, selectedMonth, selectedDay)
+        }
 
-    private fun showTimePicker() {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
+        // Configura el evento para realizar alguna acción al contactar al entrenador personal
+        buttonContactar.setOnClickListener {
+            // Aquí puedes realizar alguna acción al hacer clic en "Contactar"
+        }
 
-        val timePickerDialog = TimePickerDialog(
-            requireContext(),
-            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                // Al seleccionar una hora, actualiza la variable selectedTime
-                selectedTime = "$hourOfDay:$minute"
-                // Actualiza la etiqueta de hora para mostrar la hora seleccionada
-                textViewTime.text = selectedTime
-            },
-            hour,
-            minute,
-            true
-        )
-
-        timePickerDialog.show()
+        return view
     }
 }

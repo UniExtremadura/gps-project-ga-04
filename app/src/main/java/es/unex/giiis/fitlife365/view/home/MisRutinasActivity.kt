@@ -15,6 +15,7 @@ import es.unex.giiis.fitlife365.databinding.ActivityMyroutinesBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.SettingsActivity
 
+
 class MisRutinasActivity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
