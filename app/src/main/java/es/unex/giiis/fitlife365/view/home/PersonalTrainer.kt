@@ -1,12 +1,16 @@
 package es.unex.giiis.fitlife365.view.home
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import es.unex.giiis.fitlife365.R
 
@@ -17,7 +21,14 @@ class PersonalTrainer : Fragment() {
     private lateinit var buttonDia: Button
     private lateinit var buttonHora: Button
     private lateinit var buttonGuardarDia: Button
-    private lateinit var buttonContactar: Button
+    private lateinit var imageView: ImageView
+    private lateinit var entrenadoresArray: Array<String>
+    private lateinit var telefonosArray: Array<String>
+    private lateinit var textViewNombreSeleccionado: TextView
+    private lateinit var textViewTelefono: TextView
+
+
+
 
     private var selectedYear: Int = 0
     private var selectedMonth: Int = 0
@@ -34,8 +45,18 @@ class PersonalTrainer : Fragment() {
         buttonDia = view.findViewById(R.id.button6)
         buttonHora = view.findViewById(R.id.button7)
         buttonGuardarDia = view.findViewById(R.id.buttonGuardarDia)
-        buttonContactar = view.findViewById(R.id.button8)
+        imageView = view.findViewById(R.id.imageView8)
+        textViewNombreSeleccionado = view.findViewById(R.id.textViewNombreSeleccionado)
+        textViewTelefono = view.findViewById(R.id.textViewTelefono)
 
+
+        entrenadoresArray = resources.getStringArray(R.array.entrenadores_personales)
+        telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
+
+        // Configura el evento para mostrar la lista de entrenadores
+        imageView.setOnClickListener {
+            showEntrenadoresList()
+        }
         // Configura el evento de selección de hora
         timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
             // Puedes almacenar la hora y el minuto seleccionados o realizar alguna acción
@@ -63,14 +84,57 @@ class PersonalTrainer : Fragment() {
 
         // Configura el evento para guardar el día seleccionado
         buttonGuardarDia.setOnClickListener {
+
+            datePicker.visibility = View.GONE
+            timePicker.visibility = View.GONE
             // Puedes realizar alguna acción con el día seleccionado (selectedYear, selectedMonth, selectedDay)
         }
 
         // Configura el evento para realizar alguna acción al contactar al entrenador personal
-        buttonContactar.setOnClickListener {
-            // Aquí puedes realizar alguna acción al hacer clic en "Contactar"
-        }
+        // Configura el evento para realizar alguna acción al contactar al entrenador personal
 
         return view
     }
+    private fun showEntrenadoresList() {
+        // Crea un cuadro de diálogo para mostrar la lista de entrenadores
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Selecciona un entrenador")
+
+        // Convierte el array de entrenadores a una lista
+        val entrenadoresList = entrenadoresArray.toList()
+
+        // Configura el adaptador para el cuadro de diálogo
+        builder.setItems(telefonosArray) { _, which ->
+            // Maneja la selección del entrenador
+            val selectedTelefono = telefonosArray[which]
+            val nombre = selectedTelefono.substringBefore(':')
+            val telefono = selectedTelefono.substringAfter(':')
+
+            Toast.makeText(requireContext(), "Seleccionaste: $nombre", Toast.LENGTH_SHORT).show()
+
+            textViewNombreSeleccionado.text = "Nombre Seleccionado: $nombre"
+            textViewNombreSeleccionado.visibility = View.VISIBLE
+
+            // Almacena el teléfono seleccionado
+            textViewTelefono.text = "Tlf de contacto: $telefono"
+            textViewTelefono.visibility = View.VISIBLE
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
+    }
+
+
+    // Método para obtener el teléfono por nombre completo
+    // Método para obtener el teléfono por nombre completo
+    private fun getTelefonoByNombre(nombre: String): String {
+        // Busca el ítem que contiene el nombre en el array de entrenadores
+        val item = telefonosArray.find { it.startsWith("$nombre:") }
+
+        // Si se encuentra el ítem, extrae el número de teléfono
+        return item?.substringAfter(':') ?: ""
+    }
+
 }
+
+

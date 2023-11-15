@@ -9,4 +9,18 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="entrenadores_personales">
+        <item>Paco</item>
+        <item>Juan</item>
+        <item>Javier</item>
+        <!-- Agrega más nombres según sea necesario -->
+    </string-array>
+    <string-array name="telefonos_entrenadores">
+        <item>Paco:646563030</item>
+        <item>Juan:974493563</item>
+        <item>Javier:346647434</item>
+        <!-- Agrega más nombres según sea necesario -->
+    </string-array>
+
 </resources>
