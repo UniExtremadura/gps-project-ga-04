@@ -60,6 +60,13 @@ class PersonalTrainer : Fragment() {
         // Configura el evento de selección de hora
         timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
             // Puedes almacenar la hora y el minuto seleccionados o realizar alguna acción
+            datePicker.visibility = View.GONE
+            imageView.visibility = View.VISIBLE
+
+            datePicker.translationY = 0f
+
+            // Desplazar el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
+            buttonGuardarDia.requestFocus()
         }
 
         // Configura el evento de selección de fecha
@@ -68,25 +75,48 @@ class PersonalTrainer : Fragment() {
             selectedYear = year
             selectedMonth = monthOfYear
             selectedDay = dayOfMonth
+
+            datePicker.visibility = View.GONE
+            imageView.visibility = View.VISIBLE
+
+            datePicker.translationY = 0f
+
+            // Desplazar el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
+            buttonGuardarDia.requestFocus()
+
         }
 
         // Configura el evento para mostrar el TimePicker
         buttonHora.setOnClickListener {
             timePicker.visibility = View.VISIBLE
             datePicker.visibility = View.GONE
+            imageView.visibility = View.GONE // Oculta la foto al mostrar el DatePicker
+
+            val yOffset = 200 // Cambia este valor según tus necesidades
+
+            // Mueve el DatePicker hacia abajo para que sea más visible
+            datePicker.translationY = yOffset.toFloat()
         }
 
         // Configura el evento para mostrar el DatePicker
         buttonDia.setOnClickListener {
             datePicker.visibility = View.VISIBLE
             timePicker.visibility = View.GONE
+            imageView.visibility = View.GONE // Oculta la foto al mostrar el DatePicker
+
+            val yOffset = 200 // Cambia este valor según tus necesidades
+
+            // Mueve el DatePicker hacia abajo para que sea más visible
+            datePicker.translationY = yOffset.toFloat()
+
         }
 
         // Configura el evento para guardar el día seleccionado
         buttonGuardarDia.setOnClickListener {
-
             datePicker.visibility = View.GONE
             timePicker.visibility = View.GONE
+            imageView.visibility = View.VISIBLE // Muestra la foto al ocultar el DatePicker
+
             // Puedes realizar alguna acción con el día seleccionado (selectedYear, selectedMonth, selectedDay)
         }
 
