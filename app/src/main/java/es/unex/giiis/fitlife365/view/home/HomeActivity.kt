@@ -19,6 +19,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
+    private lateinit var personalTrainer: PersonalTrainer
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -38,8 +39,13 @@ class HomeActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar3)
         usernameText = findViewById(R.id.usernameText)
 
-        val user = intent.getSerializableExtra(LOGIN_USER) as User
-        usernameText.text = user.name
+        val user = intent.getSerializableExtra(LOGIN_USER) as? User
+        if (user != null) {
+            usernameText.text = user.name
+        } else {
+            // Manejo del caso en que el objeto User no está presente
+        }
+
 
         setUpUI()
         setUpListeners()
@@ -54,6 +60,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setUpUI() {
         crearRutinaFragment = CrearRutinaFragment()
         misRutinasFragment = MisRutinasFragment()
+        personalTrainer = PersonalTrainer()
         setCurrentFragment(misRutinasFragment)
     }
     private fun setUpListeners() {
@@ -65,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
+                    R.id.nav_personal_trainer -> setCurrentFragment(personalTrainer)
                 }
                 true
             }
