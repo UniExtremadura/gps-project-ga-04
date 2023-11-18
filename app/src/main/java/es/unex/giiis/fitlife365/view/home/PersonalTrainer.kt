@@ -163,6 +163,7 @@ class PersonalTrainer : Fragment() {
         builder.show()
     }
 
+    //liberar este recurso
     override fun onDestroyView() {
         super.onDestroyView()
         imagenesEntrenadoresArray.recycle()
