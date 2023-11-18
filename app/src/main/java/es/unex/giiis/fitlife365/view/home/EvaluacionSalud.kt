@@ -2,9 +2,11 @@ package es.unex.giiis.fitlife365.view.home
 
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,8 @@ class EvaluacionSalud : AppCompatActivity() {
     private lateinit var editTextPeso: EditText
     private lateinit var spinnerSexo: Spinner
     private lateinit var btnAceptar: Button
+    private lateinit var imageViewResultado: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +31,8 @@ class EvaluacionSalud : AppCompatActivity() {
         editTextPeso = findViewById(R.id.editTextPeso)
         spinnerSexo = findViewById(R.id.spinnerSexo)
         btnAceptar = findViewById(R.id.btnAceptar)
+        imageViewResultado = findViewById(R.id.imageViewResultado)
+
 
         // Configura el adapter para el spinner
         val adapter = ArrayAdapter.createFromResource(
@@ -70,6 +76,8 @@ class EvaluacionSalud : AppCompatActivity() {
 
         // Mostrar el porcentaje de salud en un Toast o en un TextView, según tus necesidades
         mostrarMensaje("Porcentaje de salud: $porcentajeSalud%")
+        mostrarImagenResultado(porcentajeSalud)
+
     }
 
     private fun calcularPorcentajeSalud(peso: Float, estaturaCm: Float): Int {
@@ -90,4 +98,21 @@ class EvaluacionSalud : AppCompatActivity() {
     private fun mostrarMensaje(mensaje: String) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
+
+    private fun mostrarImagenResultado(porcentajeSalud: Int) {
+        val imagenResource = when {
+            porcentajeSalud <= 5 -> R.drawable.bajo
+            porcentajeSalud <= 50 -> R.drawable.normal
+            porcentajeSalud <= 85 -> R.drawable.sobrepeso
+            else -> R.drawable.obeso
+        }
+
+        imageViewResultado.setImageResource(imagenResource)
+        imageViewResultado.visibility = View.VISIBLE
+
+        // Ajusta el tamaño de la imagen según tus necesidades
+        imageViewResultado.minimumHeight = 50 // Cambia este valor según sea necesario
+        imageViewResultado.minimumWidth = 50  // Cambia este valor según sea necesario
+    }
+
 }

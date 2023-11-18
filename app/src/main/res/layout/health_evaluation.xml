@@ -7,18 +7,19 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/imageViewResultado"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/btnAceptar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/_66f926f271713ebfb783f1214405f5d_circulo_de_progreso_del_50_por_ciento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintHorizontal_bias="0.5"
-        android:visibility="gone" />
+        />
+
 
     <TextView
         android:id="@+id/textView4"
