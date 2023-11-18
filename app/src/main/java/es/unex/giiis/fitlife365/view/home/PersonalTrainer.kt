@@ -1,6 +1,7 @@
 package es.unex.giiis.fitlife365.view.home
 
 import android.app.AlertDialog
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class PersonalTrainer : Fragment() {
     private lateinit var telefonosArray: Array<String>
     private lateinit var textViewNombreSeleccionado: TextView
     private lateinit var textViewTelefono: TextView
+    private lateinit var imagenesEntrenadoresArray: TypedArray
+
 
 
 
@@ -52,6 +55,10 @@ class PersonalTrainer : Fragment() {
 
         entrenadoresArray = resources.getStringArray(R.array.entrenadores_personales)
         telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
+
+        imagenesEntrenadoresArray = resources.obtainTypedArray(R.array.imagenes_entrenadores)
+
+
 
         // Configura el evento para mostrar la lista de entrenadores
         imageView.setOnClickListener {
@@ -140,6 +147,8 @@ class PersonalTrainer : Fragment() {
             val nombre = selectedTelefono.substringBefore(':')
             val telefono = selectedTelefono.substringAfter(':')
 
+            imageView.setImageResource(imagenesEntrenadoresArray.getResourceId(which, -1))
+
             Toast.makeText(requireContext(), "Seleccionaste: $nombre", Toast.LENGTH_SHORT).show()
 
             textViewNombreSeleccionado.text = "Nombre Seleccionado: $nombre"
@@ -154,16 +163,11 @@ class PersonalTrainer : Fragment() {
         builder.show()
     }
 
-
-    // Método para obtener el teléfono por nombre completo
-    // Método para obtener el teléfono por nombre completo
-    private fun getTelefonoByNombre(nombre: String): String {
-        // Busca el ítem que contiene el nombre en el array de entrenadores
-        val item = telefonosArray.find { it.startsWith("$nombre:") }
-
-        // Si se encuentra el ítem, extrae el número de teléfono
-        return item?.substringAfter(':') ?: ""
+    override fun onDestroyView() {
+        super.onDestroyView()
+        imagenesEntrenadoresArray.recycle()
     }
+
 
 }
 

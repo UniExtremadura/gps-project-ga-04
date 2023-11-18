@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.069"
-        app:srcCompat="@drawable/istockphoto_675179390_612x612" />
+        app:srcCompat="@drawable/paco" />
 
     <TextView
         android:id="@+id/textView"
