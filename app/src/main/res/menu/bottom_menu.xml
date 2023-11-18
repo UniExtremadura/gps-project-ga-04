@@ -9,4 +9,8 @@
         android:id="@+id/nav_create_routine"
         android:icon="@drawable/perfil_icon"
         android:title="Crear Rutina" />
+    <item
+        android:id="@+id/nav_personal_trainer"
+        android:icon="@drawable/baseline_phone_24"
+        android:title="Entrenador" />
 </menu>
