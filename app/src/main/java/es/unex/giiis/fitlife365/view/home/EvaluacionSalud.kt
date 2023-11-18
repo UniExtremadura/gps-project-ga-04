@@ -1,5 +1,6 @@
 package es.unex.giiis.fitlife365.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -55,6 +56,12 @@ class EvaluacionSalud : AppCompatActivity() {
                 mostrarMensaje("Por favor, complete todos los campos.")
             }
         }
+
+        imageViewResultado.setOnClickListener {
+            // Abre la pantalla HomeActivity al hacer clic en la imagen
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun camposValidos(): Boolean {
@@ -76,6 +83,7 @@ class EvaluacionSalud : AppCompatActivity() {
 
         // Mostrar el porcentaje de salud en un Toast o en un TextView, según tus necesidades
         mostrarMensaje("Porcentaje de salud: $porcentajeSalud%")
+        mostrarMensaje("Pulse en la foto para ir a la pantalla principal")
         mostrarImagenResultado(porcentajeSalud)
 
     }
@@ -110,9 +118,6 @@ class EvaluacionSalud : AppCompatActivity() {
         imageViewResultado.setImageResource(imagenResource)
         imageViewResultado.visibility = View.VISIBLE
 
-        // Ajusta el tamaño de la imagen según tus necesidades
-        imageViewResultado.minimumHeight = 50 // Cambia este valor según sea necesario
-        imageViewResultado.minimumWidth = 50  // Cambia este valor según sea necesario
     }
 
 }
