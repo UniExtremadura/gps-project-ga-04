@@ -17,12 +17,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".view.home.CrearRutinaActivity"
-            android:exported="false"
-            android:label="@string/title_activity_crear_rutina"
-            android:theme="@style/Theme.FitLife365" />
-        <activity
-            android:name=".view.home.MisRutinasActivity"
+            android:name=".view.home.HomeActivity"
             android:exported="true">
         </activity>
         <activity
