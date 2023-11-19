@@ -19,6 +19,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
+    private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -49,11 +50,12 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_containerHome, fragment)
             commit()
-    }
+        }
 
     private fun setUpUI() {
         crearRutinaFragment = CrearRutinaFragment()
         misRutinasFragment = MisRutinasFragment()
+        listaEjerciciosFragment = ListaEjerciciosFragment()
         setCurrentFragment(misRutinasFragment)
     }
     private fun setUpListeners() {
@@ -65,6 +67,7 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
+                   R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                 }
                 true
             }
