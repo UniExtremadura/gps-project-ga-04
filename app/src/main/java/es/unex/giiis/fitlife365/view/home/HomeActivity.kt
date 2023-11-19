@@ -20,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
+    private lateinit var personalTrainerFragment: PersonalTrainerFragment
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -56,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
         crearRutinaFragment = CrearRutinaFragment()
         misRutinasFragment = MisRutinasFragment()
         listaEjerciciosFragment = ListaEjerciciosFragment()
+        personalTrainerFragment = PersonalTrainerFragment()
         setCurrentFragment(misRutinasFragment)
     }
     private fun setUpListeners() {
@@ -68,6 +70,7 @@ class HomeActivity : AppCompatActivity() {
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
                    R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
+                    R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
                 }
                 true
             }

@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import es.unex.giiis.fitlife365.R
 
-class PersonalTrainer : Fragment() {
+class PersonalTrainerFragment : Fragment() {
 
     private lateinit var timePicker: TimePicker
     private lateinit var datePicker: DatePicker

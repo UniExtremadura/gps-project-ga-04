@@ -18,6 +18,7 @@ import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
 import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
 import kotlinx.coroutines.launch
 
 class RegistroActivity : AppCompatActivity() {
@@ -31,6 +32,9 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var registerConfirmPassword: EditText
     private lateinit var checkBoxPassword: CheckBox
     private lateinit var binding: ActivityRegisterBinding
+
+
+
 
     companion object {
         const val USERNAME = "USERNAME"
@@ -56,6 +60,8 @@ class RegistroActivity : AppCompatActivity() {
         registerEmail = findViewById(R.id.registerEmail)
         registerConfirmPassword = findViewById(R.id.registerConfirmPassword)
         checkBoxPassword = findViewById(R.id.checkBoxPassword)
+
+
 
         setUpListeners()
     }
@@ -138,12 +144,11 @@ class RegistroActivity : AppCompatActivity() {
 
 
     private fun navigateToLogin(user: User) {
-        val intent = Intent(this, IniciarSesionActivity::class.java).apply {
-            putExtra(USERNAME, user.name)
-            putExtra(PASSWORD, user.password)
-            putExtra(EMAIL, user.email)
+        val intent = Intent(this, EvaluacionSalud::class.java).apply {
+            putExtra("LOGIN_USER", user)
         }
         startActivity(intent)
     }
+
 
 }
