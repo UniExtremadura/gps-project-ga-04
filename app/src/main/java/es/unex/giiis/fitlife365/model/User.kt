@@ -10,8 +10,8 @@ data class User(
     val name: String = "",
     val password: String = "",
     val email: String = "",
-    val sexo: String = "",
-    val edad: Int = 0,
-    val altura: Int = 0,
-    val peso: Int = 0
+    var sexo: String = "",
+    var edad: Int = 0,
+    var altura: Int = 0,
+    var peso: Int = 0
 ) : Serializable
