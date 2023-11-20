@@ -16,4 +16,14 @@ interface UserDao {
 
     @Query("UPDATE user SET sexo = :sexo, edad = :edad, altura = :altura, peso = :peso WHERE userId = :userId")
     suspend fun update(sexo: String, edad: Int, altura: Int, peso: Int, userId: Long?)
+
+    @Query("UPDATE user SET name = :name, sexo = :sexo, edad = :edad, altura = :altura, peso = :peso WHERE userId = :userId")
+    suspend fun updateUser(
+        userId: Long,
+        name: String,
+        sexo: String,
+        edad: Int,
+        altura: Int,
+        peso: Int
+    )
 }

@@ -21,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
+    private lateinit var editarPerfilFragment: EditarPerfilFragment
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -58,6 +59,8 @@ class HomeActivity : AppCompatActivity() {
         misRutinasFragment = MisRutinasFragment()
         listaEjerciciosFragment = ListaEjerciciosFragment()
         personalTrainerFragment = PersonalTrainerFragment()
+        editarPerfilFragment = EditarPerfilFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+        setCurrentFragment(misRutinasFragment)
         setCurrentFragment(misRutinasFragment)
     }
     private fun setUpListeners() {
@@ -71,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
                     R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
+                    R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
                 }
                 true
             }
