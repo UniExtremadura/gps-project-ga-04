@@ -1,6 +1,7 @@
 package es.unex.giiis.fitlife365.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import es.unex.giiis.fitlife365.model.User
@@ -26,4 +27,7 @@ interface UserDao {
         altura: Int,
         peso: Int
     )
+
+    @Delete
+    suspend fun deleteUser(user: User)
 }
