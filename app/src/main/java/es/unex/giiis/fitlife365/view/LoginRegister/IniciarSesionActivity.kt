@@ -8,6 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.Preference
+import androidx.preference.PreferenceManager
+import androidx.room.Room
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
@@ -40,6 +43,20 @@ class IniciarSesionActivity : AppCompatActivity() {
         textViewRegister = binding.textView3
 
         setUpListeners()
+        readSettings()
+    }
+
+    private fun readSettings(){
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this).all
+
+        val rememberme = preferences["rememberme"] as Boolean ?: false
+        val username = preferences["username"] as String ?: ""
+        val password = preferences["password"] as String ?: ""
+
+        if (rememberme){
+            binding.etUsername.setText(username)
+            binding.etPassword.setText(password)
+        }
     }
 
     private fun validateFields(): Boolean {

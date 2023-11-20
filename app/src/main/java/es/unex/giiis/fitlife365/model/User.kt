@@ -9,6 +9,9 @@ data class User(
     @PrimaryKey(autoGenerate = true) var userId: Long?,
     val name: String = "",
     val password: String = "",
-    val email: String = ""
+    val email: String = "",
+    var sexo: String = "",
+    var edad: Int = 0,
+    var altura: Int = 0,
+    var peso: Int = 0
 ) : Serializable
-

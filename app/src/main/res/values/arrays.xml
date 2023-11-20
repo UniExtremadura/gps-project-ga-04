@@ -28,5 +28,11 @@
         <item>@drawable/laura</item>
         <!-- Agrega más imágenes según sea necesario -->
     </array>
+    <array name="opciones_sexo">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otro</item>
+        <!-- Agrega más imágenes según sea necesario -->
+    </array>
 
 </resources>

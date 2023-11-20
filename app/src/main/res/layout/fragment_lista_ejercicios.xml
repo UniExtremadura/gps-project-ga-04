@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListaEjercicios"
+        android:layout_width="match_parent"
+        android:layout_height="589dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="100dp"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/btnGuardarEnRutina"
+        android:layout_width="179dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Guardar en Rutina" />
+
+</LinearLayout>
