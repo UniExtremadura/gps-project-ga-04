@@ -3,6 +3,7 @@ package es.unex.giiis.fitlife365.view.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
@@ -11,16 +12,20 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.SettingsActivity
+import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var toolbar: Toolbar
     private lateinit var usernameText: TextView
+    private lateinit var imageViewEvS: ImageView
+    private lateinit var usernameTextEvS: TextView
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
+
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -39,6 +44,8 @@ class HomeActivity : AppCompatActivity() {
 
         toolbar = findViewById(R.id.toolbar3)
         usernameText = findViewById(R.id.usernameText)
+        imageViewEvS = findViewById(R.id.imageViewEvS)
+        usernameTextEvS = findViewById(R.id.usernameTextEvS)
 
         val user = intent.getSerializableExtra(LOGIN_USER) as User
         usernameText.text = user.name
@@ -60,10 +67,17 @@ class HomeActivity : AppCompatActivity() {
         personalTrainerFragment = PersonalTrainerFragment()
         setCurrentFragment(misRutinasFragment)
     }
+
     private fun setUpListeners() {
         with(binding){
             usernameText.setOnClickListener {
                 navigateToSettings()
+            }
+            imageViewEvS.setOnClickListener {
+                navigateToEvaluacionSalud()
+            }
+            usernameTextEvS.setOnClickListener {
+                navigateToEvaluacionSalud()
             }
             bottomNavigation.setOnItemSelectedListener{
                 when(it.itemId){
@@ -79,6 +93,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToSettings() {
         val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToEvaluacionSalud() {
+        val intent = Intent(this, EvaluacionSalud::class.java)
         startActivity(intent)
     }
 }
