@@ -102,7 +102,11 @@ class EditarPerfilFragment : Fragment() {
 
         btnEliminar.setOnClickListener {
             if (user != null) {
-                eliminarUsuario(user)
+                mostrarDialogoConfirmacionEliminacion(user) { confirmed ->
+                    if (confirmed) {
+                        eliminarUsuario(user)
+                    }
+                }
             }
         }
 
@@ -142,7 +146,6 @@ class EditarPerfilFragment : Fragment() {
 
         // Llamar al método updateUser del UserDao
         GlobalScope.launch(Dispatchers.IO) {
-            // Asegúrate de obtener la instancia de la base de datos correctamente
             val userDao = FitLife365Database.getInstance(requireContext())?.userDao()
             if (userDao != null) {
                 if (userId != null) {
@@ -155,7 +158,26 @@ class EditarPerfilFragment : Fragment() {
             }
         }
     }
+    private fun mostrarDialogoConfirmacionEliminacion(user: User, callback: (Boolean) -> Unit) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Estás seguro de eliminar tu perfil?")
 
+        // Configurar el botón de aceptar
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            // El usuario ha confirmado, ejecutar el módulo eliminarUsuario
+            callback(true)
+        }
+
+        // Configurar el botón de cancelar
+        builder.setNegativeButton("Cancelar") { _, _ ->
+            // El usuario ha cancelado, no hacer nada
+            callback(false)
+        }
+
+        // Mostrar el cuadro de diálogo
+        builder.show()
+    }
     private fun eliminarUsuario(user: User) {
         // Llamar al método deleteUser del UserDao
         GlobalScope.launch(Dispatchers.IO) {
