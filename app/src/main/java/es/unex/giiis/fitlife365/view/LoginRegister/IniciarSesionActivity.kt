@@ -35,6 +35,12 @@ class IniciarSesionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = FitLife365Database.getInstance(applicationContext)!!
+        applicationContext.deleteDatabase("fitlife365.db")
+
+        if(db.isOpen)
+            db.close()
+
+        db = Room.databaseBuilder(applicationContext, FitLife365Database::class.java, "fitlife365.db").build()
 
         btnIniciarSesion = binding.buttonContinuar
         btnRegistro = binding.registrateButton2

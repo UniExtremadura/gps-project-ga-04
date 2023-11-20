@@ -47,14 +47,17 @@ class HomeActivity : AppCompatActivity() {
         setUpListeners()
     }
 
-    private fun setCurrentFragment(fragment: Fragment) =
+    private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_containerHome, fragment)
             commit()
         }
+    }
+
 
     private fun setUpUI() {
         crearRutinaFragment = CrearRutinaFragment()
+        crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
         misRutinasFragment = MisRutinasFragment()
         listaEjerciciosFragment = ListaEjerciciosFragment()
         personalTrainerFragment = PersonalTrainerFragment()
