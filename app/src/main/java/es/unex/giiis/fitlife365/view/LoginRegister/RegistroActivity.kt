@@ -1,6 +1,5 @@
 package es.unex.giiis.fitlife365.view.LoginRegister
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -135,7 +134,7 @@ class RegistroActivity : AppCompatActivity() {
                     val id =  db?.userDao()?.insert(user)
                     if (id != null) {
                         user.userId = id
-                        navigateToLogin(user)
+                        navigateToEvaluacionSalud(user)
                     }
                 }
             }
@@ -143,7 +142,7 @@ class RegistroActivity : AppCompatActivity() {
     }
 
 
-    private fun navigateToLogin(user: User) {
+    private fun navigateToEvaluacionSalud(user: User) {
         val intent = Intent(this, EvaluacionSalud::class.java).apply {
             putExtra("LOGIN_USER", user)
         }

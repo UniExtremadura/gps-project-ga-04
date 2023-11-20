@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
-                   R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
+                    R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
                 }
                 true

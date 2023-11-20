@@ -18,4 +18,5 @@
         android:id="@+id/nav_personaltrainer"
         android:icon="@drawable/perfil_icon"
         android:title="Entrenador" />
+
 </menu>

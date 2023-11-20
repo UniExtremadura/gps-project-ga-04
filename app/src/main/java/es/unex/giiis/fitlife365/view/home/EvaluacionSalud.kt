@@ -3,6 +3,7 @@ package es.unex.giiis.fitlife365.view.home
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -12,6 +13,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.model.User
 
 class EvaluacionSalud : AppCompatActivity() {
 
@@ -58,10 +60,25 @@ class EvaluacionSalud : AppCompatActivity() {
         }
 
         imageViewResultado.setOnClickListener {
+
+            val user = intent?.getSerializableExtra("LOGIN_USER") as? User
+            if (user != null) {
+                Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
+
+                // Resto del código...
+            } else {
+                Log.d("EvaluacionSalud", "El usuario es nulo.")
+            }
+
+
             // Abre la pantalla HomeActivity al hacer clic en la imagen
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                // Pasa el usuario como parte de los datos del intent
+                putExtra(HomeActivity.LOGIN_USER, user)
+            }
             startActivity(intent)
         }
+
     }
 
     private fun camposValidos(): Boolean {
@@ -87,6 +104,7 @@ class EvaluacionSalud : AppCompatActivity() {
         mostrarImagenResultado(porcentajeSalud)
 
     }
+
 
     private fun calcularPorcentajeSalud(peso: Float, estaturaCm: Float): Int {
         // Convertir la estatura a metros
