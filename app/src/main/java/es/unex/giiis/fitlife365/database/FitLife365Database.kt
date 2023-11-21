@@ -8,12 +8,16 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.model.ExerciseModel
 
-@Database(entities = [User::class, Routine::class], version = 1)
+
+@Database(entities = [User::class, Routine::class, ExerciseModel::class], version = 1, exportSchema = false)
 abstract class FitLife365Database : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun routineDao(): RoutineDao
+
+    abstract fun exerciseModelDao(): ExerciseModelDao
 
     companion object {
         private var INSTANCE: FitLife365Database? = null
