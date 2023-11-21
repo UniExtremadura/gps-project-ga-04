@@ -71,17 +71,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewMaterial2" />
 
     <TextView
-        android:id="@+id/textViewMaterial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Tipos de músculos"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.018"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPesoObjetivo" />
-
-    <TextView
         android:id="@+id/textViewMaterial2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,26 +79,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
-    <Spinner
-        android:id="@+id/spinnerMaterial"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.656"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMaterial" />
-
     <TextView
         android:id="@+id/textViewDiasEntrenamiento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="Días de Entrenamiento"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerMaterial" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPesoObjetivo" />
 
     <Spinner
         android:id="@+id/spinnerDiasEntrenamiento"
