@@ -90,6 +90,8 @@ class EditarPerfilFragment : Fragment() {
                     if (confirmed) {
                         // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
                         actualizarUsuario(user)
+                        Toast.makeText(requireContext(), "Pefil actualizado, reinicia para obtener los cambios", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Actualize los cambios en Ev.S para saber su salud", Toast.LENGTH_SHORT).show()
                         val nuevoNombreUsuario = editTextNombre.text.toString()
                         val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
                         // Actualizar el nombre de usuario en el TextView
@@ -152,7 +154,6 @@ class EditarPerfilFragment : Fragment() {
                     userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
                     // Mostrar un mensaje Toast después de la actualización
                     GlobalScope.launch(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Perfil actualizado, reinicie para aplicar cambios", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

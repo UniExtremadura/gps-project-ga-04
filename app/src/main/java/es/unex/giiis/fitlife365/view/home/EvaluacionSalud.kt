@@ -33,6 +33,12 @@ class EvaluacionSalud : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.health_evaluation)
 
+        Toast.makeText(
+            this,
+            "Verifique su sexo, edad, altura y peso",
+            Toast.LENGTH_LONG
+        ).show()
+
         editTextEdad = findViewById(R.id.editTextEdad)
         editTextEstatura = findViewById(R.id.editTextEstatura)
         editTextPeso = findViewById(R.id.editTextPeso)
