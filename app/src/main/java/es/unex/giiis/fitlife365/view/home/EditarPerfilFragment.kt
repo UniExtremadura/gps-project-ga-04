@@ -152,7 +152,7 @@ class EditarPerfilFragment : Fragment() {
                     userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
                     // Mostrar un mensaje Toast después de la actualización
                     GlobalScope.launch(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Perfil actualizado, reinicie para aplicar cambios", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

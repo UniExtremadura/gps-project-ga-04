@@ -17,17 +17,44 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Obtener la preferencia del tema
         val themeSwitchPreference = findPreference<SwitchPreference>("theme")
-        themeSwitchPreference?.setOnPreferenceChangeListener { _, newValue ->
-            val sharedPreferences = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
-            if (sharedPreferences != null) {
-                sharedPreferences.edit().putBoolean("theme_preference", newValue as Boolean).apply()
+        themeSwitchPreference?.let {
+            // Obtener el estado actual de la preferencia
+            val currentThemeValue = it.isChecked
+
+            // Actualizar el resumen según el estado actual
+            val themeMessage = if (currentThemeValue) {
+                "Modo Oscuro"
+            } else {
+                "Modo Claro"
             }
+            it.summary = themeMessage
 
-            // Mostrar un Toast indicando que la aplicación necesita reiniciarse
-            Toast.makeText(context, "Reinicie la aplicación para aplicar los cambios de tema", Toast.LENGTH_SHORT).show()
+            // Establecer un oyente para la preferencia de cambio de tema
+            it.setOnPreferenceChangeListener { _, newValue ->
+                // Actualizar el resumen según el nuevo estado del interruptor
+                val newThemeMessage = if (newValue as Boolean) {
+                    "Modo Oscuro"
+                } else {
+                    "Modo Claro"
+                }
+                it.summary = newThemeMessage
 
-            true
+                // Guardar el nuevo valor en SharedPreferences
+                val sharedPreferences =
+                    context?.let { context -> PreferenceManager.getDefaultSharedPreferences(context) }
+                sharedPreferences?.edit()?.putBoolean("theme_preference", newValue)?.apply()
+
+                // Mostrar un Toast indicando que la aplicación necesita reiniciarse
+                Toast.makeText(
+                    context,
+                    "Reinicie la aplicación para aplicar los cambios de tema",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                true
+            }
         }
-
     }
 }
+
+
