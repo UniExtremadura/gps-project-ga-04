@@ -7,7 +7,7 @@
         android:title="Mis Rutinas" />
     <item
         android:id="@+id/nav_create_routine"
-        android:icon="@drawable/perfil_icon"
+        android:icon="@drawable/crear_rutina"
         android:title="Crear Rutina" />
 
     <item
@@ -15,8 +15,12 @@
         android:icon="@drawable/perfil_icon"
         android:title="Ejercicios" />
     <item
+        android:id="@+id/nav_editar_perfil"
+        android:icon="@drawable/perfil_icon"
+        android:title="Editar Perfil" />
+    <item
         android:id="@+id/nav_personaltrainer"
-        android:icon="@drawable/baseline_phone_24"
+        android:icon="@drawable/personal_trainer"
         android:title="Entrenador" />
 
 </menu>

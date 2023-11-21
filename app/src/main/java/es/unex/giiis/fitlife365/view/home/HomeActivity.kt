@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import es.unex.giiis.fitlife365.EditarPerfilFragment
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
@@ -25,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
+    private lateinit var editarPerfilFragment: EditarPerfilFragment
 
 
     companion object {
@@ -65,6 +67,8 @@ class HomeActivity : AppCompatActivity() {
         misRutinasFragment = MisRutinasFragment()
         listaEjerciciosFragment = ListaEjerciciosFragment()
         personalTrainerFragment = PersonalTrainerFragment()
+        editarPerfilFragment = EditarPerfilFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+        setCurrentFragment(misRutinasFragment)
         setCurrentFragment(misRutinasFragment)
     }
 
@@ -85,6 +89,7 @@ class HomeActivity : AppCompatActivity() {
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
                     R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
+                    R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
                 }
                 true
             }

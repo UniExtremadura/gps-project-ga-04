@@ -3,14 +3,12 @@
 
     <!-- Estilo para el tema claro -->
     <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
-        <!-- Definir atributos específicos para el tema claro -->
 
     </style>
 
     <!-- Estilo para el tema oscuro -->
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
-        <!-- Definir atributos específicos para el tema oscuro -->
-        <!-- Otros atributos -->
+
     </style>
 
 </resources>

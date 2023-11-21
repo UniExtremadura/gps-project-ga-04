@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -35,18 +37,75 @@ class ListaEjerciciosFragment : Fragment() {
 
     }
 
+    private val muscleMapping = mapOf(
+        "Abdominales" to "abdominals",
+        "Abductores"  to "abductors",
+        "Aductores" to "adductors",
+        "Bíceps" to "biceps",
+        "Pantorrillas" to "calves",
+        "Pecho" to "chest",
+        "Antebrazos" to "forearms",
+        "Glúteos" to "glutes",
+        "Isquiotibiales" to "hamstrings",
+        "Dorsales" to "lats",
+        "Lumbares" to "lower_back",
+        "Espalda" to "middle_back",
+        "Cuello" to "neck",
+        "Cuadríceps" to "quadriceps",
+        "Trapecios" to "traps",
+        "Tríceps" to "triceps"
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Configurar el RecyclerView
         setUpRecyclerView()
 
-        lifecycleScope.launch {
+        // Configurar el Spinner para seleccionar el músculo
+        val musclesArray = resources.getStringArray(R.array.muscle_array)
+        val spinnerAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musclesArray)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerMusculo.adapter = spinnerAdapter
+
+        // Configurar el Spinner con OnItemSelectedListener
+        binding.spinnerMusculo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
+                val selectedMuscle = parent?.getItemAtPosition(position).toString()
+                filtrarEjerciciosPorMusculo(selectedMuscle)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Lógica que se ejecuta cuando no se selecciona ningún elemento en el Spinner
+            }
+        }
+
+        // Lógica para cargar ejercicios desde la API
+        /* lifecycleScope.launch {
             if (_exercise.isEmpty()) {
                 try {
-                    _exercise = fetchShows().toExercise()
+                    // Por defecto, cargar ejercicios sin filtrar
+                    _exercise = getNetworkService().getExercisesByDifficulty("beginner").toExercise()
                     adapter.updateData(_exercise)
                 } catch (error: APIError) {
                     Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }*/
+    }
+
+    private fun filtrarEjerciciosPorMusculo(muscle: String) {
+        lifecycleScope.launch {
+            try {
+                // Traducir el nombre del músculo al inglés utilizando el mapeo
+                val muscleInEnglish = muscleMapping[muscle] ?: muscle
+                // Filtrar ejercicios por músculo (usando el nombre en inglés)
+                _exercise = getNetworkService().getExercisesByMuscle(muscleInEnglish).toExercise()
+                adapter.updateData(_exercise)
+            } catch (error: APIError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

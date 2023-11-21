@@ -16,15 +16,6 @@ abstract class FitLife365Database : RoomDatabase() {
     companion object {
         private var INSTANCE: FitLife365Database? = null
 
-        private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Añadir nuevas columnas a la tabla User
-                database.execSQL("ALTER TABLE User ADD COLUMN sexo TEXT DEFAULT ''")
-                database.execSQL("ALTER TABLE User ADD COLUMN edad INTEGER DEFAULT 0")
-                database.execSQL("ALTER TABLE User ADD COLUMN altura INTEGER DEFAULT 0")
-                database.execSQL("ALTER TABLE User ADD COLUMN peso INTEGER DEFAULT 0")
-            }
-        }
 
         fun getInstance(context: Context): FitLife365Database? {
             if (INSTANCE == null) {
