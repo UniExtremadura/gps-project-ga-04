@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
@@ -54,6 +55,13 @@ class EvaluacionSalud : AppCompatActivity() {
         editTextEstatura.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         editTextPeso.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
+        val user2 = intent?.getSerializableExtra("LOGIN_USER") as? User
+
+        if (user2 != null) {
+            cargarInformacionUsuario(user2)
+        }
+
+
         btnAceptar.setOnClickListener {
             if (camposValidos()) {
                 calcularPorcentajeSalud()
@@ -63,7 +71,6 @@ class EvaluacionSalud : AppCompatActivity() {
         }
 
         imageViewResultado.setOnClickListener {
-
             val user = intent?.getSerializableExtra("LOGIN_USER") as? User
             if (user != null) {
                 Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
@@ -73,7 +80,6 @@ class EvaluacionSalud : AppCompatActivity() {
                 Log.d("EvaluacionSalud", "El usuario es nulo.")
             }
 
-
             // Abre la pantalla HomeActivity al hacer clic en la imagen
             val intent = Intent(this, HomeActivity::class.java).apply {
                 // Pasa el usuario como parte de los datos del intent
@@ -81,7 +87,6 @@ class EvaluacionSalud : AppCompatActivity() {
             }
             startActivity(intent)
         }
-
     }
 
     private fun camposValidos(): Boolean {
@@ -92,7 +97,7 @@ class EvaluacionSalud : AppCompatActivity() {
         return edad != null && estatura != null && peso != null
     }
 
-    private fun guardarInformacionUsuario (edad: Float, estatura: Float, peso: Float, sexo: String) {
+    private fun guardarInformacionUsuario(edad: Float, estatura: Float, peso: Float, sexo: String) {
         val user = intent?.getSerializableExtra("LOGIN_USER") as? User
         if (user != null) {
             user.edad = edad.toInt()
@@ -109,7 +114,17 @@ class EvaluacionSalud : AppCompatActivity() {
         } else {
             Log.d("EvaluacionSalud", "El usuario es nulo.")
         }
+    }
 
+    private fun cargarInformacionUsuario(user: User) {
+        val sexoArray = resources.getStringArray(R.array.opciones_sexo)
+        val sexoIndex = sexoArray.indexOf(user.sexo)
+
+        // Rellenar los campos con los datos del usuario
+        editTextPeso.setText(user.peso.toString())
+        editTextEstatura.setText(user.altura.toString())
+        editTextEdad.setText(user.edad.toString())
+        spinnerSexo.setSelection(sexoIndex)
     }
 
     private fun calcularPorcentajeSalud() {
@@ -127,9 +142,7 @@ class EvaluacionSalud : AppCompatActivity() {
         mostrarMensaje("Porcentaje de salud: $porcentajeSalud%")
         mostrarMensaje("Pulse en la foto para ir a la pantalla principal")
         mostrarImagenResultado(porcentajeSalud)
-
     }
-
 
     private fun calcularPorcentajeSalud(peso: Float, estaturaCm: Float): Int {
         // Convertir la estatura a metros
@@ -160,7 +173,5 @@ class EvaluacionSalud : AppCompatActivity() {
 
         imageViewResultado.setImageResource(imagenResource)
         imageViewResultado.visibility = View.VISIBLE
-
     }
-
 }

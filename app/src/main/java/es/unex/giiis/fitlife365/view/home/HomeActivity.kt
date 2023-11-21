@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
         val user = intent.getSerializableExtra(LOGIN_USER) as User
         usernameText.text = user.name
 
-        setUpUI()
+        setUpUI(user)
         setUpListeners()
     }
 
@@ -62,12 +62,12 @@ class HomeActivity : AppCompatActivity() {
             commit()
         }
 
-    private fun setUpUI() {
+    private fun setUpUI(user: User) {
         crearRutinaFragment = CrearRutinaFragment()
         misRutinasFragment = MisRutinasFragment()
         listaEjerciciosFragment = ListaEjerciciosFragment()
         personalTrainerFragment = PersonalTrainerFragment()
-        editarPerfilFragment = EditarPerfilFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+        editarPerfilFragment = EditarPerfilFragment.newInstance(user)
         setCurrentFragment(misRutinasFragment)
         setCurrentFragment(misRutinasFragment)
     }
@@ -102,7 +102,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun navigateToEvaluacionSalud() {
-        val intent = Intent(this, EvaluacionSalud::class.java)
+        val user = intent.getSerializableExtra(LOGIN_USER) as? User
+        val intent = Intent(this, EvaluacionSalud::class.java).apply {
+            // Pasa el usuario como parte de los datos del intent
+            putExtra("LOGIN_USER", user)
+        }
         startActivity(intent)
     }
+
 }
