@@ -24,7 +24,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
-    private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
     private lateinit var editarPerfilFragment: EditarPerfilFragment
 
@@ -56,22 +55,18 @@ class HomeActivity : AppCompatActivity() {
         setUpListeners()
     }
 
-    private fun setCurrentFragment(fragment: Fragment) {
+    private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_containerHome, fragment)
             commit()
         }
-    }
-
 
     private fun setUpUI(user: User) {
         crearRutinaFragment = CrearRutinaFragment()
         crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
-        misRutinasFragment = MisRutinasFragment()
-        listaEjerciciosFragment = ListaEjerciciosFragment()
+        misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
         personalTrainerFragment = PersonalTrainerFragment()
         editarPerfilFragment = EditarPerfilFragment.newInstance(user)
-        setCurrentFragment(misRutinasFragment)
         setCurrentFragment(misRutinasFragment)
     }
 
@@ -90,7 +85,6 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
-                    R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
                     R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
                 }

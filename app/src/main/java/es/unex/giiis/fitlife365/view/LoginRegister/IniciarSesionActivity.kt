@@ -35,12 +35,16 @@ class IniciarSesionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = FitLife365Database.getInstance(applicationContext)!!
-        applicationContext.deleteDatabase("fitlife365.db")
+
+        /*applicationContext.deleteDatabase("fitlife365.db")
 
         if(db.isOpen)
             db.close()
 
         db = Room.databaseBuilder(applicationContext, FitLife365Database::class.java, "fitlife365.db").build()
+        */
+
+
 
         btnIniciarSesion = binding.buttonContinuar
         btnRegistro = binding.registrateButton2
@@ -52,18 +56,18 @@ class IniciarSesionActivity : AppCompatActivity() {
         readSettings()
     }
 
-    private fun readSettings(){
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this).all
+    private fun readSettings() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val rememberme = preferences.getBoolean("rememberme", false)
+        val username = preferences.getString("username", "") ?: ""
+        val password = preferences.getString("password", "") ?: ""
 
-        val rememberme = preferences["rememberme"] as Boolean ?: false
-        val username = preferences["username"] as String ?: ""
-        val password = preferences["password"] as String ?: ""
-
-        if (rememberme){
+        if (rememberme) {
             binding.etUsername.setText(username)
             binding.etPassword.setText(password)
         }
     }
+
 
     private fun validateFields(): Boolean {
         val username = etUsername.text.toString()
