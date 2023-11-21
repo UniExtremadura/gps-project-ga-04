@@ -1,5 +1,6 @@
 package es.unex.giiis.fitlife365.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +10,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.database.FitLife365Database
+import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import kotlinx.coroutines.launch
 
 
 class MisRutinasFragment : Fragment() {
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var usernameText: TextView
-    private lateinit var buttonContinuar: Button
-    private lateinit var buttonCrearRutina: Button
-    private lateinit var button2: Button
-    private lateinit var button3: Button
-    private lateinit var button4: Button
-    private lateinit var imageView4: ImageView
-    private lateinit var imageView5: ImageView
-    private lateinit var imageView6: ImageView
-    private lateinit var imageView7: ImageView
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var rutinasAdapter: RoutineAdapter
+    private var rutinasList: List<Routine> = mutableListOf()
+
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
 
@@ -39,6 +41,7 @@ class MisRutinasFragment : Fragment() {
             return fragment
         }
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +57,34 @@ class MisRutinasFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_myroutines, container, false)
 
+        recyclerView = view.findViewById(R.id.recyclerView)
+        rutinasAdapter = RoutineAdapter(rutinasList) { rutina -> verDetallesRutina(rutina) }
+        recyclerView.adapter = rutinasAdapter  // Asigna el adaptador al RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val database = FitLife365Database.getInstance(requireContext())
+        val rutinaDao = database?.routineDao()
+        val user = arguments?.getSerializable(LOGIN_USER) as User
+        lifecycleScope.launch {
+            rutinasList = rutinaDao?.getRoutinesByUser(user.userId) ?: emptyList()
+            rutinasAdapter.actualizarListaRutinas(rutinasList)
+        }
+
         return view
     }
-    
-    private fun eliminarRutina(button: Button) {
-        // Oculta el botón
-        button.visibility = View.GONE
-        // Luego, elimina la rutina de tu lista de rutinas
+
+    private fun eliminarRutina(rutina: Routine) {
+        val database = FitLife365Database.getInstance(requireContext())
+        val rutinaDao = database?.routineDao()
+
+        lifecycleScope.launch {
+            rutinaDao?.deleteRoutine(rutina.routineId)
+        }
     }
 
+    private fun verDetallesRutina(rutina: Routine) {
+        val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)
+        intent.putExtra("RUTINA", rutina)
+        intent.putExtra("USER", arguments?.getSerializable(LOGIN_USER) as User)
+        startActivity(intent)
+    }
 }
