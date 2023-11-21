@@ -58,5 +58,17 @@
 
     </array>
 
+    <string-array name="font_options_entries">
+        <item>Fuente 1</item>
+        <item>Fuente 2</item>
+        <!-- Agrega más opciones según sea necesario -->
+    </string-array>
+
+    <string-array name="font_options_values">
+        <item>font1</item>
+        <item>font2</item>
+        <!-- Asocia cada valor con la fuente correspondiente -->
+    </string-array>
+
 
 </resources>

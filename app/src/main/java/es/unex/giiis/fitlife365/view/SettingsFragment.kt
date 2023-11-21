@@ -4,6 +4,7 @@ import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -53,6 +54,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                 true
             }
+        }
+
+        val fontPreference = findPreference<ListPreference>("font")
+        fontPreference?.setOnPreferenceChangeListener { _, newValue ->
+            // Manejar el cambio de fuente aquí
+            // Puedes obtener el valor seleccionado con "newValue"
+            true
         }
     }
 }
