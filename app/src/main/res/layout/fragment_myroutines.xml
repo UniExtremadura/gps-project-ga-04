@@ -11,7 +11,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -19,19 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_menu" />
-
-    <Button
-        android:id="@+id/buttonCrearRutina"
-        android:layout_width="146dp"
-        android:layout_height="76dp"
-        android:layout_below="@+id/textMisRutinas"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="122dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="124dp"
-        android:backgroundTint="#CF46E3"
-        android:text="Crear Rutina" />
 
     <TextView
         android:id="@+id/textMisRutinas"
@@ -48,10 +35,10 @@
         android:id="@+id/buttonContinuar"
         android:layout_width="142dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/buttonCrearRutina"
+        android:layout_below="@+id/textMisRutinas"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="126dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="63dp"
         android:backgroundTint="#673BB6"
         android:text="Rutina 1" />
 
@@ -137,13 +124,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar3"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="246dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="57dp"
         android:layout_toEndOf="@+id/button4"
         android:background="#FF777777"
-        app:srcCompat="@drawable/papelera_icon"
-        android:clickable="true"/>
+        android:clickable="true"
+        app:srcCompat="@drawable/papelera_icon" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
