@@ -17,6 +17,7 @@ import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
 import es.unex.giiis.fitlife365.view.home.CrearRutinaFragment
+import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -90,8 +91,6 @@ class EditarPerfilFragment : Fragment() {
                     if (confirmed) {
                         // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
                         actualizarUsuario(user)
-                        Toast.makeText(requireContext(), "Pefil actualizado, reinicia para obtener los cambios", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(requireContext(), "Actualize los cambios en Ev.S para saber su salud", Toast.LENGTH_SHORT).show()
                         val nuevoNombreUsuario = editTextNombre.text.toString()
                         val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
                         // Actualizar el nombre de usuario en el TextView
@@ -152,6 +151,11 @@ class EditarPerfilFragment : Fragment() {
             if (userDao != null) {
                 if (userId != null) {
                     userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
+
+                    val intent = Intent(requireContext(), EvaluacionSalud::class.java).apply {
+                        putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
+                    }
+                    startActivity(intent)
                     // Mostrar un mensaje Toast después de la actualización
                     GlobalScope.launch(Dispatchers.Main) {
                     }
