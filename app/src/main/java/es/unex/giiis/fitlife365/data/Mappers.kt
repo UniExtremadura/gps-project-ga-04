@@ -6,6 +6,7 @@ import es.unex.giiis.fitlife365.model.ExerciseModel
 fun ExerciseList.toExercise(): List<ExerciseModel> {
     return mapNotNull { exercise ->
         ExerciseModel(
+            exerciseId = null,
             name = exercise.name.orEmpty(),
             type = exercise.type.orEmpty(),
             muscle = exercise.muscle.orEmpty(),

@@ -11,10 +11,6 @@
         android:title="Crear Rutina" />
 
     <item
-        android:id="@+id/nav_listaEjercicios"
-        android:icon="@drawable/perfil_icon"
-        android:title="Ejercicios" />
-    <item
         android:id="@+id/nav_editar_perfil"
         android:icon="@drawable/perfil_icon"
         android:title="Editar Perfil" />
