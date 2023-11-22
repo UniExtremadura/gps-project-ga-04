@@ -3,24 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_myroutines"
-        android:icon="@drawable/papelera_icon"
+        android:icon="@drawable/my_routines_icon"
         android:title="Mis Rutinas" />
     <item
         android:id="@+id/nav_create_routine"
         android:icon="@drawable/crear_rutina"
         android:title="Crear Rutina" />
-
-    <item
-        android:id="@+id/nav_listaEjercicios"
-        android:icon="@drawable/perfil_icon"
-        android:title="Ejercicios" />
-    <item
-        android:id="@+id/nav_editar_perfil"
-        android:icon="@drawable/perfil_icon"
-        android:title="Editar Perfil" />
     <item
         android:id="@+id/nav_personaltrainer"
         android:icon="@drawable/personal_trainer"
         android:title="Entrenador" />
-
+    <item
+        android:id="@+id/nav_editar_perfil"
+        android:icon="@drawable/perfil_icon"
+        android:title="Editar Perfil" />
 </menu>

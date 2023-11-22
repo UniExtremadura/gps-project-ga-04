@@ -17,7 +17,7 @@ import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
 import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
+import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import kotlinx.coroutines.launch
 
 class RegistroActivity : AppCompatActivity() {
@@ -143,7 +143,7 @@ class RegistroActivity : AppCompatActivity() {
 
 
     private fun navigateToEvaluacionSalud(user: User) {
-        val intent = Intent(this, EvaluacionSalud::class.java).apply {
+        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             putExtra("LOGIN_USER", user)
         }
         startActivity(intent)

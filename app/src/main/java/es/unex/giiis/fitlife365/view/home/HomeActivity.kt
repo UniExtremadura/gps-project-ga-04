@@ -13,7 +13,6 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.SettingsActivity
-import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
 
 class HomeActivity : AppCompatActivity() {
 
@@ -24,7 +23,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
-    private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
     private lateinit var editarPerfilFragment: EditarPerfilFragment
 
@@ -64,11 +62,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUpUI(user: User) {
         crearRutinaFragment = CrearRutinaFragment()
-        misRutinasFragment = MisRutinasFragment()
-        listaEjerciciosFragment = ListaEjerciciosFragment()
+        crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
+        misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
         personalTrainerFragment = PersonalTrainerFragment()
         editarPerfilFragment = EditarPerfilFragment.newInstance(user)
-        setCurrentFragment(misRutinasFragment)
         setCurrentFragment(misRutinasFragment)
     }
 
@@ -87,7 +84,6 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
-                    R.id.nav_listaEjercicios -> setCurrentFragment(listaEjerciciosFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
                     R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
                 }
@@ -103,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToEvaluacionSalud() {
         val user = intent.getSerializableExtra(LOGIN_USER) as? User
-        val intent = Intent(this, EvaluacionSalud::class.java).apply {
+        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             // Pasa el usuario como parte de los datos del intent
             putExtra("LOGIN_USER", user)
         }
