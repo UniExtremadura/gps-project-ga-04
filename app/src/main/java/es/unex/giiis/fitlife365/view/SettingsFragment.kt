@@ -55,13 +55,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
-
-        val fontPreference = findPreference<ListPreference>("font")
-        fontPreference?.setOnPreferenceChangeListener { _, newValue ->
-            // Manejar el cambio de fuente aquí
-            // Puedes obtener el valor seleccionado con "newValue"
-            true
-        }
     }
 }
 

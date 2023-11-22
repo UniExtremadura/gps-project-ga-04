@@ -38,7 +38,7 @@
             android:defaultValue="light"
             android:entries="@array/font_options_entries"
             android:entryValues="@array/font_options_values"
-            android:key="font"
+            android:key="font_preference"
             android:title="Cambiar Fuente"
             android:summary="Selecciona la fuente de texto"
             app:useSimpleSummaryProvider="true" />

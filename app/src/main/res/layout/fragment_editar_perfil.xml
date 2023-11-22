@@ -8,8 +8,8 @@
 
     <EditText
         android:id="@+id/et_peso"
-        android:layout_width="420dp"
-        android:layout_height="45dp"
+        android:layout_width="416dp"
+        android:layout_height="61dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#9C27B0"
         android:gravity="start"
@@ -23,8 +23,8 @@
 
     <EditText
         android:id="@+id/et_estatura"
-        android:layout_width="396dp"
-        android:layout_height="46dp"
+        android:layout_width="388dp"
+        android:layout_height="56dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#9C27B0"
         android:gravity="start"
@@ -56,7 +56,7 @@
     <EditText
         android:id="@+id/et_edad"
         android:layout_width="408dp"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="268dp"
         android:backgroundTint="#9C27B0"
@@ -79,31 +79,34 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="392dp"
         android:text="INTRODUCE TUS DATOS"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/btnAceptar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.602"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9"
-        app:layout_constraintVertical_bias="0.007" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83" />
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="251dp"
-        android:layout_height="135dp"
+        android:layout_width="144dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/toolbar3"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:elevation="4dp"
         android:src="@drawable/logofitlife365"
         app:layout_constraintBottom_toTopOf="@+id/btnAceptar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar3"
-        app:layout_constraintVertical_bias="0.124" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
@@ -112,7 +115,9 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        tools:ignore="MissingConstraints" />
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -151,10 +156,10 @@
         android:id="@+id/textViewPesoObjetivo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="128dp"
         android:text="Nombre"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.011"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
