@@ -12,12 +12,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
-import es.unex.giiis.fitlife365.view.home.CrearRutinaFragment
-import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
+import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -152,7 +150,7 @@ class EditarPerfilFragment : Fragment() {
                 if (userId != null) {
                     userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
 
-                    val intent = Intent(requireContext(), EvaluacionSalud::class.java).apply {
+                    val intent = Intent(requireContext(), EvaluacionSaludActivity::class.java).apply {
                         putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
                     }
                     startActivity(intent)

@@ -21,12 +21,21 @@ class ListaEjerciciosAdapter(
             with(binding) {
                 tvName.text = exercise.name
                 tvType.text = exercise.type
+                checkBoxNombre.isChecked = exercise.isSelected
 
                 itemView.setOnClickListener {
                     onItemClick(exercise)
                 }
+
+                checkBoxNombre.setOnCheckedChangeListener { _, isChecked ->
+                    exercise.isSelected = isChecked
+                }
             }
         }
+    }
+
+    fun getSelectedExercises(): List<ExerciseModel> {
+        return exercises.filter { it.isSelected }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {

@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <!-- Agrega un botón para filtrar por músculo -->
-
     <Spinner
         android:id="@+id/spinnerMusculo"
         android:layout_width="match_parent"

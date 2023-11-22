@@ -12,14 +12,13 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
 
-class EvaluacionSalud : AppCompatActivity() {
+class EvaluacionSaludActivity : AppCompatActivity() {
 
     private lateinit var editTextEdad: EditText
     private lateinit var editTextEstatura: EditText
