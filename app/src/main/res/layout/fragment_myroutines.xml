@@ -20,6 +20,13 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_menu" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textMisRutinas"
+        android:layout_above="@+id/bottom_navigation" />
+
     <TextView
         android:id="@+id/textMisRutinas"
         android:layout_width="wrap_content"
@@ -30,107 +37,6 @@
         android:layout_marginEnd="132dp"
         android:text="Mis Rutinas"
         android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/buttonContinuar"
-        android:layout_width="142dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/textMisRutinas"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="63dp"
-        android:backgroundTint="#673BB6"
-        android:text="Rutina 1" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="142dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/buttonContinuar"
-        android:layout_marginStart="-144dp"
-        android:layout_marginTop="32dp"
-        android:layout_toEndOf="@+id/buttonContinuar"
-        android:backgroundTint="#653BB9"
-        android:text="Rutina 2" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="142dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="129dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#673BB6"
-        android:text="Rutina 3" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="142dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/button3"
-        android:layout_marginStart="-141dp"
-        android:layout_marginTop="32dp"
-        android:layout_toEndOf="@+id/button3"
-        android:backgroundTint="#673BB6"
-        android:text="Rutina 4" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView5"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="58dp"
-        android:layout_toEndOf="@+id/button3"
-        android:adjustViewBounds="false"
-        android:background="#777777"
-        app:srcCompat="@drawable/papelera_icon"
-        android:clickable="true"/>
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView7"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="58dp"
-        android:layout_toEndOf="@+id/button2"
-        android:background="#FF777777"
-        app:srcCompat="@drawable/papelera_icon"
-        android:clickable="true"/>
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView4"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="58dp"
-        android:layout_toEndOf="@+id/button4"
-        android:background="#FF777777"
-        app:srcCompat="@drawable/papelera_icon"
-        android:clickable="true"/>
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="145dp"
-        android:layout_marginEnd="57dp"
-        android:layout_toEndOf="@+id/button4"
-        android:background="#FF777777"
-        android:clickable="true"
-        app:srcCompat="@drawable/papelera_icon" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
@@ -169,5 +75,6 @@
         android:text="Nombre de Usuario"
         android:textColor="#000000"
         android:textSize="18sp" />
+
 </RelativeLayout>
 

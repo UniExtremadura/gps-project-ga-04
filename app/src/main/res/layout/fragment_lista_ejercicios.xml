@@ -5,12 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <!-- Agrega un botón para filtrar por músculo -->
+
+    <Spinner
+        android:id="@+id/spinnerMusculo"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="70dp"
+        android:entries="@array/muscle_array"
+        android:prompt="@string/select_muscle" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListaEjercicios"
         android:layout_width="match_parent"
-        android:layout_height="589dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginBottom="100dp"
+        android:layout_height="481dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/white"
         android:padding="10dp"
         android:scrollbars="vertical" />
@@ -20,6 +30,7 @@
         android:layout_width="179dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="0dp"
         android:text="Guardar en Rutina" />
 
 </LinearLayout>

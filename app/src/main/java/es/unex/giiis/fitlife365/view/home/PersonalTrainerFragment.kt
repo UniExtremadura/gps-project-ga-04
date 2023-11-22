@@ -14,6 +14,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import es.unex.giiis.fitlife365.R
+import java.util.Locale
 
 class PersonalTrainerFragment : Fragment() {
 
@@ -26,22 +27,29 @@ class PersonalTrainerFragment : Fragment() {
     private lateinit var entrenadoresArray: Array<String>
     private lateinit var telefonosArray: Array<String>
     private lateinit var textViewNombreSeleccionado: TextView
+    private lateinit var textView: TextView
     private lateinit var textViewTelefono: TextView
     private lateinit var imagenesEntrenadoresArray: TypedArray
-
-
-
+    private var isDatePickerVisible = false
 
 
     private var selectedYear: Int = 0
     private var selectedMonth: Int = 0
     private var selectedDay: Int = 0
+    private var selectedHour: Int = 0
+    private var selectedMinute: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.personal_trainer, container, false)
+
+        Toast.makeText(
+            requireContext(),
+            "Haz clic en la foto del entrenador para ver la lista de entrenadores",
+            Toast.LENGTH_LONG
+        ).show()
 
         timePicker = view.findViewById(R.id.timePicker)
         datePicker = view.findViewById(R.id.datePicker)
@@ -51,87 +59,119 @@ class PersonalTrainerFragment : Fragment() {
         imageView = view.findViewById(R.id.imageView8)
         textViewNombreSeleccionado = view.findViewById(R.id.textViewNombreSeleccionado)
         textViewTelefono = view.findViewById(R.id.textViewTelefono)
-
+        textView = view.findViewById(R.id.textView)
 
         entrenadoresArray = resources.getStringArray(R.array.entrenadores_personales)
         telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
-
         imagenesEntrenadoresArray = resources.obtainTypedArray(R.array.imagenes_entrenadores)
-
-
 
         // Configura el evento para mostrar la lista de entrenadores
         imageView.setOnClickListener {
             showEntrenadoresList()
         }
+
         // Configura el evento de selección de hora
         timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
-            // Puedes almacenar la hora y el minuto seleccionados o realizar alguna acción
-            datePicker.visibility = View.GONE
-            imageView.visibility = View.VISIBLE
+            // Almacena la hora y los minutos seleccionados
+            selectedHour = hourOfDay
+            selectedMinute = minute
 
-            datePicker.translationY = 0f
+            // Oculta el TimePicker y muestra los elementos necesarios
+            timePicker.visibility = View.GONE
+            showTrainerDetails()
 
-            // Desplazar el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
-            buttonGuardarDia.requestFocus()
+            // Desplaza el foco de la vista hacia otro elemento, por ejemplo, el botón de día
+            buttonDia.requestFocus()
         }
 
         // Configura el evento de selección de fecha
         datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-            // Puedes almacenar el año, mes y día seleccionados
+            // Almacena el año, mes y día seleccionados
             selectedYear = year
             selectedMonth = monthOfYear
             selectedDay = dayOfMonth
 
             datePicker.visibility = View.GONE
             imageView.visibility = View.VISIBLE
+            textViewNombreSeleccionado.visibility = View.VISIBLE
+            textViewTelefono.visibility = View.VISIBLE
+            textView.visibility = View.VISIBLE
 
             datePicker.translationY = 0f
 
-            // Desplazar el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
-            buttonGuardarDia.requestFocus()
+            // Desplaza el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
+            buttonDia.requestFocus()
 
+            if (isDatePickerVisible) {
+                Toast.makeText(requireContext(), "Para visualizar el día, vuelva a pulsar en el botón día", Toast.LENGTH_SHORT).show()
+                isDatePickerVisible = false
+            }
         }
 
         // Configura el evento para mostrar el TimePicker
         buttonHora.setOnClickListener {
+            hideTrainerDetails()
             timePicker.visibility = View.VISIBLE
             datePicker.visibility = View.GONE
-            imageView.visibility = View.GONE // Oculta la foto al mostrar el DatePicker
 
-            val yOffset = 200 // Cambia este valor según tus necesidades
+            val yOffset = 50 // Cambia este valor según tus necesidades
+            // Mueve el TimePicker hacia abajo para que sea más visible
+            timePicker.translationY = yOffset.toFloat()
 
-            // Mueve el DatePicker hacia abajo para que sea más visible
-            datePicker.translationY = yOffset.toFloat()
+            // Oculta el botón para guardar día
+           // buttonGuardarDia.visibility = View.GONE
         }
 
         // Configura el evento para mostrar el DatePicker
         buttonDia.setOnClickListener {
+            hideTrainerDetails()
             datePicker.visibility = View.VISIBLE
             timePicker.visibility = View.GONE
-            imageView.visibility = View.GONE // Oculta la foto al mostrar el DatePicker
 
-            val yOffset = 200 // Cambia este valor según tus necesidades
+            val yOffset = 70 // Cambia este valor según tus necesidades
 
             // Mueve el DatePicker hacia abajo para que sea más visible
             datePicker.translationY = yOffset.toFloat()
 
+            // Oculta el botón para guardar día
+            isDatePickerVisible = true
         }
 
-        // Configura el evento para guardar el día seleccionado
         buttonGuardarDia.setOnClickListener {
-            datePicker.visibility = View.GONE
             timePicker.visibility = View.GONE
-            imageView.visibility = View.VISIBLE // Muestra la foto al ocultar el DatePicker
-
-            // Puedes realizar alguna acción con el día seleccionado (selectedYear, selectedMonth, selectedDay)
+            showTrainerDetails()
         }
 
-        // Configura el evento para realizar alguna acción al contactar al entrenador personal
-        // Configura el evento para realizar alguna acción al contactar al entrenador personal
 
+        // Configura el evento para realizar alguna acción al contactar al entrenador personal
         return view
     }
+
+    private fun hideTrainerDetails() {
+        imageView.visibility = View.GONE
+        textViewNombreSeleccionado.visibility = View.GONE
+        textViewTelefono.visibility = View.GONE
+        textView.visibility = View.GONE // Oculta el mensaje "ENTRENADOR PERSONAL"
+    }
+
+    private fun showTrainerDetails() {
+        imageView.visibility = View.VISIBLE
+        textViewNombreSeleccionado.visibility = View.VISIBLE
+        textViewTelefono.visibility = View.VISIBLE
+        textView.visibility = View.VISIBLE // Muestra el mensaje "ENTRENADOR PERSONAL"
+
+        // Muestra la hora seleccionada en un TextView o realiza otra acción según tus necesidades
+        val formattedTime =
+            String.format(Locale.getDefault(), "Hora Seleccionada: %02d:%02d", selectedHour, selectedMinute)
+        Toast.makeText(
+            requireContext(),
+            "Para modificar la hora, seleccione el numero a modificar. Seleccione AM/PM",
+            Toast.LENGTH_LONG
+        ).show()
+        textView.text = formattedTime
+        textView.visibility = View.VISIBLE
+    }
+
     private fun showEntrenadoresList() {
         // Crea un cuadro de diálogo para mostrar la lista de entrenadores
         val builder = AlertDialog.Builder(requireContext())
@@ -163,13 +203,10 @@ class PersonalTrainerFragment : Fragment() {
         builder.show()
     }
 
-    //liberar este recurso
+    // Libera este recurso
     override fun onDestroyView() {
         super.onDestroyView()
         imagenesEntrenadoresArray.recycle()
     }
 
-
 }
-
-
