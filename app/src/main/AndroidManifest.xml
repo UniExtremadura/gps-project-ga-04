@@ -23,6 +23,10 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".view.home.ConsejosActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".view.home.EvaluacionSalud"
             android:exported="true">
         </activity>
@@ -34,6 +38,7 @@
             android:name=".view.LoginRegister.IniciarSesionActivity"
             android:exported="true">
         </activity>
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
