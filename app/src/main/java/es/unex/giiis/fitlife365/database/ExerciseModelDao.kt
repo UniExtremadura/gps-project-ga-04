@@ -14,4 +14,11 @@ interface ExerciseModelDao {
     @Query("SELECT * FROM ExerciseModel")
     suspend fun getAll(): List<ExerciseModel>
 
+    @Query("SELECT * FROM ExerciseModel WHERE exerciseId = :exerciseId")
+    suspend fun getExerciseById(exerciseId: Long?): ExerciseModel
+
+    //añadir rutinaId al ejercicio
+    @Query("UPDATE ExerciseModel SET routineId = :routineId WHERE exerciseId = :exerciseId")
+    suspend fun addRoutineExercise(exerciseId: Long?, routineId: Long?)
+
 }

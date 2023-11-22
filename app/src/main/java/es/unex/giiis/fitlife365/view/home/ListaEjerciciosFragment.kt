@@ -1,12 +1,15 @@
 package es.unex.giiis.fitlife365.view.home
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -17,8 +20,11 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.toExercise
+import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.FragmentListaEjerciciosBinding
 import es.unex.giiis.fitlife365.model.ExerciseModel
+import es.unex.giiis.fitlife365.model.Routine
+import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
 
 
@@ -28,13 +34,13 @@ class ListaEjerciciosFragment : Fragment() {
     private var _binding: FragmentListaEjerciciosBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var btnGuardar : Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListaEjerciciosBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     private val muscleMapping = mapOf(
@@ -58,14 +64,17 @@ class ListaEjerciciosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Configurar el RecyclerView
         setUpRecyclerView()
+        val database = FitLife365Database.getInstance(requireContext())
+
+        btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
+        val user = arguments?.getSerializable("user") as User
+        val rutina = arguments?.getSerializable("rutina") as Routine
 
         // Configurar el Spinner para seleccionar el músculo
         val musclesArray = resources.getStringArray(R.array.muscle_array)
-        val spinnerAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musclesArray)
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musclesArray)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerMusculo.adapter = spinnerAdapter
 
@@ -81,6 +90,36 @@ class ListaEjerciciosFragment : Fragment() {
                 // Lógica que se ejecuta cuando no se selecciona ningún elemento en el Spinner
             }
         }
+
+        btnGuardar.setOnClickListener {
+            val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
+            val exerciseModelDao = database?.exerciseModelDao()
+            val rutinaDao = database?.routineDao()
+            var cadenaEjercicios = ""
+
+            //Insertar cada ejercicio seleccionado en ExerciseModelDao
+            for (ejercicio in listaEjerciciosSeleccionados) {
+                lifecycleScope.launch {
+                    val id = exerciseModelDao?.insert(ejercicio)
+                    ejercicio.exerciseId = id
+                    Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
+                    exerciseModelDao?.addRoutineExercise(id, rutina.routineId)
+                    Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
+                    cadenaEjercicios += id.toString() + ","
+                    if (listaEjerciciosSeleccionados.indexOf(ejercicio) == listaEjerciciosSeleccionados.size - 1) {
+                        cadenaEjercicios = cadenaEjercicios.dropLast(1)
+                        rutinaDao?.updateRoutine(rutina.routineId, cadenaEjercicios)
+                        Log.d("Ejercicios añadidos a rutina: ", cadenaEjercicios)
+                    }
+                }
+            }
+
+            navigateToHome(user)
+        }
+    }
+
+    private fun navigateToHome(user: User) {
+        HomeActivity.start(requireContext(), user)
     }
 
     private fun filtrarEjerciciosPorMusculo(muscle: String) {
@@ -142,14 +181,16 @@ class ListaEjerciciosFragment : Fragment() {
         _binding = null
     }
 
+    // En el companion object
     companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListaEjerciciosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(user: User, rutina : Routine): ListaEjerciciosFragment {
+            val fragment = ListaEjerciciosFragment()
+            val args = Bundle()
+            args.putSerializable("user", user)
+            args.putSerializable("rutina", rutina)
+            fragment.arguments = args
+            return fragment
+        }
     }
+
 }

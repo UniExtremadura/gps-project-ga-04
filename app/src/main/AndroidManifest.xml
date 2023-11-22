@@ -27,7 +27,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".view.home.EvaluacionSalud"
+            android:name=".view.home.EvaluacionSaludActivity"
             android:exported="true">
         </activity>
         <activity
