@@ -150,7 +150,7 @@ class CrearRutinaFragment : Fragment() {
                     }
 
                     // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = ResourcesCompat.getFont(requireContext(), fontResId)
+                    val typeface = resources.getFont(fontResId)
 
                     // Aplicar la fuente
                     view.typeface = typeface

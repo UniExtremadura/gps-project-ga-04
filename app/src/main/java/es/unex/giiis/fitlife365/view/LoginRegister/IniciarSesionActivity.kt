@@ -36,6 +36,8 @@ class IniciarSesionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
+        setContentView(binding.root)
+
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
@@ -44,8 +46,6 @@ class IniciarSesionActivity : AppCompatActivity() {
         if (selectedFont != null) {
             applyFont(window.decorView, selectedFont)
         }
-
-        setContentView(binding.root)
 
         db = FitLife365Database.getInstance(applicationContext)!!
 

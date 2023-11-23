@@ -23,14 +23,6 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val themePreference = sharedPreferences.getBoolean("theme_preference", false)
 
-        // Obtener la fuente seleccionada desde SharedPreferences
-        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
-
-        // Aplicar la fuente seleccionada
-        if (selectedFont != null) {
-            applyFont(window.decorView, selectedFont)
-        }
-
         // Aplicar el tema en esta actividad solo si no se está recreando
         if (!isRecreating) {
             if (themePreference) {
@@ -42,6 +34,14 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_screen)
+
+        // Obtener la fuente seleccionada desde SharedPreferences
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+
+        // Aplicar la fuente seleccionada
+        if (selectedFont != null) {
+            applyFont(window.decorView, selectedFont)
+        }
 
         val btnIniciarSesion = findViewById<Button>(R.id.iniciarSesionButton)
         val btnRegistrarse = findViewById<Button>(R.id.registrateButton)

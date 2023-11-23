@@ -29,7 +29,6 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
