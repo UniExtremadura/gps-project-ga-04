@@ -3,6 +3,7 @@ package es.unex.giiis.fitlife365.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.fitlife365.R
@@ -30,6 +31,10 @@ class EjerciciosAdapter : RecyclerView.Adapter<EjerciciosAdapter.EjercicioViewHo
         return ejerciciosList.size
     }
 
+    public fun obtenerEjercicios(): List<ExerciseModel> {
+        return ejerciciosList
+    }
+
     inner class EjercicioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nombreEjercicio: TextView = itemView.findViewById(R.id.nombreEjercicio)
         private val tipoEjercicio: TextView = itemView.findViewById(R.id.tipoEjericio)
@@ -38,6 +43,8 @@ class EjerciciosAdapter : RecyclerView.Adapter<EjerciciosAdapter.EjercicioViewHo
         private val equipamientoEjercicio: TextView = itemView.findViewById(R.id.equipamientoEjercicio)
         private val instruccionesEjercicio: TextView = itemView.findViewById(R.id.instruccionesEjericio)
 
+        private val checkboxEjercicio: CheckBox = itemView.findViewById(R.id.ejercicioCompletadoCheckBox)
+
         fun bind(ejercicio: ExerciseModel) {
             nombreEjercicio.text = ejercicio.name
             tipoEjercicio.text = ejercicio.type
@@ -45,6 +52,11 @@ class EjerciciosAdapter : RecyclerView.Adapter<EjerciciosAdapter.EjercicioViewHo
             dificultadEjercicio.text = ejercicio.difficulty
             equipamientoEjercicio.text = ejercicio.equipment
             instruccionesEjercicio.text = ejercicio.instructions
+
+            checkboxEjercicio.isChecked = ejercicio.isCompleted
+            checkboxEjercicio.setOnCheckedChangeListener { _, isChecked ->
+                ejercicio.isCompleted = isChecked
+            }
         }
     }
 }

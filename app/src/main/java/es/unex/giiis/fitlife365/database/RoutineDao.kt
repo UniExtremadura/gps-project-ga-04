@@ -21,4 +21,7 @@ interface RoutineDao {
     @Query("DELETE FROM Routine WHERE routineId = :routineId")
     suspend fun deleteRoutine(routineId: Long?)
 
+    @Query("SELECT * FROM Routine WHERE routineId = :routineId")
+    suspend fun getRoutineById(routineId: Long?): Routine
+
 }

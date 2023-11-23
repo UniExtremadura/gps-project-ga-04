@@ -35,6 +35,8 @@ class ListaEjerciciosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var btnGuardar : Button
+
+    private lateinit var btnConfirmar: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,13 +64,22 @@ class ListaEjerciciosFragment : Fragment() {
         "Tríceps" to "triceps"
     )
 
+    private val difficultyMapping = mapOf(
+        "Principiante" to "beginner",
+        "Intermedio" to "intermediate",
+        "Avanzado" to "expert"
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Configurar el RecyclerView
         setUpRecyclerView()
         val database = FitLife365Database.getInstance(requireContext())
+        val difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
         btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
+        btnConfirmar = view.findViewById(R.id.btnConfirmarEjercicios)
+
         val user = arguments?.getSerializable("user") as User
         val rutina = arguments?.getSerializable("rutina") as Routine
 
@@ -83,7 +94,7 @@ class ListaEjerciciosFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
-                filtrarEjerciciosPorMusculo(selectedMuscle)
+                filtrarEjerciciosPorMusculo(selectedMuscle, difficulty )
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -95,25 +106,37 @@ class ListaEjerciciosFragment : Fragment() {
             val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
             val exerciseModelDao = database?.exerciseModelDao()
             val rutinaDao = database?.routineDao()
-            var cadenaEjercicios = ""
 
-            //Insertar cada ejercicio seleccionado en ExerciseModelDao
-            for (ejercicio in listaEjerciciosSeleccionados) {
-                lifecycleScope.launch {
+            lifecycleScope.launch {
+                // Obtener la rutina actual
+                val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
+
+                // Obtener la cadena de ejercicios anterior
+                val cadenaEjerciciosAnterior = routineEntity?.ejercicios ?: ""
+
+                // Insertar cada ejercicio seleccionado en ExerciseModelDao
+                for (ejercicio in listaEjerciciosSeleccionados) {
                     val id = exerciseModelDao?.insert(ejercicio)
                     ejercicio.exerciseId = id
                     Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
                     exerciseModelDao?.addRoutineExercise(id, rutina.routineId)
                     Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
-                    cadenaEjercicios += id.toString() + ","
-                    if (listaEjerciciosSeleccionados.indexOf(ejercicio) == listaEjerciciosSeleccionados.size - 1) {
-                        cadenaEjercicios = cadenaEjercicios.dropLast(1)
-                        rutinaDao?.updateRoutine(rutina.routineId, cadenaEjercicios)
-                        Log.d("Ejercicios añadidos a rutina: ", cadenaEjercicios)
-                    }
                 }
-            }
 
+                // Concatenar los ejercicios anteriores con los nuevos
+                val cadenaEjerciciosNueva = if (cadenaEjerciciosAnterior.isNotEmpty()) {
+                    cadenaEjerciciosAnterior + "," + listaEjerciciosSeleccionados.joinToString(",") { it.exerciseId.toString() }
+                } else {
+                    listaEjerciciosSeleccionados.joinToString(",") { it.exerciseId.toString() }
+                }
+
+                // Actualizar la cadena de ejercicios en la rutina
+                rutinaDao?.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
+                Log.d("Ejercicios añadidos a rutina: ", cadenaEjerciciosNueva)
+            }
+        }
+
+        btnConfirmar.setOnClickListener {
             navigateToHome(user)
         }
     }
@@ -122,14 +145,19 @@ class ListaEjerciciosFragment : Fragment() {
         HomeActivity.start(requireContext(), user)
     }
 
-    private fun filtrarEjerciciosPorMusculo(muscle: String) {
+    private fun filtrarEjerciciosPorMusculo(muscle: String, difficulty: String) {
         lifecycleScope.launch {
             try {
                 // Traducir el nombre del músculo al inglés utilizando el mapeo
                 val muscleInEnglish = muscleMapping[muscle] ?: muscle
-                // Filtrar ejercicios por músculo (usando el nombre en inglés)
-                _exercise = getNetworkService().getExercisesByMuscle(muscleInEnglish).toExercise()
+
+                // Traducir la dificultad al inglés utilizando el mapeo
+                val difficultyInEnglish = difficultyMapping[difficulty] ?: difficulty
+
+                // Filtrar ejercicios por músculo y dificultad (usando el nombre en inglés)
+                _exercise = getNetworkService().getExercisesByMuscleAndDifficulty(muscleInEnglish, difficultyInEnglish).toExercise()
                 adapter.updateData(_exercise)
+
             } catch (error: APIError) {
                 Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
@@ -183,11 +211,12 @@ class ListaEjerciciosFragment : Fragment() {
 
     // En el companion object
     companion object {
-        fun newInstance(user: User, rutina : Routine): ListaEjerciciosFragment {
+        fun newInstance(user: User, rutina : Routine, difficulty : String): ListaEjerciciosFragment {
             val fragment = ListaEjerciciosFragment()
             val args = Bundle()
             args.putSerializable("user", user)
             args.putSerializable("rutina", rutina)
+            args.putString("difficulty", difficulty)
             fragment.arguments = args
             return fragment
         }

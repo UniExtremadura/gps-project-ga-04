@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
@@ -59,15 +60,43 @@ class DetallesRutinaActivity : AppCompatActivity() {
                 navigateToSettings()
             }
             eliminarButton.setOnClickListener {
-                eliminarRutina()
-                navigateToHomeActivity()
+                mostrarDialogoConfirmacion()
             }
             volverHome.setOnClickListener {
+                updateCompletionStatusForAllExercises()
                 navigateToHomeActivity()
             }
         }
     }
 
+    private fun mostrarDialogoConfirmacion() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirmar eliminación")
+        builder.setMessage("¿Estás seguro de que deseas eliminar la rutina?")
+
+        // Botón Aceptar
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            eliminarRutina()
+            navigateToHomeActivity()
+        }
+
+        // Botón Cancelar
+        builder.setNegativeButton("Cancelar") { _, _ ->
+            // No hacer nada, simplemente cerrar el diálogo
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun updateCompletionStatusForAllExercises() {
+        val database = FitLife365Database.getInstance(this)
+        val exerciseModelDao = database?.exerciseModelDao()
+        lifecycleScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
+            exerciseModelDao?.updateExercise(it)
+            }
+        }
+    }
     private fun setUpUI() {
         nombreRutina = findViewById(R.id.nombreRutina)
         pesoObjetivo = findViewById(R.id.pesoObjetivo)
@@ -122,6 +151,8 @@ class DetallesRutinaActivity : AppCompatActivity() {
             rutinaDao?.deleteRoutine(rutina.routineId)
         }
     }
+
+
 
     private fun navigateToHomeActivity() {
         HomeActivity.start(this, user)

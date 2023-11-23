@@ -121,4 +121,12 @@
             android:textColor="#666666"/>
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/ejercicioCompletadoCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ejercicio completado"
+        android:checked="false"
+        android:layout_marginEnd="8dp"/>
+
 </LinearLayout>

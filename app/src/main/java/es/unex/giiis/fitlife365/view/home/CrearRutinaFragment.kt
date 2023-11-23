@@ -105,7 +105,9 @@ class CrearRutinaFragment : Fragment() {
                 }
             }
 
-            val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine)
+            val difficulty = spinnerExperiencia.selectedItem.toString()
+            val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)
+
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_containerHome, listaEjerciciosFragment)
                 addToBackStack(null) // Agrega la transacción a la pila de retroceso

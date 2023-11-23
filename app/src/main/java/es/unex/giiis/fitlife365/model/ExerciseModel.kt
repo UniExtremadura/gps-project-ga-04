@@ -24,5 +24,6 @@ data class ExerciseModel (
     val difficulty: String = "",
     val instructions: String = "",
     var isSelected: Boolean = false,
-    val routineId: Long? = null
+    val routineId: Long? = null,
+    var isCompleted: Boolean = false
 ) : Serializable
