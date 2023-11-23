@@ -59,6 +59,9 @@ class MisRutinasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_myroutines, container, false)
+        val database = FitLife365Database.getInstance(requireContext())
+        val rutinaDao = database?.routineDao()
+        val user = arguments?.getSerializable(LOGIN_USER) as User
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -72,26 +75,23 @@ class MisRutinasFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         rutinasAdapter = RoutineAdapter(rutinasList) { rutina -> verDetallesRutina(rutina) }
         recyclerView.adapter = rutinasAdapter  // Asigna el adaptador al RecyclerView
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val database = FitLife365Database.getInstance(requireContext())
-        val rutinaDao = database?.routineDao()
-        val user = arguments?.getSerializable(LOGIN_USER) as User
+
+        val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
+
         lifecycleScope.launch {
             rutinasList = rutinaDao?.getRoutinesByUser(user.userId) ?: emptyList()
             rutinasAdapter.actualizarListaRutinas(rutinasList)
+
+            // Actualiza la visibilidad del TextView según la cantidad de elementos en el RecyclerView
+            textEmptyRecyclerView.visibility = if (rutinasList.isEmpty()) View.VISIBLE else View.GONE
         }
 
         return view
     }
 
-    private fun eliminarRutina(rutina: Routine) {
-        val database = FitLife365Database.getInstance(requireContext())
-        val rutinaDao = database?.routineDao()
 
-        lifecycleScope.launch {
-            rutinaDao?.deleteRoutine(rutina.routineId)
-        }
-    }
 
     private fun verDetallesRutina(rutina: Routine) {
         val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)

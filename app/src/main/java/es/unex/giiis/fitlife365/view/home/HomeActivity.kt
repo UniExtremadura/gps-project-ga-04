@@ -18,7 +18,6 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.SettingsActivity
-import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
 
 class HomeActivity : AppCompatActivity() {
 
@@ -114,7 +113,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToEvaluacionSalud() {
         val user = intent.getSerializableExtra(LOGIN_USER) as? User
-        val intent = Intent(this, EvaluacionSalud::class.java).apply {
+        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             // Pasa el usuario como parte de los datos del intent
             putExtra("LOGIN_USER", user)
         }

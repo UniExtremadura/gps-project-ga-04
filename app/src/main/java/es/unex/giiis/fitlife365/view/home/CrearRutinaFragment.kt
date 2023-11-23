@@ -92,8 +92,12 @@ class CrearRutinaFragment : Fragment() {
         btnAceptar.setOnClickListener {
 
             // Crea la rutina
-            val nombreRutina = nombreRutina.text.toString()
-            val pesoObjetivoRutina = pesoObjetivoRutina.text.toString().toInt()
+            val nombre = "Por defecto"
+            val nombreRutina = nombreRutina.text.toString().takeIf { it.isNotEmpty() } ?: nombre
+
+            val peso = 60
+            val pesoObjetivoRutina = pesoObjetivoRutina.text.toString().toIntOrNull() ?: peso
+
             val diasEntrenamiento = spinnerDiasEntrenamiento.selectedItem.toString()
 
             val routine = Routine(
@@ -105,14 +109,18 @@ class CrearRutinaFragment : Fragment() {
                 ejercicios = ""
             )
 
+
             // Inserta la rutina en la base de datos
             if (routineDao != null) {
                 lifecycleScope.launch {
-                    routineDao.insert(routine)
+                    val id = routineDao.insert(routine)
+                    routine.routineId = id
                 }
             }
 
-            val listaEjerciciosFragment = ListaEjerciciosFragment()
+            val difficulty = spinnerExperiencia.selectedItem.toString()
+            val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)
+
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_containerHome, listaEjerciciosFragment)
                 addToBackStack(null) // Agrega la transacción a la pila de retroceso

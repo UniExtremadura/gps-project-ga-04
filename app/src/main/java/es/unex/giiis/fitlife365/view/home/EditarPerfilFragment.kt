@@ -12,14 +12,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
-import androidx.preference.PreferenceManager
-import es.unex.giiis.fitlife365.view.home.CrearRutinaFragment
-import es.unex.giiis.fitlife365.view.home.EvaluacionSalud
+import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -59,15 +55,6 @@ class EditarPerfilFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_editar_perfil, container, false)
         val sexo = listOf("Hombre", "Mujer", "Otro")
-
-        // Obtener la fuente seleccionada desde SharedPreferences
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
-
-        // Aplicar la fuente seleccionada
-        if (selectedFont != null) {
-            applyFont(view, selectedFont)
-        }
 
         // Obtener referencias a las vistas
         editTextNombre = view.findViewById(R.id.et_nombre)
@@ -125,37 +112,6 @@ class EditarPerfilFragment : Fragment() {
         return view
     }
 
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = ResourcesCompat.getFont(requireContext(), fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
     private fun mostrarDialogoConfirmacion(user: User, callback: (Boolean) -> Unit) { //tercera subtarea
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Confirmación")
@@ -194,7 +150,7 @@ class EditarPerfilFragment : Fragment() {
                 if (userId != null) {
                     userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
 
-                    val intent = Intent(requireContext(), EvaluacionSalud::class.java).apply {
+                    val intent = Intent(requireContext(), EvaluacionSaludActivity::class.java).apply {
                         putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
                     }
                     startActivity(intent)
