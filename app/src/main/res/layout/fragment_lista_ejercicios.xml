@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <!-- Agrega un botón para filtrar por músculo -->
-
     <Spinner
         android:id="@+id/spinnerMusculo"
         android:layout_width="match_parent"
@@ -32,5 +30,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="0dp"
         android:text="Guardar en Rutina" />
+
+    <Button
+        android:id="@+id/btnConfirmarEjercicios"
+        android:layout_width="179dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="0dp"
+        android:text="Confirmar" />
 
 </LinearLayout>

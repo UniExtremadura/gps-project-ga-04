@@ -1,9 +1,11 @@
 package es.unex.giiis.fitlife365.view.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.model.Routine
@@ -30,13 +32,13 @@ class RoutineAdapter(
         holder.nombreRutina.setOnClickListener {
             onItemClickListener(rutina)
         }
-
     }
+
     fun actualizarListaRutinas(nuevaLista: List<Routine>) {
         rutinas = nuevaLista
         notifyDataSetChanged()
     }
-
+    
     override fun getItemCount(): Int {
         return rutinas.size
     }

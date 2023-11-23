@@ -12,7 +12,8 @@ fun ExerciseList.toExercise(): List<ExerciseModel> {
             muscle = exercise.muscle.orEmpty(),
             equipment = exercise.equipment.orEmpty(),
             difficulty = exercise.difficulty.orEmpty(),
-            instructions = exercise.instructions.orEmpty()
+            instructions = exercise.instructions.orEmpty(),
+            isSelected = false
         )
     }
 }

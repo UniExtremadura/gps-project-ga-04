@@ -13,5 +13,5 @@ data class Routine (
     val name: String = "",
     val pesoObjetivo: Int = 0,
     val diasEntrenamiento: String = "",
-    val ejercicios: String = ""
+    var ejercicios: String = ""
 ) : Serializable

@@ -1,6 +1,7 @@
 package es.unex.giiis.fitlife365.view.home
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ class PersonalTrainerFragment : Fragment() {
     private lateinit var textViewTelefono: TextView
     private lateinit var imagenesEntrenadoresArray: TypedArray
     private var isDatePickerVisible = false
+    private lateinit var buttonConsejos: Button
 
 
     private var selectedYear: Int = 0
@@ -60,10 +62,19 @@ class PersonalTrainerFragment : Fragment() {
         textViewNombreSeleccionado = view.findViewById(R.id.textViewNombreSeleccionado)
         textViewTelefono = view.findViewById(R.id.textViewTelefono)
         textView = view.findViewById(R.id.textView)
+        buttonConsejos = view.findViewById(R.id.buttonConsejos)
+
 
         entrenadoresArray = resources.getStringArray(R.array.entrenadores_personales)
         telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
         imagenesEntrenadoresArray = resources.obtainTypedArray(R.array.imagenes_entrenadores)
+
+        buttonConsejos.setOnClickListener {
+            // Abre la actividad de Consejos aquí
+            val intent = Intent(requireContext(), ConsejosActivity::class.java)
+            startActivity(intent)
+        }
+
 
         // Configura el evento para mostrar la lista de entrenadores
         imageView.setOnClickListener {
