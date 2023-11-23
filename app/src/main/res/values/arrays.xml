@@ -58,4 +58,18 @@
 
     </array>
 
+    <string-array name="font_options_entries">
+        <item>openSans</item>
+        <item>Roboto</item>
+        <item>Ubuntu</item>
+        <item>Ephesis</item>
+    </string-array>
+
+    <string-array name="font_options_values">
+        <item>openSans</item>
+        <item>Roboto</item>
+        <item>Ubuntu</item>
+        <item>Ephesis</item>
+    </string-array>
+
 </resources>
