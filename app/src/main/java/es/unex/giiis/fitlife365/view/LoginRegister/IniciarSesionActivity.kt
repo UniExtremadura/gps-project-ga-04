@@ -62,6 +62,7 @@ class IniciarSesionActivity : AppCompatActivity() {
         val username = preferences.getString("username", "") ?: ""
         val password = preferences.getString("password", "") ?: ""
 
+
         if (rememberme) {
             binding.etUsername.setText(username)
             binding.etPassword.setText(password)
