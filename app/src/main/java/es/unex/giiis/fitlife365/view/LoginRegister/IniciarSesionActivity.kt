@@ -8,12 +8,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.CredentialCheck
+import es.unex.giiis.fitlife365.view.home.HomeActivity
 import kotlinx.coroutines.launch
 
 class IniciarSesionActivity : AppCompatActivity() {
@@ -30,18 +32,17 @@ class IniciarSesionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
         db = FitLife365Database.getInstance(applicationContext)!!
 
-        applicationContext.deleteDatabase("fitlife365.db")
+        /*applicationContext.deleteDatabase("fitlife365.db")
 
         if(db.isOpen)
             db.close()
 
         db = Room.databaseBuilder(applicationContext, FitLife365Database::class.java, "fitlife365.db").build()
-
+        */
 
 
 
@@ -55,14 +56,11 @@ class IniciarSesionActivity : AppCompatActivity() {
         readSettings()
     }
 
-
-
     private fun readSettings() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val rememberme = preferences.getBoolean("rememberme", false)
         val username = preferences.getString("username", "") ?: ""
         val password = preferences.getString("password", "") ?: ""
-
 
         if (rememberme) {
             binding.etUsername.setText(username)
@@ -113,7 +111,7 @@ class IniciarSesionActivity : AppCompatActivity() {
                     val check = CredentialCheck.passwordOk(binding.etPassword.text.toString(), user.password)
                     if (check.fail)
                         showToast(check.msg)
-                    else navigateToRegister()
+                    else navigateToHomeActivity(user!!)
                 }
                 else
                     showToast("Invalid username")
@@ -121,6 +119,10 @@ class IniciarSesionActivity : AppCompatActivity() {
         }
         else
             showToast(check.msg)
+    }
+
+    private fun navigateToHomeActivity(user: User) {
+        HomeActivity.start(this, user)
     }
 
     private fun navigateToRegister() {
