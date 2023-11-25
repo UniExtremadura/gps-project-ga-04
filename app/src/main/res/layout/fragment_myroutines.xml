@@ -20,6 +20,13 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_menu" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textMisRutinas"
+        android:layout_above="@+id/bottom_navigation" />
+
     <TextView
         android:id="@+id/textEmptyRecyclerView"
         android:layout_width="wrap_content"

@@ -63,6 +63,7 @@ class MisRutinasFragment : Fragment() {
         val rutinaDao = database?.routineDao()
         val user = arguments?.getSerializable(LOGIN_USER) as User
 
+        recyclerView = view.findViewById(R.id.recyclerView)
         rutinasAdapter = RoutineAdapter(rutinasList) { rutina -> verDetallesRutina(rutina) }
         recyclerView.adapter = rutinasAdapter  // Asigna el adaptador al RecyclerView
 
