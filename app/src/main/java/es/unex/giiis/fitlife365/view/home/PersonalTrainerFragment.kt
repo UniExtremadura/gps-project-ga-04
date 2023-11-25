@@ -19,6 +19,10 @@ import java.util.Locale
 
 class PersonalTrainerFragment : Fragment() {
 
+    private lateinit var datePicker: DatePicker
+    private lateinit var timePicker: TimePicker
+    private lateinit var buttonDia: Button
+    private lateinit var buttonGuardarDia: Button
     private lateinit var imageView: ImageView
     private lateinit var entrenadoresArray: Array<String>
     private lateinit var telefonosArray: Array<String>
@@ -26,6 +30,12 @@ class PersonalTrainerFragment : Fragment() {
     private lateinit var textView: TextView
     private lateinit var textViewTelefono: TextView
     private lateinit var imagenesEntrenadoresArray: TypedArray
+    private var isDatePickerVisible = false
+
+
+    private var selectedYear: Int = 0
+    private var selectedMonth: Int = 0
+    private var selectedDay: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +49,9 @@ class PersonalTrainerFragment : Fragment() {
             Toast.LENGTH_LONG
         ).show()
 
-
+        datePicker = view.findViewById(R.id.datePicker)
+        buttonDia = view.findViewById(R.id.button6)
+        buttonGuardarDia = view.findViewById(R.id.buttonGuardarDia)
         imageView = view.findViewById(R.id.imageView8)
         textViewNombreSeleccionado = view.findViewById(R.id.textViewNombreSeleccionado)
         textViewTelefono = view.findViewById(R.id.textViewTelefono)
@@ -50,13 +62,78 @@ class PersonalTrainerFragment : Fragment() {
         telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
         imagenesEntrenadoresArray = resources.obtainTypedArray(R.array.imagenes_entrenadores)
 
-
         // Configura el evento para mostrar la lista de entrenadores
         imageView.setOnClickListener {
             showEntrenadoresList()
         }
 
+
+        // Configura el evento de selección de fecha
+        datePicker.setOnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
+            // Almacena el año, mes y día seleccionados
+            selectedYear = year
+            selectedMonth = monthOfYear
+            selectedDay = dayOfMonth
+
+            datePicker.visibility = View.GONE
+            imageView.visibility = View.VISIBLE
+            textViewNombreSeleccionado.visibility = View.VISIBLE
+            textViewTelefono.visibility = View.VISIBLE
+            textView.visibility = View.VISIBLE
+
+            datePicker.translationY = 0f
+
+            // Desplaza el foco de la vista hacia otro elemento, por ejemplo, el botón de guardar día
+            buttonDia.requestFocus()
+
+            if (isDatePickerVisible) {
+                Toast.makeText(requireContext(), "Para visualizar el día, vuelva a pulsar en el botón día", Toast.LENGTH_SHORT).show()
+                isDatePickerVisible = false
+            }
+        }
+
+
+        // Configura el evento para mostrar el DatePicker
+        buttonDia.setOnClickListener {
+            hideTrainerDetails()
+            datePicker.visibility = View.VISIBLE
+            timePicker.visibility = View.GONE
+
+            val yOffset = 70 // Cambia este valor según tus necesidades
+
+            // Mueve el DatePicker hacia abajo para que sea más visible
+            datePicker.translationY = yOffset.toFloat()
+
+            // Oculta el botón para guardar día
+            isDatePickerVisible = true
+        }
+
+        buttonGuardarDia.setOnClickListener {
+            timePicker.visibility = View.GONE
+            showTrainerDetails()
+        }
+
+
+        // Configura el evento para realizar alguna acción al contactar al entrenador personal
         return view
+    }
+
+    private fun hideTrainerDetails() {
+        imageView.visibility = View.GONE
+        textViewNombreSeleccionado.visibility = View.GONE
+        textViewTelefono.visibility = View.GONE
+        textView.visibility = View.GONE // Oculta el mensaje "ENTRENADOR PERSONAL"
+    }
+
+    private fun showTrainerDetails() {
+        imageView.visibility = View.VISIBLE
+        textViewNombreSeleccionado.visibility = View.VISIBLE
+        textViewTelefono.visibility = View.VISIBLE
+        textView.visibility = View.VISIBLE // Muestra el mensaje "ENTRENADOR PERSONAL"
+
+        // Muestra la hora seleccionada en un TextView o realiza otra acción según tus necesidades
+
+        textView.visibility = View.VISIBLE
     }
 
     private fun showEntrenadoresList() {
