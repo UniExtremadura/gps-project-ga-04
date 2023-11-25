@@ -14,4 +14,22 @@
         <item>Mujer</item>
         <item>Otro</item>
     </array>
+    <string-array name="entrenadores_personales">
+        <item>Paco</item>
+        <item>Juan</item>
+        <item>Javier</item>
+        <!-- Agrega más nombres según sea necesario -->
+    </string-array>
+    <string-array name="telefonos_entrenadores">
+        <item>Paco:646563030</item>
+        <item>Juan:974493563</item>
+        <item>Laura:346647434</item>
+        <!-- Agrega más nombres según sea necesario -->
+    </string-array>
+    <array name="imagenes_entrenadores">
+        <item>@drawable/paco</item>
+        <item>@drawable/juan</item>
+        <item>@drawable/laura</item>
+        <!-- Agrega más imágenes según sea necesario -->
+    </array>
 </resources>
