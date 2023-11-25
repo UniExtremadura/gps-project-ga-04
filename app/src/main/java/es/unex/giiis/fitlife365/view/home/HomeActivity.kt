@@ -7,17 +7,17 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.SettingsActivity
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var imageViewEvS: ImageView
-    private lateinit var usernameTextEvS: TextView
     private lateinit var binding: ActivityHomeBinding
-
+    private lateinit var crearRutinaFragment: CrearRutinaFragment
+    private lateinit var misRutinasFragment: MisRutinasFragment
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -33,32 +33,40 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        toolbar = findViewById(R.id.toolbar3)
-        imageViewEvS = findViewById(R.id.imageViewEvS)
-        usernameTextEvS = findViewById(R.id.usernameTextEvS)
-
+        setUpUI()
         setUpListeners()
-
     }
 
+    private fun setCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_containerHome, fragment)
+            commit()
+    }
 
+    private fun setUpUI() {
+        crearRutinaFragment = CrearRutinaFragment()
+        crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
+        misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+
+        setCurrentFragment(misRutinasFragment)
+    }
     private fun setUpListeners() {
         with(binding){
-
-            imageViewEvS.setOnClickListener {
-                navigateToEvaluacionSalud()
+            usernameText.setOnClickListener {
+                navigateToSettings()
             }
-            usernameTextEvS.setOnClickListener {
-                navigateToEvaluacionSalud()
+            bottomNavigation.setOnItemSelectedListener{
+                when(it.itemId){
+                    es.unex.giiis.fitlife365.R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
+                    es.unex.giiis.fitlife365.R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
+                }
+                true
             }
         }
     }
-    private fun navigateToEvaluacionSalud() {
-        val user = intent.getSerializableExtra(LOGIN_USER) as? User
-        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
-            // Pasa el usuario como parte de los datos del intent
-            putExtra("LOGIN_USER", user)
-        }
+
+    private fun navigateToSettings() {
+        val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
 }
