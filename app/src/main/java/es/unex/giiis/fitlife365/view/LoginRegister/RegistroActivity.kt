@@ -17,6 +17,7 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import kotlinx.coroutines.launch
 
 class RegistroActivity : AppCompatActivity() {
@@ -134,7 +135,7 @@ class RegistroActivity : AppCompatActivity() {
                     val id =  db?.userDao()?.insert(user)
                     if (id != null) {
                         user.userId = id
-                        navigateToLogin(user)
+                        navigateToEvaluacionSalud(user)
                     }
                 }
             }
@@ -142,8 +143,8 @@ class RegistroActivity : AppCompatActivity() {
     }
 
 
-    private fun navigateToLogin(user: User) {
-        val intent = Intent(this, IniciarSesionActivity::class.java).apply {
+    private fun navigateToEvaluacionSalud(user: User) {
+        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             putExtra("LOGIN_USER", user)
         }
         startActivity(intent)
