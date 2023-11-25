@@ -77,6 +77,13 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             } else {
                 Log.d("EvaluacionSalud", "El usuario es nulo.")
             }
+
+            // Abre la pantalla HomeActivity al hacer clic en la imagen
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                // Pasa el usuario como parte de los datos del intent
+                putExtra(HomeActivity.LOGIN_USER, user)
+            }
+            startActivity(intent)
         }
     }
 
@@ -106,8 +113,6 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             Log.d("EvaluacionSalud", "El usuario es nulo.")
         }
     }
-
-
 
     private fun calcularPorcentajeSalud() {
         val edad = editTextEdad.text.toString().toFloat()
