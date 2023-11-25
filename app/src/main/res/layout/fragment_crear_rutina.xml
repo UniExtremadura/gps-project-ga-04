@@ -131,6 +131,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerExperiencia" />
 
+
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="208dp"
