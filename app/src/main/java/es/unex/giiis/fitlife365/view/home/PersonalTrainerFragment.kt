@@ -205,7 +205,6 @@ class PersonalTrainerFragment : Fragment() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
-
     // Libera este recurso
     override fun onDestroyView() {
         super.onDestroyView()
