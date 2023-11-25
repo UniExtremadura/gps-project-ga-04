@@ -88,6 +88,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     private fun navigateToEvaluacionSalud() {
         val user = intent.getSerializableExtra(LOGIN_USER) as? User
         val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
