@@ -43,6 +43,8 @@ class EjerciciosAdapter : RecyclerView.Adapter<EjerciciosAdapter.EjercicioViewHo
         private val equipamientoEjercicio: TextView = itemView.findViewById(R.id.equipamientoEjercicio)
         private val instruccionesEjercicio: TextView = itemView.findViewById(R.id.instruccionesEjericio)
 
+        private val checkboxEjercicio: CheckBox = itemView.findViewById(R.id.ejercicioCompletadoCheckBox)
+
         fun bind(ejercicio: ExerciseModel) {
             nombreEjercicio.text = ejercicio.name
             tipoEjercicio.text = ejercicio.type
@@ -50,6 +52,11 @@ class EjerciciosAdapter : RecyclerView.Adapter<EjerciciosAdapter.EjercicioViewHo
             dificultadEjercicio.text = ejercicio.difficulty
             equipamientoEjercicio.text = ejercicio.equipment
             instruccionesEjercicio.text = ejercicio.instructions
+
+            checkboxEjercicio.isChecked = ejercicio.isCompleted
+            checkboxEjercicio.setOnCheckedChangeListener { _, isChecked ->
+                ejercicio.isCompleted = isChecked
+            }
         }
     }
 }
