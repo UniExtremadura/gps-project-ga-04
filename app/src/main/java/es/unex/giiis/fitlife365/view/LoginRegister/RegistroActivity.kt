@@ -12,11 +12,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
 import es.unex.giiis.fitlife365.model.User
+import kotlinx.coroutines.launch
 
 class RegistroActivity : AppCompatActivity() {
+
+    private lateinit var db: FitLife365Database
 
     private lateinit var btnContinuar: Button
     private lateinit var registerUsername: EditText
@@ -44,6 +49,8 @@ class RegistroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        db = FitLife365Database.getInstance(applicationContext)!!
 
         btnContinuar = findViewById(R.id.idContinuarRegistro)
         registerUsername = findViewById(R.id.registerUsername)
@@ -117,8 +124,19 @@ class RegistroActivity : AppCompatActivity() {
         with(binding) {
             val check = validateFields()
             if (check) {
-                val user = User(registerUsername.text.toString(), registerPassword.text.toString())
-                navigateToLogin(user)
+                lifecycleScope.launch{
+                    val user = User(
+                        null,
+                        registerUsername.text.toString(),
+                        registerPassword.text.toString(),
+                        registerEmail.text.toString()
+                    )
+                    val id =  db?.userDao()?.insert(user)
+                    if (id != null) {
+                        user.userId = id
+                        navigateToLogin(user)
+                    }
+                }
             }
         }
     }
