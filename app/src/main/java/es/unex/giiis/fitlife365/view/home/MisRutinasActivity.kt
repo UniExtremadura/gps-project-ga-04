@@ -92,12 +92,7 @@ class MisRutinasActivity : AppCompatActivity() {
             usernameText.setOnClickListener {
                 navigateToSettings()
             }
-            bottomNavigation.setOnItemSelectedListener{
-                when(it.itemId){
-                    R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
-                }
-                true
-            }
+
         }
     }
 
