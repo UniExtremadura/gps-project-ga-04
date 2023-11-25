@@ -5,8 +5,18 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = Routine::class,
+            parentColumns = ["routineId"],
+            childColumns = ["routineId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class ExerciseModel (
+    @PrimaryKey(autoGenerate = true) var exerciseId: Long?,
     val name: String = "",
     val type: String = "",
     val muscle: String = "",

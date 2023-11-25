@@ -4,16 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 
 
-@Database(entities = [User::class, Routine::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Routine::class, ExerciseModel::class], version = 1, exportSchema = false)
 abstract class FitLife365Database : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
     abstract fun routineDao(): RoutineDao
+
+    abstract fun exerciseModelDao(): ExerciseModelDao
     companion object {
         private var INSTANCE: FitLife365Database? = null
 
