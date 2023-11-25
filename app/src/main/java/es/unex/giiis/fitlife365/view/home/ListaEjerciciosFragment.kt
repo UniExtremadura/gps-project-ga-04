@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import es.unex.giiis.fitlife365.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,6 +36,16 @@ class ListaEjerciciosFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_lista_ejercicios, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val musculos = listOf("Pecho", "Espalda", "Hombros", "Biceps", "Triceps", "Piernas", "Abdomen")
+        val spinnerMusculos = view.findViewById<Spinner>(R.id.spinnerMusculo)
+        val adapterMusculos = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musculos)
+        spinnerMusculos.adapter = adapterMusculos
     }
 
     companion object {
