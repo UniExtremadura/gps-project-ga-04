@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import androidx.room.Room
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
 import es.unex.giiis.fitlife365.model.User
@@ -34,13 +35,13 @@ class IniciarSesionActivity : AppCompatActivity() {
 
         db = FitLife365Database.getInstance(applicationContext)!!
 
-        /*applicationContext.deleteDatabase("fitlife365.db")
+        applicationContext.deleteDatabase("fitlife365.db")
 
         if(db.isOpen)
             db.close()
 
         db = Room.databaseBuilder(applicationContext, FitLife365Database::class.java, "fitlife365.db").build()
-        */
+
 
 
 
