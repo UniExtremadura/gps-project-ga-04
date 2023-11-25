@@ -9,4 +9,9 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+    <array name="opciones_sexo">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otro</item>
+    </array>
 </resources>
