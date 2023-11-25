@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_home)
+        setContentView(binding.root)
 
         toolbar = findViewById(R.id.toolbar3)
         imageViewEvS = findViewById(R.id.imageViewEvS)
