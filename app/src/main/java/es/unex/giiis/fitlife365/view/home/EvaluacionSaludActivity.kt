@@ -60,6 +60,13 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         editTextEstatura.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         editTextPeso.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
+        val user2 = intent?.getSerializableExtra("LOGIN_USER") as? User
+
+        if (user2 != null) {
+            cargarInformacionUsuario(user2)
+        }
+
+
         btnAceptar.setOnClickListener {
             if (camposValidos()) {
                 calcularPorcentajeSalud()
@@ -112,6 +119,17 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         } else {
             Log.d("EvaluacionSalud", "El usuario es nulo.")
         }
+    }
+
+    private fun cargarInformacionUsuario(user: User) {
+        val sexoArray = resources.getStringArray(R.array.opciones_sexo)
+        val sexoIndex = sexoArray.indexOf(user.sexo)
+
+        // Rellenar los campos con los datos del usuario
+        editTextPeso.setText(user.peso.toString())
+        editTextEstatura.setText(user.altura.toString())
+        editTextEdad.setText(user.edad.toString())
+        spinnerSexo.setSelection(sexoIndex)
     }
 
     private fun calcularPorcentajeSalud() {
