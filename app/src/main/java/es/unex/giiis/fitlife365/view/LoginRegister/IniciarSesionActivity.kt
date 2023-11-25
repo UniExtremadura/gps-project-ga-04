@@ -35,13 +35,13 @@ class IniciarSesionActivity : AppCompatActivity() {
 
         db = FitLife365Database.getInstance(applicationContext)!!
 
-        applicationContext.deleteDatabase("fitlife365.db")
+       /* applicationContext.deleteDatabase("fitlife365.db")
 
         if(db.isOpen)
             db.close()
 
         db = Room.databaseBuilder(applicationContext, FitLife365Database::class.java, "fitlife365.db").build()
-
+        */
 
 
 

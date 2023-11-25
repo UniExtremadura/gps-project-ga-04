@@ -20,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
+    private lateinit var personalTrainerFragment: PersonalTrainerFragment
     private lateinit var imageViewEvS: ImageView
     private lateinit var usernameTextEvS: TextView
 
@@ -59,6 +60,8 @@ class HomeActivity : AppCompatActivity() {
         crearRutinaFragment = CrearRutinaFragment()
         crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
         misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+        personalTrainerFragment = PersonalTrainerFragment()
+
 
         setCurrentFragment(misRutinasFragment)
     }
@@ -77,6 +80,9 @@ class HomeActivity : AppCompatActivity() {
                 when(it.itemId){
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
+                    R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
+
+
                 }
                 true
             }
