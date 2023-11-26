@@ -5,13 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/spinnerMusculo"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:layout_marginTop="70dp"
-         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListaEjercicios"
         android:layout_width="match_parent"
