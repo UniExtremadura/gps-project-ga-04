@@ -1,0 +1,115 @@
+<!-- dialog_detalles_ejercicio.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/btnCerrar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_close" />
+
+    <TextView
+        android:id="@+id/tvNombreEjercicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Ejercicio"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tvTipoEjercicio"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="Tipo de Ejercicio"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_width="365dp"
+        android:layout_height="67dp"
+        android:orientation="horizontal">
+
+        <!-- Etiqueta y valor para Músculo -->
+        <LinearLayout
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Músculo"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMusculo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bíceps"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Etiqueta y valor para Equipamiento -->
+
+        <!-- Etiqueta y valor para Dificultad -->
+        <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dificultad"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Principiante"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Equipamiento"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEquipment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Máquina de Pesas"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instrucciones detalladas sobre cómo realizar el ejercicio."
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Agregar más TextViews según sea necesario -->
+
+</LinearLayout>

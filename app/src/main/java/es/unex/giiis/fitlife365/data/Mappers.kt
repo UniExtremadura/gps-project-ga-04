@@ -1,5 +1,6 @@
 package es.unex.giiis.fitlife365.data
 
+import es.unex.giiis.fitlife365.data.Exercise
 import es.unex.giiis.fitlife365.model.ExerciseModel
 
 fun ExerciseList.toExercise(): List<ExerciseModel> {

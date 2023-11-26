@@ -47,4 +47,5 @@ interface ExerciseAPI {
     @GET("exercises?" + API_KEY + "&")
     suspend fun getExercisesByMuscleAndDifficulty(@Query("muscle") muscle: String, @Query("difficulty") difficulty: String): ExerciseList
 
+
 }
