@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:text="Datos del perfil"
         android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.1" />
@@ -100,6 +99,5 @@
         android:layout_marginBottom="16dp"
         />
 
-    <!-- Añade aquí las ImageView correspondientes a cada porcentaje -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

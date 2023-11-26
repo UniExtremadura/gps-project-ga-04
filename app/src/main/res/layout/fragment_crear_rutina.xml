@@ -7,7 +7,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
-        android:layout_width="391dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
@@ -48,7 +48,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="50dp"
-        android:text="CREACIÓN DE RUTINA"
+        android:text="NUEVA RUTINA"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textSize="24sp"
@@ -130,6 +130,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerExperiencia" />
+
 
     <EditText
         android:id="@+id/editTextText"

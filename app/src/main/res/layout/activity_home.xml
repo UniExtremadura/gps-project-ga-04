@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Contenido principal -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,7 +54,6 @@
         android:layout_marginTop="-44dp"
         android:layout_marginEnd="63dp"
         android:text="Nombre de Usuario"
-        android:fontFamily="@font/opensans"
         android:textColor="#000000"
         android:textSize="18sp" />
 
@@ -82,5 +80,6 @@
         android:layout_marginTop="-40dp"
         android:layout_toRightOf="@+id/imageViewEvS"
         android:layout_marginStart="8dp"/>
+
 </RelativeLayout>
 

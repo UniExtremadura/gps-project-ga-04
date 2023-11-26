@@ -38,7 +38,7 @@ class RoutineAdapter(
         rutinas = nuevaLista
         notifyDataSetChanged()
     }
-    
+
     override fun getItemCount(): Int {
         return rutinas.size
     }
