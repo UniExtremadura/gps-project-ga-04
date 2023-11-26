@@ -86,14 +86,43 @@ class EditarPerfilFragment : Fragment() {
         // Configurar el evento de clic para el botón Aceptar
         btnAceptar.setOnClickListener {
             if (user != null) {
-                actualizarUsuario(user)
-                val nuevoNombreUsuario = editTextNombre.text.toString()
-                val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
-                // Actualizar el nombre de usuario en el TextView
-                nombreUsuario.text = nuevoNombreUsuario
+                // Mostrar un cuadro de diálogo de confirmación
+                mostrarDialogoConfirmacion(user) { confirmed ->
+                    if (confirmed) {
+                        // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
+                        actualizarUsuario(user)
+                        val nuevoNombreUsuario = editTextNombre.text.toString()
+                        val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
+                        // Actualizar el nombre de usuario en el TextView
+                        nombreUsuario.text = nuevoNombreUsuario
+
+                    }
+                }
             }
         }
         return view
+    }
+
+    private fun mostrarDialogoConfirmacion(user: User, callback: (Boolean) -> Unit) { //tercera subtarea
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Estás seguro de actualizar tu perfil?")
+
+        // Configurar el botón de aceptar
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
+            actualizarUsuario(user)
+            callback(true)
+        }
+
+        // Configurar el botón de cancelar
+        builder.setNegativeButton("Cancelar") { _, _ ->
+            // El usuario ha cancelado, no hacer nada
+            callback(false)
+        }
+
+        // Mostrar el cuadro de diálogo
+        builder.show()
     }
 
     private fun actualizarUsuario(user: User) {
