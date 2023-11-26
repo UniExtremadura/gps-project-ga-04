@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     private fun applyFont(view: View, fontName: String) {
         when (view) {
             is ViewGroup -> {
