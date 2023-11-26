@@ -17,7 +17,6 @@ import es.unex.giiis.fitlife365.view.LoginRegister.RegistroActivity
 class MainActivity : AppCompatActivity() {
 
     private var isRecreating = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Obtener la preferencia del tema
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
