@@ -58,15 +58,6 @@ class EditarPerfilFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_editar_perfil, container, false)
         val sexo = listOf("Hombre", "Mujer", "Otro")
 
-        // Obtener la fuente seleccionada desde SharedPreferences
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
-
-        // Aplicar la fuente seleccionada
-        if (selectedFont != null) {
-            applyFont(view, selectedFont)
-        }
-
         // Obtener referencias a las vistas
         editTextNombre = view.findViewById(R.id.et_nombre)
         spinnerSexo = view.findViewById(R.id.spinnerMaterial)
@@ -95,127 +86,14 @@ class EditarPerfilFragment : Fragment() {
         // Configurar el evento de clic para el botón Aceptar
         btnAceptar.setOnClickListener {
             if (user != null) {
-                // Mostrar un cuadro de diálogo de confirmación
-                mostrarDialogoConfirmacion(user) { confirmed ->
-                    if (confirmed) {
-                        // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-                        actualizarUsuario(user)
-                        val nuevoNombreUsuario = editTextNombre.text.toString()
-                        val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
-                        // Actualizar el nombre de usuario en el TextView
-                        nombreUsuario.text = nuevoNombreUsuario
-
-                    }
-                }
+                actualizarUsuario(user)
+                val nuevoNombreUsuario = editTextNombre.text.toString()
+                val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
+                // Actualizar el nombre de usuario en el TextView
+                nombreUsuario.text = nuevoNombreUsuario
             }
         }
-
-        btnEliminar.setOnClickListener {
-            if (user != null) {
-                mostrarDialogoConfirmacionEliminacion(user) { confirmed ->
-                    if (confirmed) {
-                        eliminarUsuario(user)
-                    }
-                }
-            }
-        }
-
         return view
-    }
-
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is EditText -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente a la barra de edición de texto
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is Button -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente al botón
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-    private fun mostrarDialogoConfirmacion(user: User, callback: (Boolean) -> Unit) { //tercera subtarea
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmación")
-        builder.setMessage("¿Estás seguro de actualizar tu perfil?")
-
-        // Configurar el botón de aceptar
-        builder.setPositiveButton("Aceptar") { _, _ ->
-            // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-            actualizarUsuario(user)
-            callback(true)
-        }
-
-        // Configurar el botón de cancelar
-        builder.setNegativeButton("Cancelar") { _, _ ->
-            // El usuario ha cancelado, no hacer nada
-            callback(false)
-        }
-
-        // Mostrar el cuadro de diálogo
-        builder.show()
     }
 
     private fun actualizarUsuario(user: User) {
@@ -242,40 +120,6 @@ class EditarPerfilFragment : Fragment() {
                     GlobalScope.launch(Dispatchers.Main) {
                     }
                 }
-            }
-        }
-    }
-    private fun mostrarDialogoConfirmacionEliminacion(user: User, callback: (Boolean) -> Unit) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmación")
-        builder.setMessage("¿Estás seguro de eliminar tu perfil?")
-
-        // Configurar el botón de aceptar
-        builder.setPositiveButton("Aceptar") { _, _ ->
-            // El usuario ha confirmado, ejecutar el módulo eliminarUsuario
-            callback(true)
-        }
-
-        // Configurar el botón de cancelar
-        builder.setNegativeButton("Cancelar") { _, _ ->
-            // El usuario ha cancelado, no hacer nada
-            callback(false)
-        }
-
-        // Mostrar el cuadro de diálogo
-        builder.show()
-    }
-    private fun eliminarUsuario(user: User) {
-        // Llamar al método deleteUser del UserDao
-        GlobalScope.launch(Dispatchers.IO) {
-            val userDao = FitLife365Database.getInstance(requireContext())?.userDao()
-            if (userDao != null) {
-                userDao.deleteUser(user)
-
-                    // Ir a la pantalla de MainActivity
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
             }
         }
     }
