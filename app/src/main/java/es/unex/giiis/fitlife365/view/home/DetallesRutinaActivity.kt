@@ -2,16 +2,12 @@ package es.unex.giiis.fitlife365.view.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityDetallesRutinaBinding
@@ -57,6 +53,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
         setUpListeners()
     }
 
+
     private fun setUpListeners() {
         with(binding) {
             usernameText.setOnClickListener {
@@ -97,7 +94,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
         val exerciseModelDao = database?.exerciseModelDao()
         lifecycleScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
             exerciseModelDao?.updateExercise(it)
-            }
+        }
         }
     }
     private fun setUpUI() {

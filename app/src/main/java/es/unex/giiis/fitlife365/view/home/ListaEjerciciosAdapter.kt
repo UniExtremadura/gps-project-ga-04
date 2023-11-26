@@ -1,6 +1,5 @@
 package es.unex.giiis.fitlife365.view.home
 
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ class ListaEjerciciosAdapter(
 
     class ShowViewHolder(
         private val binding: ItemExerciseBinding,
-        private val onItemClick: (ExerciseModel) -> Unit // Agrega esta línea
+        private val onItemClick: (ExerciseModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(exercise: ExerciseModel, size: Int) {
             with(binding) {
@@ -45,7 +44,7 @@ class ListaEjerciciosAdapter(
             parent,
             false
         )
-        return ShowViewHolder(binding, onItemClick) // Pasa onItemClick aquí
+        return ShowViewHolder(binding, onItemClick)
     }
 
     override fun getItemCount() = exercises.size
