@@ -67,6 +67,7 @@ class EditarPerfilFragment : Fragment() {
         btnAceptar = view.findViewById(R.id.btnAceptar)
         btnEliminar = view.findViewById<Button>(R.id.buttonEliminar)
 
+
         val adapterSexo = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexo)
         adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSexo.adapter = adapterSexo
