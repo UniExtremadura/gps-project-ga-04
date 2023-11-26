@@ -25,4 +25,13 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Tema">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="theme"
+            android:title="Cambiar tema" />
+    </PreferenceCategory>
+
+
 </PreferenceScreen>
