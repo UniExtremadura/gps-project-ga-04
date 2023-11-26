@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import es.unex.giiis.fitlife365.EditarPerfilFragment
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
 import es.unex.giiis.fitlife365.model.User
@@ -21,6 +22,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var crearRutinaFragment: CrearRutinaFragment
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
+    private lateinit var editarPerfilFragment: EditarPerfilFragment
     private lateinit var imageViewEvS: ImageView
     private lateinit var usernameTextEvS: TextView
 
@@ -46,7 +48,7 @@ class HomeActivity : AppCompatActivity() {
         val user = intent.getSerializableExtra(LOGIN_USER) as User
         usernameText.text = user.name
 
-        setUpUI()
+        setUpUI(user)
         setUpListeners()
     }
 
@@ -56,13 +58,12 @@ class HomeActivity : AppCompatActivity() {
             commit()
     }
 
-    private fun setUpUI() {
+    private fun setUpUI(user: User) {
         crearRutinaFragment = CrearRutinaFragment()
         crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
         misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
         personalTrainerFragment = PersonalTrainerFragment()
-
-
+        editarPerfilFragment = EditarPerfilFragment.newInstance(user)
         setCurrentFragment(misRutinasFragment)
     }
     private fun setUpListeners() {
@@ -81,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
                     R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
-
+                    R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
                 }
                 true
             }
