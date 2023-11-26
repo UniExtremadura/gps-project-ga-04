@@ -67,7 +67,6 @@ class EditarPerfilFragment : Fragment() {
         btnAceptar = view.findViewById(R.id.btnAceptar)
         btnEliminar = view.findViewById<Button>(R.id.buttonEliminar)
 
-
         val adapterSexo = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexo)
         adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSexo.adapter = adapterSexo
@@ -101,6 +100,13 @@ class EditarPerfilFragment : Fragment() {
                 }
             }
         }
+
+        btnEliminar.setOnClickListener {
+            if (user != null) {
+                eliminarUsuario(user)
+            }
+        }
+
         return view
     }
 
@@ -150,6 +156,21 @@ class EditarPerfilFragment : Fragment() {
                     GlobalScope.launch(Dispatchers.Main) {
                     }
                 }
+            }
+        }
+    }
+
+    private fun eliminarUsuario(user: User) {
+        // Llamar al método deleteUser del UserDao
+        GlobalScope.launch(Dispatchers.IO) {
+            val userDao = FitLife365Database.getInstance(requireContext())?.userDao()
+            if (userDao != null) {
+                userDao.deleteUser(user)
+
+                // Ir a la pantalla de MainActivity
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
     }
