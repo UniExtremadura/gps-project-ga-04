@@ -32,4 +32,26 @@
         <item>@drawable/laura</item>
         <!-- Agrega más imágenes según sea necesario -->
     </array>
+
+    <array name="muscle_array">
+        <item>Selecciona el músculo</item>
+
+        <item>Abdominales</item>
+        <item>Abductores</item>
+        <item>Aductores</item>
+        <item>Antebrazos</item>
+        <item>Bíceps</item>
+        <item>Cuadríceps</item>
+        <item>Cuello</item>
+        <item>Dorsales</item>
+        <item>Espalda</item>
+        <item>Glúteos</item>
+        <item>Isquiotibiales</item>
+        <item>Lumbares</item>
+        <item>Pantorrillas</item>
+        <item>Pecho</item>
+        <item>Trapecios</item>
+        <item>Tríceps</item>
+
+    </array>
 </resources>

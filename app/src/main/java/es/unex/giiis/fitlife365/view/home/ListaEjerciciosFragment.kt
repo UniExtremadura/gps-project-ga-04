@@ -1,10 +1,15 @@
 package es.unex.giiis.fitlife365.view.home
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -14,47 +19,147 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
-import es.unex.giiis.fitlife365.data.ExerciseList
 import es.unex.giiis.fitlife365.data.toExercise
+import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.FragmentListaEjerciciosBinding
 import es.unex.giiis.fitlife365.model.ExerciseModel
+import es.unex.giiis.fitlife365.model.Routine
+import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaEjerciciosFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListaEjerciciosFragment : Fragment() {
     private var _exercise: List<ExerciseModel> = emptyList()
     private lateinit var adapter : ListaEjerciciosAdapter
     private var _binding: FragmentListaEjerciciosBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var btnGuardar : Button
+
+    private lateinit var btnConfirmar: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentListaEjerciciosBinding.inflate(inflater, container, false)
         return binding.root
-
     }
+
+    private val muscleMapping = mapOf(
+        "Abdominales" to "abdominals",
+        "Abductores"  to "abductors",
+        "Aductores" to "adductors",
+        "Bíceps" to "biceps",
+        "Pantorrillas" to "calves",
+        "Pecho" to "chest",
+        "Antebrazos" to "forearms",
+        "Glúteos" to "glutes",
+        "Isquiotibiales" to "hamstrings",
+        "Dorsales" to "lats",
+        "Lumbares" to "lower_back",
+        "Espalda" to "middle_back",
+        "Cuello" to "neck",
+        "Cuadríceps" to "quadriceps",
+        "Trapecios" to "traps",
+        "Tríceps" to "triceps"
+    )
+
+    private val difficultyMapping = mapOf(
+        "Principiante" to "beginner",
+        "Intermedio" to "intermediate",
+        "Avanzado" to "expert"
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Configurar el RecyclerView
         setUpRecyclerView()
+        val database = FitLife365Database.getInstance(requireContext())
+        val difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
-        lifecycleScope.launch {
-            if (_exercise.isEmpty()) {
-                try {
-                    _exercise = fetchShows().toExercise()
-                    adapter.updateData(_exercise)
-                } catch (error: APIError) {
-                    Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+        btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
+        btnConfirmar = view.findViewById(R.id.btnConfirmarEjercicios)
+
+        val user = arguments?.getSerializable("user") as User
+        val rutina = arguments?.getSerializable("rutina") as Routine
+
+        // Configurar el Spinner para seleccionar el músculo
+        val musclesArray = resources.getStringArray(R.array.muscle_array)
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musclesArray)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerMusculo.adapter = spinnerAdapter
+
+        // Configurar el Spinner con OnItemSelectedListener
+        binding.spinnerMusculo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
+                val selectedMuscle = parent?.getItemAtPosition(position).toString()
+                filtrarEjerciciosPorMusculo(selectedMuscle, difficulty )
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Lógica que se ejecuta cuando no se selecciona ningún elemento en el Spinner
+            }
+        }
+
+        btnGuardar.setOnClickListener {
+            val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
+            val exerciseModelDao = database?.exerciseModelDao()
+            val rutinaDao = database?.routineDao()
+
+            lifecycleScope.launch {
+                // Obtener la rutina actual
+                val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
+
+                // Obtener la cadena de ejercicios anterior
+                val cadenaEjerciciosAnterior = routineEntity?.ejercicios ?: ""
+
+                // Insertar cada ejercicio seleccionado en ExerciseModelDao
+                for (ejercicio in listaEjerciciosSeleccionados) {
+                    val id = exerciseModelDao?.insert(ejercicio)
+                    ejercicio.exerciseId = id
+                    Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
+                    exerciseModelDao?.addRoutineExercise(id, rutina.routineId)
+                    Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
                 }
+
+                // Concatenar los ejercicios anteriores con los nuevos
+                val cadenaEjerciciosNueva = if (cadenaEjerciciosAnterior.isNotEmpty()) {
+                    cadenaEjerciciosAnterior + "," + listaEjerciciosSeleccionados.joinToString(",") { it.exerciseId.toString() }
+                } else {
+                    listaEjerciciosSeleccionados.joinToString(",") { it.exerciseId.toString() }
+                }
+
+                // Actualizar la cadena de ejercicios en la rutina
+                rutinaDao?.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
+                Log.d("Ejercicios añadidos a rutina: ", cadenaEjerciciosNueva)
+            }
+        }
+
+        btnConfirmar.setOnClickListener {
+            navigateToHome(user)
+        }
+    }
+
+    private fun navigateToHome(user: User) {
+        HomeActivity.start(requireContext(), user)
+    }
+
+    private fun filtrarEjerciciosPorMusculo(muscle: String, difficulty: String) {
+        lifecycleScope.launch {
+            try {
+                // Traducir el nombre del músculo al inglés utilizando el mapeo
+                val muscleInEnglish = muscleMapping[muscle] ?: muscle
+
+                // Traducir la dificultad al inglés utilizando el mapeo
+                val difficultyInEnglish = difficultyMapping[difficulty] ?: difficulty
+
+                // Filtrar ejercicios por músculo y dificultad (usando el nombre en inglés)
+                _exercise = getNetworkService().getExercisesByMuscleAndDifficulty(muscleInEnglish, difficultyInEnglish).toExercise()
+                adapter.updateData(_exercise)
+
+            } catch (error: APIError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -67,15 +172,6 @@ class ListaEjerciciosFragment : Fragment() {
         }
     }
 
-    private suspend fun fetchShows(): ExerciseList {
-        var apiShows: ExerciseList
-        try {
-            apiShows = getNetworkService().getExercisesByDifficulty("beginner")
-        } catch (cause: Throwable) {
-            throw APIError("Unable to fetch data from API", cause)
-        }
-        return apiShows
-    }
 
     private fun mostrarDetallesDelEjercicio(exercise: ExerciseModel) {
         // Crear un cuadro de diálogo emergente para mostrar detalles del ejercicio
@@ -107,19 +203,23 @@ class ListaEjerciciosFragment : Fragment() {
         dialog.show()
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    // En el companion object
     companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListaEjerciciosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(user: User, rutina : Routine, difficulty : String): ListaEjerciciosFragment {
+            val fragment = ListaEjerciciosFragment()
+            val args = Bundle()
+            args.putSerializable("user", user)
+            args.putSerializable("rutina", rutina)
+            args.putString("difficulty", difficulty)
+            fragment.arguments = args
+            return fragment
+        }
     }
+
 }
