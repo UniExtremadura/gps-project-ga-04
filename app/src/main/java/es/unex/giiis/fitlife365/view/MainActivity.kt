@@ -17,7 +17,6 @@ import es.unex.giiis.fitlife365.view.LoginRegister.RegistroActivity
 class MainActivity : AppCompatActivity() {
 
     private var isRecreating = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Obtener la preferencia del tema
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -36,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_screen)
 
         // Obtener la fuente seleccionada desde SharedPreferences
-        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+        val selectedFont =
+            sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
     private fun applyFont(view: View, fontName: String) {
         when (view) {
             is ViewGroup -> {
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                     applyFont(view.getChildAt(i), fontName)
                 }
             }
+
             is TextView -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
+
             is EditText -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -107,6 +110,7 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
+
             is Button -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -131,5 +135,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
