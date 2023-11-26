@@ -6,16 +6,20 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import kotlinx.coroutines.launch
@@ -51,6 +55,15 @@ class RegistroActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obtener la fuente seleccionada desde SharedPreferences
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+
+        // Aplicar la fuente seleccionada
+        if (selectedFont != null) {
+            applyFont(window.decorView, selectedFont)
+        }
+
         db = FitLife365Database.getInstance(applicationContext)!!
 
         btnContinuar = findViewById(R.id.idContinuarRegistro)
@@ -65,6 +78,78 @@ class RegistroActivity : AppCompatActivity() {
         setUpListeners()
     }
 
+    private fun applyFont(view: View, fontName: String) {
+        when (view) {
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    applyFont(view.getChildAt(i), fontName)
+                }
+            }
+            is TextView -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is EditText -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente a la barra de edición de texto
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is Button -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente al botón
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
 
     private fun validateFields() : Boolean {
         val username = registerUsername.text.toString()

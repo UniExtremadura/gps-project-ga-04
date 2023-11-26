@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_screen)
 
         // Obtener la fuente seleccionada desde SharedPreferences
-        val selectedFont =
-            sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
@@ -65,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                     applyFont(view.getChildAt(i), fontName)
                 }
             }
-
             is TextView -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -87,7 +85,6 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-
             is EditText -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -109,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-
             is Button -> {
                 try {
                     // Obtener el identificador del recurso de fuente
@@ -134,3 +130,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+

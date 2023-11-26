@@ -15,7 +15,7 @@ class ListaEjerciciosAdapter(
 
     class ShowViewHolder(
         private val binding: ItemExerciseBinding,
-        private val onItemClick: (ExerciseModel) -> Unit
+        private val onItemClick: (ExerciseModel) -> Unit // Agrega esta línea
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(exercise: ExerciseModel, size: Int) {
             with(binding) {
@@ -44,7 +44,7 @@ class ListaEjerciciosAdapter(
             parent,
             false
         )
-        return ShowViewHolder(binding, onItemClick)
+        return ShowViewHolder(binding, onItemClick) // Pasa onItemClick aquí
     }
 
     override fun getItemCount() = exercises.size

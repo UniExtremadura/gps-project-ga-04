@@ -58,6 +58,15 @@ class EditarPerfilFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_editar_perfil, container, false)
         val sexo = listOf("Hombre", "Mujer", "Otro")
 
+        // Obtener la fuente seleccionada desde SharedPreferences
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+
+        // Aplicar la fuente seleccionada
+        if (selectedFont != null) {
+            applyFont(view, selectedFont)
+        }
+
         // Obtener referencias a las vistas
         editTextNombre = view.findViewById(R.id.et_nombre)
         spinnerSexo = view.findViewById(R.id.spinnerMaterial)
@@ -112,6 +121,79 @@ class EditarPerfilFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun applyFont(view: View, fontName: String) {
+        when (view) {
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    applyFont(view.getChildAt(i), fontName)
+                }
+            }
+            is TextView -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is EditText -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente a la barra de edición de texto
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is Button -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente al botón
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun mostrarDialogoConfirmacion(user: User, callback: (Boolean) -> Unit) { //tercera subtarea
@@ -183,7 +265,6 @@ class EditarPerfilFragment : Fragment() {
         // Mostrar el cuadro de diálogo
         builder.show()
     }
-
     private fun eliminarUsuario(user: User) {
         // Llamar al método deleteUser del UserDao
         GlobalScope.launch(Dispatchers.IO) {
