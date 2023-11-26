@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.fitlife365.R
@@ -81,8 +78,6 @@ class MisRutinasFragment : Fragment() {
 
         return view
     }
-
-
 
     private fun verDetallesRutina(rutina: Routine) {
         val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)
