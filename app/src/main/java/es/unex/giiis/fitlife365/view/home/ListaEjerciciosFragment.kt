@@ -1,13 +1,17 @@
 package es.unex.giiis.fitlife365.view.home
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.ExerciseList
@@ -56,7 +60,7 @@ class ListaEjerciciosFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        adapter = ListaEjerciciosAdapter(_exercise)
+        adapter = ListaEjerciciosAdapter(_exercise, ::mostrarDetallesDelEjercicio)
         with(binding) {
             rvListaEjercicios.layoutManager = LinearLayoutManager(context)
             rvListaEjercicios.adapter = adapter
@@ -71,6 +75,36 @@ class ListaEjerciciosFragment : Fragment() {
             throw APIError("Unable to fetch data from API", cause)
         }
         return apiShows
+    }
+
+    private fun mostrarDetallesDelEjercicio(exercise: ExerciseModel) {
+        // Crear un cuadro de diálogo emergente para mostrar detalles del ejercicio
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_detalles_ejercicio)
+
+        // Configurar el contenido del cuadro de diálogo con los detalles del ejercicio
+        val tvNombre = dialog.findViewById<TextView>(R.id.tvNombreEjercicio)
+        val tvTipo = dialog.findViewById<TextView>(R.id.tvTipoEjercicio)
+        val tvMusculo = dialog.findViewById<TextView>(R.id.tvMusculo)
+        val tvEquipo = dialog.findViewById<TextView>(R.id.tvEquipment)
+        val tvDificultad = dialog.findViewById<TextView>(R.id.tvDifficulty)
+        val tvInstrucciones = dialog.findViewById<TextView>(R.id.tvInstructions)
+
+        tvNombre.text = exercise.name
+        tvTipo.text = exercise.type
+        tvMusculo.text = exercise.muscle
+        tvEquipo.text = exercise.equipment
+        tvDificultad.text = exercise.difficulty
+        tvInstrucciones.text = exercise.instructions
+
+        // Agregar un botón (por ejemplo, ImageView con una 'X') para cerrar el cuadro de diálogo
+        val btnCerrar = dialog.findViewById<ImageView>(R.id.btnCerrar)
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Mostrar el cuadro de diálogo
+        dialog.show()
     }
 
     override fun onDestroyView() {
