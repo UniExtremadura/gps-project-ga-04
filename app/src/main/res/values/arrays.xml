@@ -9,11 +9,7 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
-    <array name="opciones_sexo">
-        <item>Hombre</item>
-        <item>Mujer</item>
-        <item>Otro</item>
-    </array>
+
     <string-array name="entrenadores_personales">
         <item>Paco</item>
         <item>Juan</item>
@@ -32,7 +28,14 @@
         <item>@drawable/laura</item>
         <!-- Agrega más imágenes según sea necesario -->
     </array>
+    <array name="opciones_sexo">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otro</item>
+        <!-- Agrega más imágenes según sea necesario -->
+    </array>
 
+    <!-- res/values/arrays.xml -->
     <array name="muscle_array">
         <item>Selecciona el músculo</item>
 
@@ -54,4 +57,19 @@
         <item>Tríceps</item>
 
     </array>
+
+    <string-array name="font_options_entries">
+        <item>openSans</item>
+        <item>Roboto</item>
+        <item>Ubuntu</item>
+        <item>Ephesis</item>
+    </string-array>
+
+    <string-array name="font_options_values">
+        <item>openSans</item>
+        <item>Roboto</item>
+        <item>Ubuntu</item>
+        <item>Ephesis</item>
+    </string-array>
+
 </resources>

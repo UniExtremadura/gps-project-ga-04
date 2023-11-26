@@ -18,6 +18,7 @@ import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.home.HomeActivity.Companion.LOGIN_USER
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +39,6 @@ class CrearRutinaFragment : Fragment() {
     private lateinit var nombreRutina : EditText
     private lateinit var pesoObjetivoRutina : EditText
     private lateinit var currentUser : User
-    private lateinit var listaEjerciciosFragment: ListaEjerciciosFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +56,15 @@ class CrearRutinaFragment : Fragment() {
         val database = FitLife365Database.getInstance(requireContext())
         val routineDao = database?.routineDao()
         val view = inflater.inflate(R.layout.fragment_crear_rutina, container, false)
+
+        // Obtener la fuente seleccionada desde SharedPreferences
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+
+        // Aplicar la fuente seleccionada
+        if (selectedFont != null) {
+            applyFont(view, selectedFont)
+        }
 
         nombreRutina = view.findViewById(R.id.editTextText)
         pesoObjetivoRutina = view.findViewById(R.id.editTextNumber)
@@ -110,6 +119,7 @@ class CrearRutinaFragment : Fragment() {
             }
 
             val difficulty = spinnerExperiencia.selectedItem.toString()
+            val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)
 
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_containerHome, listaEjerciciosFragment)
@@ -119,6 +129,79 @@ class CrearRutinaFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun applyFont(view: View, fontName: String) {
+        when (view) {
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    applyFont(view.getChildAt(i), fontName)
+                }
+            }
+            is TextView -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is EditText -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente a la barra de edición de texto
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is Button -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente al botón
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     fun setUser (user: User){
