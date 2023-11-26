@@ -1,6 +1,5 @@
 package es.unex.giiis.fitlife365.view.home
 
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,22 +9,33 @@ import es.unex.giiis.fitlife365.model.ExerciseModel
 
 class ListaEjerciciosAdapter(
     private var exercises: List<ExerciseModel>,
+    private val onItemClick: (ExerciseModel) -> Unit
 ) : RecyclerView.Adapter<ListaEjerciciosAdapter.ShowViewHolder>() {
 
 
     class ShowViewHolder(
-        private val binding: ItemExerciseBinding
+        private val binding: ItemExerciseBinding,
+        private val onItemClick: (ExerciseModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(exercise: ExerciseModel, totalItems: Int) {
+        fun bind(exercise: ExerciseModel, size: Int) {
             with(binding) {
                 tvName.text = exercise.name
                 tvType.text = exercise.type
-                tvMuscle.text = exercise.muscle
-                tvEquipment.text = exercise.equipment
-                tvDifficulty.text = exercise.difficulty
-                tvInstructions.text = exercise.instructions
+                checkBoxNombre.isChecked = exercise.isSelected
+
+                itemView.setOnClickListener {
+                    onItemClick(exercise)
+                }
+
+                checkBoxNombre.setOnCheckedChangeListener { _, isChecked ->
+                    exercise.isSelected = isChecked
+                }
             }
         }
+    }
+
+    fun getSelectedExercises(): List<ExerciseModel> {
+        return exercises.filter { it.isSelected }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
@@ -34,8 +44,9 @@ class ListaEjerciciosAdapter(
             parent,
             false
         )
-        return ShowViewHolder(binding)
+        return ShowViewHolder(binding, onItemClick)
     }
+
     override fun getItemCount() = exercises.size
 
     override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {

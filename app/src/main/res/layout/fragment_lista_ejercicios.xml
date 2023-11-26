@@ -5,10 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <Spinner
+        android:id="@+id/spinnerMusculo"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="70dp"
+        android:entries="@array/muscle_array"
+        android:prompt="@string/select_muscle" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListaEjercicios"
         android:layout_width="match_parent"
-        android:layout_height="423dp"
+        android:layout_height="481dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:background="@color/white"
