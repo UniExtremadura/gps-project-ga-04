@@ -75,7 +75,6 @@
         android:layout_gravity="center"
         android:text="Ev.S"
         android:textColor="#000000"
-        android:onClick="navigateToEvaluacionSalud"
         android:layout_below="@+id/toolbar3"
         android:layout_marginTop="-40dp"
         android:layout_toRightOf="@+id/imageViewEvS"
