@@ -111,7 +111,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun navigateToEvaluacionSalud() {
+    public fun navigateToEvaluacionSalud() {
         val user = intent.getSerializableExtra(LOGIN_USER) as? User
         val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             // Pasa el usuario como parte de los datos del intent
