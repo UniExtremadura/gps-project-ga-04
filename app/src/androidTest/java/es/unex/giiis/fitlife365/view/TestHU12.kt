@@ -3,6 +3,7 @@ package es.unex.giiis.fitlife365.view
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
@@ -14,7 +15,10 @@ import es.unex.giiis.fitlife365.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.anything
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -267,7 +271,7 @@ class TestHU12 {
                 isDisplayed()
             )
         )
-            bottomNavigationItemView.perform(click())
+        bottomNavigationItemView.perform(click())
 
         val textView = onView(
             allOf(
@@ -277,7 +281,52 @@ class TestHU12 {
             )
         )
         textView.check(matches(withText("ENTRENADOR PERSONAL")))
+
+        val imageView = onView(
+            allOf(
+                withId(R.id.imageView8),
+                withParent(withParent(withId(R.id.fragment_containerHome))),
+                isDisplayed()
+            )
+        )
+        imageView.check(matches(isDisplayed()))
+
+
+        val button = onView(
+            allOf(
+                withId(R.id.button6), withText("Día:"),
+                withParent(withParent(withId(R.id.fragment_containerHome))),
+                isDisplayed()
+            )
+        )
+        button.check(matches(isDisplayed()))
+
+        val button2 = onView(
+            allOf(
+                withId(R.id.button7), withText("Hora:"),
+                withParent(withParent(withId(R.id.fragment_containerHome))),
+                isDisplayed()
+            )
+        )
+        button2.check(matches(isDisplayed()))
+
+        val appCompatImageView2 = onView(
+            allOf(
+                withId(R.id.imageView8),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.fragment_containerHome),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatImageView2.perform(click())
+
     }
+
 
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int
