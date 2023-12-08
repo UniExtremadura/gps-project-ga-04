@@ -28,36 +28,21 @@ class TESTHU2 {
     var mActivityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun TESTHU2() {
+    fun tESTHU2() {
         val materialButton = onView(
             allOf(
-                withId(R.id.iniciarSesionButton), withText("Iniciar Sesión"),
+                withId(R.id.registrateButton), withText("Regístrate"),
                 childAtPosition(
                     childAtPosition(
                         withId(android.R.id.content),
                         0
                     ),
-                    0
+                    1
                 ),
                 isDisplayed()
             )
         )
         materialButton.perform(click())
-
-        val materialButton2 = onView(
-            allOf(
-                withId(R.id.registrateButton2), withText("Regístrate"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        materialButton2.perform(click())
 
         val appCompatEditText = onView(
             allOf(
@@ -119,7 +104,7 @@ class TESTHU2 {
         )
         appCompatEditText4.perform(replaceText("admin"), closeSoftKeyboard())
 
-        val materialButton3 = onView(
+        val materialButton2 = onView(
             allOf(
                 withId(R.id.idContinuarRegistro), withText("Continuar"),
                 childAtPosition(
@@ -132,7 +117,7 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
-        materialButton3.perform(click())
+        materialButton2.perform(click())
 
         val appCompatEditText5 = onView(
             allOf(
@@ -147,11 +132,11 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
-        appCompatEditText5.perform(replaceText("21"))
+        appCompatEditText5.perform(replaceText("20"))
 
         val appCompatEditText6 = onView(
             allOf(
-                withId(R.id.editTextEdad), withText("21"),
+                withId(R.id.editTextEdad), withText("20"),
                 childAtPosition(
                     childAtPosition(
                         withId(android.R.id.content),
@@ -224,7 +209,7 @@ class TESTHU2 {
         )
         appCompatEditText10.perform(closeSoftKeyboard())
 
-        val materialButton4 = onView(
+        val materialButton3 = onView(
             allOf(
                 withId(R.id.btnAceptar), withText("Aceptar"),
                 childAtPosition(
@@ -237,7 +222,7 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
-        materialButton4.perform(click())
+        materialButton3.perform(click())
 
         val appCompatImageView = onView(
             allOf(
@@ -269,31 +254,7 @@ class TESTHU2 {
         )
         bottomNavigationItemView.perform(click())
 
-        val textView = onView(
-            allOf(
-                withId(R.id.textView2), withText("INTRODUCE TUS DATOS"),
-                withParent(withParent(withId(R.id.fragment_containerHome))),
-                isDisplayed()
-            )
-        )
-        textView.check(matches(withText("INTRODUCE TUS DATOS")))
-
         val appCompatEditText11 = onView(
-            allOf(
-                withId(R.id.et_edad), withText("21"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.fragment_containerHome),
-                        0
-                    ),
-                    3
-                ),
-                isDisplayed()
-            )
-        )
-        appCompatEditText11.perform(replaceText("20"))
-
-        val appCompatEditText12 = onView(
             allOf(
                 withId(R.id.et_edad), withText("20"),
                 childAtPosition(
@@ -306,9 +267,24 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
+        appCompatEditText11.perform(replaceText("21"))
+
+        val appCompatEditText12 = onView(
+            allOf(
+                withId(R.id.et_edad), withText("21"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.fragment_containerHome),
+                        0
+                    ),
+                    3
+                ),
+                isDisplayed()
+            )
+        )
         appCompatEditText12.perform(closeSoftKeyboard())
 
-        val materialButton5 = onView(
+        val materialButton4 = onView(
             allOf(
                 withId(R.id.btnAceptar), withText("Editar"),
                 childAtPosition(
@@ -321,18 +297,9 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
-        materialButton5.perform(click())
+        materialButton4.perform(click())
 
-        val textView2 = onView(
-            allOf(
-                withId(android.R.id.message), withText("¿Estás seguro de actualizar tu perfil?"),
-                withParent(withParent(withId(androidx.appcompat.R.id.scrollView))),
-                isDisplayed()
-            )
-        )
-        textView2.check(matches(withText("¿Estás seguro de actualizar tu perfil?")))
-
-        val materialButton6 = onView(
+        val materialButton5 = onView(
             allOf(
                 withId(android.R.id.button1), withText("Aceptar"),
                 childAtPosition(
@@ -344,18 +311,9 @@ class TESTHU2 {
                 )
             )
         )
-        materialButton6.perform(scrollTo(), click())
+        materialButton5.perform(scrollTo(), click())
 
-        val textView3 = onView(
-            allOf(
-                withId(R.id.textView4), withText("Datos del perfil"),
-                withParent(withParent(withId(android.R.id.content))),
-                isDisplayed()
-            )
-        )
-        textView3.check(matches(withText("Datos del perfil")))
-
-        val materialButton7 = onView(
+        val materialButton6 = onView(
             allOf(
                 withId(R.id.btnAceptar), withText("Aceptar"),
                 childAtPosition(
@@ -368,7 +326,7 @@ class TESTHU2 {
                 isDisplayed()
             )
         )
-        materialButton7.perform(click())
+        materialButton6.perform(click())
 
         val appCompatImageView2 = onView(
             allOf(
@@ -384,6 +342,30 @@ class TESTHU2 {
             )
         )
         appCompatImageView2.perform(click())
+
+        val bottomNavigationItemView2 = onView(
+            allOf(
+                withId(R.id.nav_editar_perfil), withContentDescription("Editar Perfil"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.bottom_navigation),
+                        0
+                    ),
+                    3
+                ),
+                isDisplayed()
+            )
+        )
+        bottomNavigationItemView2.perform(click())
+
+        val editText = onView(
+            allOf(
+                withId(R.id.et_edad), withText("21"),
+                withParent(withParent(withId(R.id.fragment_containerHome))),
+                isDisplayed()
+            )
+        )
+        editText.check(matches(withText("21")))
     }
 
     private fun childAtPosition(
