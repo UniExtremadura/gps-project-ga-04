@@ -17,7 +17,7 @@ class RoutineTest {
             name = "Monday Routine",
             pesoObjetivo = 70,
             diasEntrenamiento = "Monday",
-            ejercicios = "Push-ups, Squats, Lunges"
+            ejercicios = "1, 2, 3"
         )
     }
 
@@ -48,12 +48,12 @@ class RoutineTest {
 
     @Test
     fun getEjercicios() {
-        assertEquals("Push-ups, Squats, Lunges", routine.ejercicios)
+        assertEquals("1, 2, 3", routine.ejercicios)
     }
 
     @Test
     fun testToString() {
-        val expectedToString = "Routine(routineId=1, userId=1, name=Monday Routine, pesoObjetivo=70, diasEntrenamiento=Monday, ejercicios=Push-ups, Squats, Lunges)"
+        val expectedToString = "Routine(routineId=1, userId=1, name=Monday Routine, pesoObjetivo=70, diasEntrenamiento=Monday, ejercicios=1, 2, 3)"
         assertEquals(expectedToString, routine.toString())
     }
 }
