@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/textMisRutinas"
-        android:layout_above="@+id/bottom_navigation" />
+        />
 
     <TextView
         android:id="@+id/textEmptyRecyclerView"
@@ -37,8 +38,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar3"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="132dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="133dp"
         android:text="Mis Rutinas"
         android:textSize="24sp" />
 
