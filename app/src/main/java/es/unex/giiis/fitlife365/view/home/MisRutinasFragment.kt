@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
@@ -49,13 +50,6 @@ class MisRutinasFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: android.content.Context) {
-    super.onAttach(context)
-    repository = Repository.getInstance(
-        FitLife365Database.getInstance(context)!!.exerciseModelDao(),
-        getNetworkService(), FitLife365Database.getInstance(context)!!.routineDao(), FitLife365Database.getInstance(context)!!.userDao()
-    )
-}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -69,8 +63,10 @@ class MisRutinasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_myroutines, container, false)
-        val database = FitLife365Database.getInstance(requireContext())
-        val rutinaDao = database?.routineDao()
+
+        val appContainer = (this.activity?.application as FitLife365Application).appContainer
+        repository = appContainer.repository
+
         val user = arguments?.getSerializable(LOGIN_USER) as User
 
         // Obtener la fuente seleccionada desde SharedPreferences

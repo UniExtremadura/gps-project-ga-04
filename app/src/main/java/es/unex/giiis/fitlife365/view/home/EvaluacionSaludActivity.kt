@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
@@ -64,10 +65,8 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         imageViewResultado = findViewById(R.id.imageViewResultado)
 
         //inicia la variable repository
-        repository = Repository.getInstance(
-            FitLife365Database.getInstance(this)!!.exerciseModelDao(),
-            getNetworkService(), FitLife365Database.getInstance(this)!!.routineDao(), FitLife365Database.getInstance(this)!!.userDao()
-        )
+        val appContainer = (application as FitLife365Application).appContainer
+        repository = appContainer.repository
 
         // Configura el adapter para el spinner
         val adapter = ArrayAdapter.createFromResource(

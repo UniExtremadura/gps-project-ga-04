@@ -8,7 +8,7 @@ import es.unex.giiis.fitlife365.database.UserDao
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 
-class Repository private constructor(
+class Repository constructor(
     private val exerciseModelDao: ExerciseModelDao,
     private val networkService: ExerciseAPI,
     private val routineDao: RoutineDao,

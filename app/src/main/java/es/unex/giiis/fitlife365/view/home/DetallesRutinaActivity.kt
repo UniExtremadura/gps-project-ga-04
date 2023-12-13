@@ -22,6 +22,7 @@ import es.unex.giiis.fitlife365.view.SettingsActivity
 import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
+import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
 
@@ -64,10 +65,10 @@ class DetallesRutinaActivity : AppCompatActivity() {
         ejerciciosAdapter = EjerciciosAdapter() // Puedes crear un adaptador personalizado para tus ejercicios
         recyclerViewEjercicios.adapter = ejerciciosAdapter
         recyclerViewEjercicios.layoutManager = LinearLayoutManager(this)
-        repository = Repository.getInstance(
-            FitLife365Database.getInstance(this)!!.exerciseModelDao(),
-            getNetworkService(), FitLife365Database.getInstance(this)!!.routineDao(), FitLife365Database.getInstance(this)!!.userDao()
-        )
+
+        val appContainer = (application as FitLife365Application).appContainer
+        repository = appContainer.repository
+
 
         setUpUI()
         setUpListeners()

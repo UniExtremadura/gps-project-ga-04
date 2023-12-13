@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
@@ -61,15 +62,6 @@ class ListaEjerciciosFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onAttach(context: android.content.Context) {
-        super.onAttach(context)
-        repository = Repository.getInstance(
-            FitLife365Database.getInstance(context)!!.exerciseModelDao(),
-            getNetworkService(), FitLife365Database.getInstance(context)!!.routineDao(), FitLife365Database.getInstance(context)!!.userDao()
-        )
-
     }
 
     private fun applyFont(view: View, fontName: String) {
@@ -174,7 +166,10 @@ class ListaEjerciciosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Configurar el RecyclerView
         setUpRecyclerView()
-        val database = FitLife365Database.getInstance(requireContext())
+
+        val appContainer = (this.activity?.application as FitLife365Application).appContainer
+        repository = appContainer.repository
+
         val difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
         btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
@@ -204,8 +199,6 @@ class ListaEjerciciosFragment : Fragment() {
 
         btnGuardar.setOnClickListener {
             val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
-            val exerciseModelDao = database?.exerciseModelDao()
-            val rutinaDao = database?.routineDao()
 
             lifecycleScope.launch {
                 // Obtener la rutina actual
