@@ -22,6 +22,8 @@ import es.unex.giiis.fitlife365.view.SettingsActivity
 import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
+import es.unex.giiis.fitlife365.api.getNetworkService
+import es.unex.giiis.fitlife365.data.Repository
 
 
 class DetallesRutinaActivity : AppCompatActivity() {
@@ -39,6 +41,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
     private lateinit var user : User
     private lateinit var recyclerViewEjercicios: RecyclerView
     private lateinit var ejerciciosAdapter: EjerciciosAdapter
+    private lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +64,10 @@ class DetallesRutinaActivity : AppCompatActivity() {
         ejerciciosAdapter = EjerciciosAdapter() // Puedes crear un adaptador personalizado para tus ejercicios
         recyclerViewEjercicios.adapter = ejerciciosAdapter
         recyclerViewEjercicios.layoutManager = LinearLayoutManager(this)
+        repository = Repository.getInstance(
+            FitLife365Database.getInstance(this)!!.exerciseModelDao(),
+            getNetworkService(), FitLife365Database.getInstance(this)!!.routineDao(), FitLife365Database.getInstance(this)!!.userDao()
+        )
 
         setUpUI()
         setUpListeners()
@@ -179,7 +186,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
         val database = FitLife365Database.getInstance(this)
         val exerciseModelDao = database?.exerciseModelDao()
         lifecycleScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
-            exerciseModelDao?.updateExercise(it)
+            repository.updateExercise(it)
         }
         }
     }
@@ -234,10 +241,9 @@ class DetallesRutinaActivity : AppCompatActivity() {
         val rutinaDao = database?.routineDao()
 
         lifecycleScope.launch {
-            rutinaDao?.deleteRoutine(rutina.routineId)
+            repository.deleteRoutine(rutina.routineId)
         }
     }
-
 
 
     private fun navigateToHomeActivity() {

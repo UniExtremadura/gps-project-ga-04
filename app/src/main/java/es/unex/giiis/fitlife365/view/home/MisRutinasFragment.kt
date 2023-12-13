@@ -18,6 +18,8 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.api.getNetworkService
+import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
@@ -32,6 +34,8 @@ class MisRutinasFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var rutinasAdapter: RoutineAdapter
     private var rutinasList: List<Routine> = mutableListOf()
+    private lateinit var repository: Repository
+
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -45,7 +49,13 @@ class MisRutinasFragment : Fragment() {
         }
     }
 
-
+    override fun onAttach(context: android.content.Context) {
+    super.onAttach(context)
+    repository = Repository.getInstance(
+        FitLife365Database.getInstance(context)!!.exerciseModelDao(),
+        getNetworkService(), FitLife365Database.getInstance(context)!!.routineDao(), FitLife365Database.getInstance(context)!!.userDao()
+    )
+}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -81,7 +91,7 @@ class MisRutinasFragment : Fragment() {
         val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
 
         lifecycleScope.launch {
-            rutinasList = rutinaDao?.getRoutinesByUser(user.userId) ?: emptyList()
+            rutinasList = repository.getRoutinesByUser(user.userId) ?: emptyList()
             rutinasAdapter.actualizarListaRutinas(rutinasList)
 
             // Actualiza la visibilidad del TextView según la cantidad de elementos en el RecyclerView
