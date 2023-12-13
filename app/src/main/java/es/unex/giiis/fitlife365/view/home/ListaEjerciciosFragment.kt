@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
+import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.data.toExercise
 import es.unex.giiis.fitlife365.database.FitLife365Database
+import es.unex.giiis.fitlife365.database.UserDao
 import es.unex.giiis.fitlife365.databinding.FragmentListaEjerciciosBinding
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -37,8 +40,10 @@ class ListaEjerciciosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var btnGuardar : Button
-
+    private lateinit var musculoElegido : String
     private lateinit var btnConfirmar: Button
+
+    private lateinit var repository: Repository
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +61,15 @@ class ListaEjerciciosFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: android.content.Context) {
+        super.onAttach(context)
+        repository = Repository.getInstance(
+            FitLife365Database.getInstance(context)!!.exerciseModelDao(),
+            getNetworkService(), FitLife365Database.getInstance(context)!!.routineDao(), FitLife365Database.getInstance(context)!!.userDao()
+        )
+
     }
 
     private fun applyFont(view: View, fontName: String) {
@@ -174,12 +188,12 @@ class ListaEjerciciosFragment : Fragment() {
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, musclesArray)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerMusculo.adapter = spinnerAdapter
-
         // Configurar el Spinner con OnItemSelectedListener
         binding.spinnerMusculo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
+                musculoElegido = selectedMuscle
                 filtrarEjerciciosPorMusculo(selectedMuscle, difficulty )
             }
 
@@ -195,17 +209,19 @@ class ListaEjerciciosFragment : Fragment() {
 
             lifecycleScope.launch {
                 // Obtener la rutina actual
-                val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
+                //val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
+                val routineEntity = repository.getRoutinebyID(rutina.routineId)
 
                 // Obtener la cadena de ejercicios anterior
                 val cadenaEjerciciosAnterior = routineEntity?.ejercicios ?: ""
 
                 // Insertar cada ejercicio seleccionado en ExerciseModelDao
                 for (ejercicio in listaEjerciciosSeleccionados) {
-                    val id = exerciseModelDao?.insert(ejercicio)
+                    //val id = exerciseModelDao?.insert(ejercicio)
+                    val id = repository.insert(ejercicio)
                     ejercicio.exerciseId = id
                     Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
-                    exerciseModelDao?.addRoutineExercise(id, rutina.routineId)
+                    repository.addRoutineExercise(id, rutina.routineId)
                     Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
                 }
 
@@ -217,13 +233,33 @@ class ListaEjerciciosFragment : Fragment() {
                 }
 
                 // Actualizar la cadena de ejercicios en la rutina
-                rutinaDao?.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
+                repository.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
                 Log.d("Ejercicios añadidos a rutina: ", cadenaEjerciciosNueva)
+
             }
         }
 
         btnConfirmar.setOnClickListener {
             navigateToHome(user)
+        }
+    }
+
+    private fun subscribeUi(adapter: ListaEjerciciosAdapter) {
+        repository.exercices.observe(viewLifecycleOwner) { exercices ->
+            adapter.updateData(exercices)
+        }
+    }
+
+    private fun launchDataLoad(block: suspend () -> Unit): Job {
+        return lifecycleScope.launch {
+            try {
+              //  binding.spinnerMusculo.visibility = View.VISIBLE
+                block()
+            } catch (error: APIError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            } //finally {
+                //binding.spinnerMusculo.visibility = View.GONE
+            //}
         }
     }
 

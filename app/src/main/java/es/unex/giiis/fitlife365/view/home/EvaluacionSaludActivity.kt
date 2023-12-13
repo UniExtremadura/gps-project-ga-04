@@ -14,9 +14,12 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.api.getNetworkService
+import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
@@ -29,6 +32,9 @@ class EvaluacionSaludActivity : AppCompatActivity() {
     private lateinit var spinnerSexo: Spinner
     private lateinit var btnAceptar: Button
     private lateinit var imageViewResultado: ImageView
+
+    private lateinit var repository: Repository
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +63,11 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         btnAceptar = findViewById(R.id.btnAceptar)
         imageViewResultado = findViewById(R.id.imageViewResultado)
 
+        //inicia la variable repository
+        repository = Repository.getInstance(
+            FitLife365Database.getInstance(this)!!.exerciseModelDao(),
+            getNetworkService(), FitLife365Database.getInstance(this)!!.routineDao(), FitLife365Database.getInstance(this)!!.userDao()
+        )
 
         // Configura el adapter para el spinner
         val adapter = ArrayAdapter.createFromResource(
@@ -105,6 +116,8 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
 
     private fun applyFont(view: View, fontName: String) {
         when (view) {
@@ -198,7 +211,7 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             val database = FitLife365Database.getInstance(this)
             val userDao = database?.userDao()
             lifecycleScope.launch {
-                userDao?.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
+                repository.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
             }
             Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
         } else {
