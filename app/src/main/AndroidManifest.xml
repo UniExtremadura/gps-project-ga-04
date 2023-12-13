@@ -31,9 +31,6 @@
             android:name=".view.SettingsActivity"
             android:exported="true" />
         <activity
-            android:name=".view.home.MisRutinasFragment"
-            android:exported="true" />
-        <activity
             android:name=".view.LoginRegister.RegistroActivity"
             android:exported="true" />
         <activity
