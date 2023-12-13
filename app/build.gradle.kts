@@ -91,5 +91,7 @@ dependencies {
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:$room_version")
 
+    testImplementation ("org.mockito:mockito-core:3.11.2")
+    androidTestImplementation ("org.mockito:mockito-android:3.11.2")
 
 }
