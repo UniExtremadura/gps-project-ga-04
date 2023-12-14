@@ -202,10 +202,13 @@ class ListaEjerciciosFragment : Fragment() {
             }
         }
 
+
+
         btnGuardar.setOnClickListener {
             val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
             val exerciseModelDao = database?.exerciseModelDao()
             val rutinaDao = database?.routineDao()
+
 
             lifecycleScope.launch {
                 // Obtener la rutina actual
@@ -239,7 +242,10 @@ class ListaEjerciciosFragment : Fragment() {
             }
         }
 
+
         btnConfirmar.setOnClickListener {
+            subscribeUi(adapter)
+            launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
             navigateToHome(user)
         }
     }
