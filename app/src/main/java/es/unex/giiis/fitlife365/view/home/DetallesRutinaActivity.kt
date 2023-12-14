@@ -2,10 +2,7 @@ package es.unex.giiis.fitlife365.view.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
+import es.unex.giiis.fitlife365.utils.FontUtils
 
 
 class DetallesRutinaActivity : AppCompatActivity() {
@@ -54,7 +52,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            applyFont(window.decorView, selectedFont)
+            FontUtils.applyFont(this, window.decorView, selectedFont)
         }
 
         rutina = intent.getSerializableExtra("RUTINA") as Routine
@@ -72,81 +70,6 @@ class DetallesRutinaActivity : AppCompatActivity() {
         setUpUI()
         setUpListeners()
     }
-
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is EditText -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente a la barra de edición de texto
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is Button -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente al botón
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
-
     private fun setUpListeners() {
         with(binding) {
             usernameText.setOnClickListener {
