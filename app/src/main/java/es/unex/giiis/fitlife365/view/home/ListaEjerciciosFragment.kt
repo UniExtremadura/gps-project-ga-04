@@ -1,7 +1,6 @@
 package es.unex.giiis.fitlife365.view.home
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,18 +16,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.data.toExercise
 import es.unex.giiis.fitlife365.database.FitLife365Database
-import es.unex.giiis.fitlife365.database.UserDao
 import es.unex.giiis.fitlife365.databinding.FragmentListaEjerciciosBinding
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.utils.FontUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -58,83 +55,19 @@ class ListaEjerciciosFragment : Fragment() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            applyFont(view, selectedFont)
+            FontUtils.applyFont(requireContext(), view, selectedFont)
         }
 
         return binding.root
     }
 
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
+    override fun onAttach(context: android.content.Context) {
+        super.onAttach(context)
+        repository = Repository.getInstance(
+            FitLife365Database.getInstance(context)!!.exerciseModelDao(),
+            getNetworkService(), FitLife365Database.getInstance(context)!!.routineDao(), FitLife365Database.getInstance(context)!!.userDao()
+        )
 
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is EditText -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente a la barra de edición de texto
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is Button -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente al botón
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
     }
 
     private val muscleMapping = mapOf(
@@ -166,10 +99,7 @@ class ListaEjerciciosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Configurar el RecyclerView
         setUpRecyclerView()
-
-        val appContainer = (this.activity?.application as FitLife365Application).appContainer
-        repository = appContainer.repository
-
+        val database = FitLife365Database.getInstance(requireContext())
         val difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
         btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
@@ -201,6 +131,8 @@ class ListaEjerciciosFragment : Fragment() {
 
         btnGuardar.setOnClickListener {
             val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
+            val exerciseModelDao = database?.exerciseModelDao()
+            val rutinaDao = database?.routineDao()
 
 
             lifecycleScope.launch {

@@ -1,20 +1,13 @@
 package es.unex.giiis.fitlife365.view
 
-import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.preference.ListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.utils.FontUtils
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -27,7 +20,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            view?.let { applyFont(it, selectedFont) }
+            view?.let { rootView -> FontUtils.applyFont(requireContext(), rootView, selectedFont) }
         }
         val fontPreference = findPreference<ListPreference>("font_preference")
         fontPreference?.let {
@@ -79,78 +72,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 ).show()
 
                 true
-            }
-        }
-    }
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is EditText -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente a la barra de edición de texto
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is Button -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente al botón
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
             }
         }
     }

@@ -1,24 +1,20 @@
 package es.unex.giiis.fitlife365.view.home
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.home.HomeActivity.Companion.LOGIN_USER
+import es.unex.giiis.fitlife365.utils.FontUtils
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,7 +59,7 @@ class CrearRutinaFragment : Fragment() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            applyFont(view, selectedFont)
+            FontUtils.applyFont(requireContext(), view, selectedFont)
         }
 
         nombreRutina = view.findViewById(R.id.editTextText)
@@ -130,80 +126,6 @@ class CrearRutinaFragment : Fragment() {
 
         return view
     }
-
-    private fun applyFont(view: View, fontName: String) {
-        when (view) {
-            is ViewGroup -> {
-                for (i in 0 until view.childCount) {
-                    applyFont(view.getChildAt(i), fontName)
-                }
-            }
-            is TextView -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is EditText -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente a la barra de edición de texto
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            is Button -> {
-                try {
-                    // Obtener el identificador del recurso de fuente
-                    val fontResId = when (fontName) {
-                        "openSans" -> R.font.opensans
-                        "Roboto" -> R.font.roboto
-                        "Ubuntu" -> R.font.ubuntu
-                        "Ephesis" -> R.font.ephesis
-                        else -> R.font.opensans // Valor predeterminado
-                    }
-
-                    // Crear el objeto Typeface con la fuente seleccionada
-                    val typeface = resources.getFont(fontResId)
-
-                    // Aplicar la fuente al botón
-                    view.typeface = typeface
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
     fun setUser (user: User){
         currentUser = user
     }
