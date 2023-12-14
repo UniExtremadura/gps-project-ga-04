@@ -197,8 +197,11 @@ class ListaEjerciciosFragment : Fragment() {
             }
         }
 
+
+
         btnGuardar.setOnClickListener {
             val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
+
 
             lifecycleScope.launch {
                 // Obtener la rutina actual
@@ -232,7 +235,10 @@ class ListaEjerciciosFragment : Fragment() {
             }
         }
 
+
         btnConfirmar.setOnClickListener {
+            subscribeUi(adapter)
+            launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
             navigateToHome(user)
         }
     }
