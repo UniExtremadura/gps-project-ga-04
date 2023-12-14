@@ -64,18 +64,17 @@ dependencies {
     implementation("androidx.preference:preference:1.2.1")
     implementation("androidx.room:room-common:2.6.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha02")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha02")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test:runner:1.5.1")
-    androidTestImplementation("androidx.test:rules:1.6.0-alpha02")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
-    debugImplementation("androidx.tracing:tracing:1.1.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0-alpha02")
     val room_version = "2.5.0"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -92,6 +91,5 @@ dependencies {
     testImplementation("androidx.room:room-testing:$room_version")
 
     debugImplementation("androidx.tracing:tracing:1.1.0")
-
 
 }
