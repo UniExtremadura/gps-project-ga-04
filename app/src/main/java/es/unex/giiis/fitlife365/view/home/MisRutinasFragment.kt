@@ -36,6 +36,7 @@ class MisRutinasFragment : Fragment() {
     private lateinit var rutinasAdapter: RoutineAdapter
     private var rutinasList: List<Routine> = mutableListOf()
     private lateinit var repository: Repository
+    private lateinit var addRoutineButton : Button
 
 
     companion object {
@@ -68,6 +69,7 @@ class MisRutinasFragment : Fragment() {
         repository = appContainer.repository
 
         val user = arguments?.getSerializable(LOGIN_USER) as User
+        addRoutineButton = view.findViewById(R.id.btnAddRoutine)
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -92,6 +94,17 @@ class MisRutinasFragment : Fragment() {
 
             // Actualiza la visibilidad del TextView según la cantidad de elementos en el RecyclerView
             textEmptyRecyclerView.visibility = if (rutinasList.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        addRoutineButton.setOnClickListener {
+            val crearRutinaFragment = CrearRutinaFragment()
+            crearRutinaFragment.setUser(arguments?.getSerializable(LOGIN_USER) as User)
+
+            val fragmentManager: FragmentManager? = fragmentManager
+            fragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_containerHome, crearRutinaFragment)
+                ?.addToBackStack(null) // Agrega el fragmento actual al back stack
+                ?.commit()
         }
 
         return view

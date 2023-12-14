@@ -6,10 +6,6 @@
         android:icon="@drawable/my_routines_icon"
         android:title="Mis Rutinas" />
     <item
-        android:id="@+id/nav_create_routine"
-        android:icon="@drawable/crear_rutina"
-        android:title="Crear Rutina" />
-    <item
         android:id="@+id/nav_personaltrainer"
         android:icon="@drawable/personal_trainer"
         android:title="Entrenador" />

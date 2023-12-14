@@ -96,7 +96,6 @@ class HomeActivity : AppCompatActivity() {
             }
             bottomNavigation.setOnItemSelectedListener{
                 when(it.itemId){
-                    R.id.nav_create_routine -> setCurrentFragment(crearRutinaFragment)
                     R.id.nav_myroutines -> setCurrentFragment(misRutinasFragment)
                     R.id.nav_personaltrainer -> setCurrentFragment(personalTrainerFragment)
                     R.id.nav_editar_perfil -> setCurrentFragment(editarPerfilFragment)
