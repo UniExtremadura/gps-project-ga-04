@@ -10,7 +10,10 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.api.getNetworkService
+import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
@@ -35,7 +38,7 @@ class CrearRutinaFragment : Fragment() {
     private lateinit var nombreRutina : EditText
     private lateinit var pesoObjetivoRutina : EditText
     private lateinit var currentUser : User
-
+    private lateinit var repository: Repository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,9 +51,10 @@ class CrearRutinaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //Inicializar la base de datos
-        val database = FitLife365Database.getInstance(requireContext())
-        val routineDao = database?.routineDao()
+        //inicia la variable repository
+        val appContainer = (this.activity?.application as FitLife365Application).appContainer
+        repository = appContainer.repository
+
         val view = inflater.inflate(R.layout.fragment_crear_rutina, container, false)
 
         // Obtener la fuente seleccionada desde SharedPreferences
@@ -105,14 +109,11 @@ class CrearRutinaFragment : Fragment() {
                 ejercicios = ""
             )
 
-
-            // Inserta la rutina en la base de datos
-            if (routineDao != null) {
-                lifecycleScope.launch {
-                    val id = routineDao.insert(routine)
-                    routine.routineId = id
-                }
+            lifecycleScope.launch {
+                val id = repository.insertRoutine(routine)
+                routine.routineId = id
             }
+
 
             val difficulty = spinnerExperiencia.selectedItem.toString()
             val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)

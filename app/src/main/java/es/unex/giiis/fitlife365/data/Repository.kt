@@ -48,6 +48,10 @@ class Repository constructor(
         return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || exerciseModelDao.getNumberOfExercices() == 0L
     }
 
+    suspend fun insertRoutine(routine: Routine): Long? {
+        return routineDao.insert(routine)
+    }
+
      suspend fun getRoutinebyID(routineId: Long?): Routine {
         return routineDao.getRoutineById(routineId)
 
