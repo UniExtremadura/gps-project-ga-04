@@ -91,5 +91,6 @@ dependencies {
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:$room_version")
 
+    debugImplementation("androidx.tracing:tracing:1.1.0")
 
 }
