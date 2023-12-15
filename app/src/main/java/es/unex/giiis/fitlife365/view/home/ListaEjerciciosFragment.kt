@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,9 @@ import kotlinx.coroutines.launch
 
 
 class ListaEjerciciosFragment : Fragment() {
+    private val viewModel: ListaEjerciciosViewModel by viewModels { ListaEjerciciosViewModel.Factory }
+
+
     private var _exercise: List<ExerciseModel> = emptyList()
     private lateinit var adapter : ListaEjerciciosAdapter
     private var _binding: FragmentListaEjerciciosBinding? = null
@@ -42,7 +46,6 @@ class ListaEjerciciosFragment : Fragment() {
     private lateinit var musculoElegido : String
     private lateinit var btnConfirmar: Button
 
-    private lateinit var repository: Repository
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,17 +94,28 @@ class ListaEjerciciosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Configurar el RecyclerView
         setUpRecyclerView()
+
+
         val difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
-        //inicia la variable repository
-        val appContainer = (this.activity?.application as FitLife365Application).appContainer
-        repository = appContainer.repository
 
         btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
         btnConfirmar = view.findViewById(R.id.btnConfirmarEjercicios)
 
         val user = arguments?.getSerializable("user") as User
         val rutina = arguments?.getSerializable("rutina") as Routine
+
+        viewModel.user = user
+
+        viewModel.routine = rutina
+        viewModel.dificultad = difficulty
+
+
+        viewModel.toast.observe(viewLifecycleOwner){text ->
+            text?.let { Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                viewModel.onToastShown()
+            }
+        }
 
         // Configurar el Spinner para seleccionar el músculo
         val musclesArray = resources.getStringArray(R.array.muscle_array)
@@ -114,6 +128,7 @@ class ListaEjerciciosFragment : Fragment() {
                 // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
                 musculoElegido = selectedMuscle
+                viewModel.musculo = selectedMuscle
                 filtrarEjerciciosPorMusculo(selectedMuscle, difficulty )
             }
 
@@ -130,7 +145,7 @@ class ListaEjerciciosFragment : Fragment() {
             lifecycleScope.launch {
                 // Obtener la rutina actual
                 //val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
-                val routineEntity = repository.getRoutinebyID(rutina.routineId)
+                val routineEntity = viewModel.getRoutinebyID(rutina.routineId)
 
                 // Obtener la cadena de ejercicios anterior
                 val cadenaEjerciciosAnterior = routineEntity?.ejercicios ?: ""
@@ -138,10 +153,10 @@ class ListaEjerciciosFragment : Fragment() {
                 // Insertar cada ejercicio seleccionado en ExerciseModelDao
                 for (ejercicio in listaEjerciciosSeleccionados) {
                     //val id = exerciseModelDao?.insert(ejercicio)
-                    val id = repository.insert(ejercicio)
+                    val id = viewModel.insert(ejercicio)
                     ejercicio.exerciseId = id
                     Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
-                    repository.addRoutineExercise(id, rutina.routineId)
+                    viewModel.addRoutineExercise(id, rutina.routineId)
                     Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
                 }
 
@@ -153,36 +168,22 @@ class ListaEjerciciosFragment : Fragment() {
                 }
 
                 // Actualizar la cadena de ejercicios en la rutina
-                repository.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
+                viewModel.updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
                 Log.d("Ejercicios añadidos a rutina: ", cadenaEjerciciosNueva)
 
             }
         }
 
-
         btnConfirmar.setOnClickListener {
             subscribeUi(adapter)
-            launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
+            // launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
             navigateToHome(user)
         }
     }
 
     private fun subscribeUi(adapter: ListaEjerciciosAdapter) {
-        repository.exercices.observe(viewLifecycleOwner) { exercices ->
-            adapter.updateData(exercices)
-        }
-    }
-
-    private fun launchDataLoad(block: suspend () -> Unit): Job {
-        return lifecycleScope.launch {
-            try {
-              //  binding.spinnerMusculo.visibility = View.VISIBLE
-                block()
-            } catch (error: APIError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
-            } //finally {
-                //binding.spinnerMusculo.visibility = View.GONE
-            //}
+        viewModel.exercises.observe(viewLifecycleOwner) { result ->
+            adapter.updateData(result)
         }
     }
 
