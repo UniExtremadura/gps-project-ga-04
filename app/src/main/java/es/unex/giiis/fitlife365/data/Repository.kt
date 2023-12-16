@@ -26,7 +26,7 @@ class Repository constructor(
     private suspend fun fetchRecentExercises(selectedMuscle :String, difficulty :String) {
         try {
             // Obtener ejercicios de la API
-            val exercisesFromApi = networkService.getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty).toExercise()
+            val exercisesFromApi = getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty).toExercise()
 
             // Verificar si la lista de ejercicios de la API no está vacía antes de intentar actualizar la base de datos
            // if (exercisesFromApi.isNotEmpty()) {
@@ -39,6 +39,10 @@ class Repository constructor(
         } catch (cause: Throwable) {
             throw APIError("Unable to fetch data from API", cause)
         }
+    }
+
+    suspend fun getExercisesByMuscleAndDifficulty(selectedMuscle :String, difficulty :String): ExerciseList {
+        return networkService.getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty)
     }
 
 
