@@ -127,7 +127,7 @@ class HomeActivity : AppCompatActivity() {
     private fun mostrarDetallesRutina(rutina: Routine) {
         val intent = Intent(this, DetallesRutinaActivity::class.java)
         intent.putExtra("RUTINA", rutina)
-        intent.putExtra("USER",viewModel.userInSession)
+        intent.putExtra("LOGIN_USER", viewModel.userInSession)
         startActivity(intent)
     }
 }
