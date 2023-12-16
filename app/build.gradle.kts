@@ -93,5 +93,15 @@ dependencies {
 
     testImplementation ("org.mockito:mockito-core:3.11.2")
     androidTestImplementation ("org.mockito:mockito-android:3.11.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.1")
+    androidTestImplementation("com.squareup.okhttp3:okhttp:4.9.1")
+    testImplementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    androidTestImplementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    testImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    androidTestImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+
 
 }
