@@ -32,19 +32,16 @@ class APITest {
             .create(ExerciseAPI::class.java)
     }
 
+    @After
+    fun tearDown() {
+        // Apaga el servidor simulado
+        mockWebServer.shutdown()
+    }
+
     @Test
     fun testGetExerciseByMuscle() = runBlocking {
-        mockWebServer = MockWebServer()
-
-        // Configura la URL base del servidor simulado en tu API
-        exerciseAPI = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ExerciseAPI::class.java)
-        // Define una respuesta simulada con un ejercicio específico para el bíceps
         val mockResponse = MockResponse()
-            .setBody("{\"exerciseList\": [{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Intrucciones}]}")
+            .setBody("[{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Instrucciones\"}]")
 
         // Agrega la respuesta al servidor simulado
         mockWebServer.enqueue(mockResponse)
@@ -61,18 +58,15 @@ class APITest {
         assertEquals("barbell", exercise.equipment)
         assertEquals("beginner", exercise.difficulty)
         assertEquals("strength", exercise.type)
-        assertEquals("Intrucciones", exercise.instructions)
+        assertEquals("Instrucciones", exercise.instructions)
 
-        mockWebServer.shutdown()
     }
 
 
     @Test
     fun testGetExerciseByMuscleAndDifficulty (){
-        // Define una respuesta simulada con un ejercicio específico para el bíceps y dificultad beginner
-
         val mockResponse = MockResponse()
-            .setBody("{\"exerciseList\": [{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Intrucciones}]}")
+            .setBody("[{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Instrucciones\"}]")
 
         // Agrega la respuesta al servidor simulado
         mockWebServer.enqueue(mockResponse)
@@ -89,16 +83,14 @@ class APITest {
             assertEquals("barbell", exercise.equipment)
             assertEquals("beginner", exercise.difficulty)
             assertEquals("strength", exercise.type)
-            assertEquals("Intrucciones", exercise.instructions)
+            assertEquals("Instrucciones", exercise.instructions)
         }
     }
 
     @Test
     fun testGetExerciseByEquipment (){
-        // Define una respuesta simulada con un ejercicio específico para el bíceps y dificultad beginner
-
         val mockResponse = MockResponse()
-            .setBody("{\"exerciseList\": [{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Intrucciones}]}")
+            .setBody("[{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Instrucciones\"}]")
 
 
         // Agrega la respuesta al servidor simulado
@@ -116,16 +108,14 @@ class APITest {
             assertEquals("barbell", exercise.equipment)
             assertEquals("beginner", exercise.difficulty)
             assertEquals("strength", exercise.type)
-            assertEquals("Intrucciones", exercise.instructions)
+            assertEquals("Instrucciones", exercise.instructions)
         }
     }
 
     @Test
     fun testGetExerciseByDifficulty (){
-        // Define una respuesta simulada con un ejercicio específico para el bíceps y dificultad beginner
-
         val mockResponse = MockResponse()
-            .setBody("{\"exerciseList\": [{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Intrucciones}]}")
+            .setBody("[{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Instrucciones\"}]")
 
         // Agrega la respuesta al servidor simulado
         mockWebServer.enqueue(mockResponse)
@@ -142,16 +132,14 @@ class APITest {
             assertEquals("barbell", exercise.equipment)
             assertEquals("beginner", exercise.difficulty)
             assertEquals("strength", exercise.type)
-            assertEquals("Intrucciones", exercise.instructions)
+            assertEquals("Instrucciones", exercise.instructions)
         }
     }
 
     @Test
     fun testGetExerciseByType (){
-        // Define una respuesta simulada con un ejercicio específico para el bíceps y dificultad beginner
-
         val mockResponse = MockResponse()
-            .setBody("{\"exerciseList\": [{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Intrucciones}]}")
+            .setBody("[{\"id\": 1, \"name\": \"Curl de biceps\", \"muscle\": \"biceps\", \"equipment\": \"barbell\", \"difficulty\": \"beginner\", \"type\": \"strength\", \"instructions\": \"Instrucciones\"}]")
 
         // Agrega la respuesta al servidor simulado
         mockWebServer.enqueue(mockResponse)
@@ -168,7 +156,7 @@ class APITest {
             assertEquals("barbell", exercise.equipment)
             assertEquals("beginner", exercise.difficulty)
             assertEquals("strength", exercise.type)
-            assertEquals("Intrucciones", exercise.instructions)
+            assertEquals("Instrucciones", exercise.instructions)
         }
     }
 }

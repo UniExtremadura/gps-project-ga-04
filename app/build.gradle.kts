@@ -72,7 +72,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
     debugImplementation("androidx.tracing:tracing:1.1.0")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0-alpha02")
@@ -91,17 +91,13 @@ dependencies {
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:$room_version")
 
-    testImplementation ("org.mockito:mockito-core:3.11.2")
-    androidTestImplementation ("org.mockito:mockito-android:3.11.2")
+    testImplementation("org.mockito:mockito-core:4.6.1")
+    androidTestImplementation("org.mockito:mockito-android:4.6.1")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.6.1")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
     testImplementation("com.squareup.okhttp3:okhttp:4.9.1")
-    androidTestImplementation("com.squareup.okhttp3:okhttp:4.9.1")
-    testImplementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    androidTestImplementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    androidTestImplementation("com.squareup.okhttp3:okhttp:")
     testImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
     androidTestImplementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-
-
 }
