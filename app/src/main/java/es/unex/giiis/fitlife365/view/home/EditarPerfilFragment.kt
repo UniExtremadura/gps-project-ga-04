@@ -1,5 +1,6 @@
 package es.unex.giiis.fitlife365
 
+import EditarPerfilViewModel
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
@@ -42,6 +44,7 @@ class EditarPerfilFragment : Fragment() {
     private lateinit var editTextPeso: EditText
     private lateinit var btnAceptar: Button
     private lateinit var btnEliminar: Button
+    private val viewModel: EditarPerfilViewModel by viewModels { EditarPerfilViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +53,6 @@ class EditarPerfilFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +79,7 @@ class EditarPerfilFragment : Fragment() {
         btnAceptar = view.findViewById(R.id.btnAceptar)
         btnEliminar = view.findViewById<Button>(R.id.buttonEliminar)
 
+
         val adapterSexo = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexo)
         adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSexo.adapter = adapterSexo
@@ -101,7 +103,19 @@ class EditarPerfilFragment : Fragment() {
                 mostrarDialogoConfirmacion(user) { confirmed ->
                     if (confirmed) {
                         // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-                        actualizarUsuario(user)
+                        viewModel.actualizarUsuario(user)
+                        // Ir a la pantalla de MainActivity
+                        val nombre = editTextNombre.text.toString()
+                        val sexo = spinnerSexo.selectedItem.toString()
+                        val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
+                        val altura = editTextAltura.text.toString().toIntOrNull() ?: 0
+                        val peso = editTextPeso.text.toString().toIntOrNull() ?: 0
+
+                        val intent = Intent(requireContext(), EvaluacionSaludActivity::class.java).apply {
+                            putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
+                        }
+                        startActivity(intent)
+
                         val nuevoNombreUsuario = editTextNombre.text.toString()
                         val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
                         // Actualizar el nombre de usuario en el TextView
@@ -116,7 +130,11 @@ class EditarPerfilFragment : Fragment() {
             if (user != null) {
                 mostrarDialogoConfirmacionEliminacion(user) { confirmed ->
                     if (confirmed) {
-                        eliminarUsuario(user)
+                        viewModel.eliminarUsuario(user)
+                        // Ir a la pantalla de MainActivity
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
                     }
                 }
             }
@@ -133,7 +151,20 @@ class EditarPerfilFragment : Fragment() {
         // Configurar el botón de aceptar
         builder.setPositiveButton("Aceptar") { _, _ ->
             // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-            actualizarUsuario(user)
+            viewModel.actualizarUsuario(user)
+            // Ir a la pantalla de MainActivity
+
+            val nombre = editTextNombre.text.toString()
+            val sexo = spinnerSexo.selectedItem.toString()
+            val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
+            val altura = editTextAltura.text.toString().toIntOrNull() ?: 0
+            val peso = editTextPeso.text.toString().toIntOrNull() ?: 0
+
+            val intent = Intent(requireContext(), EvaluacionSaludActivity::class.java).apply {
+                putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
+            }
+            startActivity(intent)
+            // Mostrar un mensaje Toast después de la actualización
             callback(true)
         }
 
@@ -147,33 +178,6 @@ class EditarPerfilFragment : Fragment() {
         builder.show()
     }
 
-    private fun actualizarUsuario(user: User) {
-        // Obtener los valores de las vistas
-        val userId = user.userId
-        val nombre = editTextNombre.text.toString()
-        val sexo = spinnerSexo.selectedItem.toString()
-        val edad = editTextEdad.text.toString().toIntOrNull() ?: 0
-        val altura = editTextAltura.text.toString().toIntOrNull() ?: 0
-        val peso = editTextPeso.text.toString().toIntOrNull() ?: 0
-
-        // Llamar al método updateUser del UserDao
-        GlobalScope.launch(Dispatchers.IO) {
-            val userDao = FitLife365Database.getInstance(requireContext())?.userDao()
-            if (userDao != null) {
-                if (userId != null) {
-                    userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
-
-                    val intent = Intent(requireContext(), EvaluacionSaludActivity::class.java).apply {
-                        putExtra("LOGIN_USER", user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
-                    }
-                    startActivity(intent)
-                    // Mostrar un mensaje Toast después de la actualización
-                    GlobalScope.launch(Dispatchers.Main) {
-                    }
-                }
-            }
-        }
-    }
     private fun mostrarDialogoConfirmacionEliminacion(user: User, callback: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Confirmación")
@@ -193,20 +197,6 @@ class EditarPerfilFragment : Fragment() {
 
         // Mostrar el cuadro de diálogo
         builder.show()
-    }
-    private fun eliminarUsuario(user: User) {
-        // Llamar al método deleteUser del UserDao
-        GlobalScope.launch(Dispatchers.IO) {
-            val userDao = FitLife365Database.getInstance(requireContext())?.userDao()
-            if (userDao != null) {
-                userDao.deleteUser(user)
-
-                // Ir a la pantalla de MainActivity
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
     }
 
     companion object {

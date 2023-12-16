@@ -1,5 +1,8 @@
 package es.unex.giiis.fitlife365.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import es.unex.giiis.fitlife365.api.APIError
 import es.unex.giiis.fitlife365.api.ExerciseAPI
 import es.unex.giiis.fitlife365.database.ExerciseModelDao
@@ -7,6 +10,7 @@ import es.unex.giiis.fitlife365.database.RoutineDao
 import es.unex.giiis.fitlife365.database.UserDao
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
+import es.unex.giiis.fitlife365.model.User
 
 class Repository constructor(
     private val exerciseModelDao: ExerciseModelDao,
@@ -17,6 +21,17 @@ class Repository constructor(
     private var lastUpdateTimeMillis: Long = 0L
 
     val exercices = exerciseModelDao.getExercices()
+
+    /*
+    private val userFilter = MutableLiveData<Long>()
+
+    val showsInLibrary: LiveData<Routine> =
+        userFilter.switchMap{userid -> routineDao.getRoutinesByUser(userid)}
+
+    fun setUserid(userid: Long) {
+        userFilter.value = userid
+    }
+    */
 
     suspend fun tryUpdateRecentExercicesCache(selectedMuscle :String, difficulty :String) {
         if (shouldUpdateExercicesCache())
@@ -68,7 +83,6 @@ class Repository constructor(
 
     suspend fun insert(ejercicio: ExerciseModel): Long? {
         return exerciseModelDao.insert(ejercicio)
-
     }
 
     suspend fun addRoutineExercise(id: Long?, routineId: Long?) {
@@ -88,8 +102,17 @@ class Repository constructor(
 
     }
 
-    suspend fun getRoutinesByUser(userId: Long?): List<Routine>? {
+      suspend fun getRoutinesByUser(userId: Long?): List<Routine>? {
         return routineDao.getRoutinesByUser(userId)
+    }
+
+    suspend fun insertR(routine: Routine): Long? {
+        return routineDao.insert(routine)
+    }
+
+    suspend fun deleteUser(user: User) {
+        userDao.deleteUser(user)
+
     }
 
     companion object {

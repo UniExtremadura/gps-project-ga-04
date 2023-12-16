@@ -14,7 +14,7 @@ interface RoutineDao {
     suspend fun insert(routine: Routine): Long
 
     @Query("SELECT * FROM Routine WHERE userId = :userId")
-    suspend fun getRoutinesByUser(userId: Long?): List<Routine>
+     suspend fun getRoutinesByUser(userId: Long?): List<Routine>
 
     @Query("UPDATE Routine SET ejercicios = :exercises WHERE routineId = :routineId")
     suspend fun updateRoutine(routineId: Long?, exercises: String)

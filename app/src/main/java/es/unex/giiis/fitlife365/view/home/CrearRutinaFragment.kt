@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.FitLife365Application
@@ -31,6 +34,7 @@ const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CrearRutinaFragment : Fragment() {
+    private val viewModel: CrearRutinaViewModel by viewModels { CrearRutinaViewModel.Factory }
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -66,10 +70,6 @@ class CrearRutinaFragment : Fragment() {
             FontUtils.applyFont(requireContext(), view, selectedFont)
         }
 
-        nombreRutina = view.findViewById(R.id.editTextText)
-        pesoObjetivoRutina = view.findViewById(R.id.editTextNumber)
-
-
         val diasEntrenamiento = listOf("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo")
         val experiencia = listOf("Principiante", "Intermedio", "Avanzado")
 
@@ -89,31 +89,12 @@ class CrearRutinaFragment : Fragment() {
         btnAceptar = view.findViewById(R.id.btnAceptar)
 
         // Establece el OnClickListener
+        //view.findViewById<Button>(R.id.btnAceptar).setOnClickListener(viewModel.btnAceptarClickListener)
         btnAceptar.setOnClickListener {
-
-            // Crea la rutina
-            val nombre = "Por defecto"
-            val nombreRutina = nombreRutina.text.toString().takeIf { it.isNotEmpty() } ?: nombre
-
-            val peso = 60
-            val pesoObjetivoRutina = pesoObjetivoRutina.text.toString().toIntOrNull() ?: peso
-
             val diasEntrenamiento = spinnerDiasEntrenamiento.selectedItem.toString()
 
-            val routine = Routine(
-                routineId = null,
-                userId = currentUser.userId,
-                name = nombreRutina,
-                pesoObjetivo = pesoObjetivoRutina,
-                diasEntrenamiento = diasEntrenamiento,
-                ejercicios = ""
-            )
-
-            lifecycleScope.launch {
-                val id = repository.insertRoutine(routine)
-                routine.routineId = id
-            }
-
+            viewModel.setUser(currentUser)
+            val routine = viewModel.crearRutina(view, diasEntrenamiento)
 
             val difficulty = spinnerExperiencia.selectedItem.toString()
             val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)
@@ -129,6 +110,10 @@ class CrearRutinaFragment : Fragment() {
     }
     fun setUser (user: User){
         currentUser = user
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {
