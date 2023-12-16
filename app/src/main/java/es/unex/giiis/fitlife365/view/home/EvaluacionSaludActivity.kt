@@ -13,13 +13,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.api.getNetworkService
-import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
@@ -120,24 +116,6 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         return edad != null && estatura != null && peso != null
     }
 
-    private fun guardarInformacionUsuario(edad: Float, estatura: Float, peso: Float, sexo: String) {
-        val user = intent?.getSerializableExtra("LOGIN_USER") as? User
-        if (user != null) {
-            user.edad = edad.toInt()
-            user.altura = estatura.toInt()
-            user.peso = peso.toInt()
-            user.sexo = sexo
-
-            val database = FitLife365Database.getInstance(this)
-            val userDao = database?.userDao()
-            lifecycleScope.launch {
-                viewModel.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
-            }
-            Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
-        } else {
-            Log.d("EvaluacionSalud", "El usuario es nulo.")
-        }
-    }
 
     private fun cargarInformacionUsuario(user: User) {
         val sexoArray = resources.getStringArray(R.array.opciones_sexo)
@@ -151,12 +129,13 @@ class EvaluacionSaludActivity : AppCompatActivity() {
     }
 
     private fun calcularPorcentajeSalud() {
+        val user = intent?.getSerializableExtra("LOGIN_USER") as? User
         val edad = editTextEdad.text.toString().toFloat()
         val estatura = editTextEstatura.text.toString().toFloat()
         val peso = editTextPeso.text.toString().toFloat()
         val sexo = spinnerSexo.selectedItem.toString()
 
-        guardarInformacionUsuario(edad, estatura, peso, sexo)
+        viewModel.guardarInformacionUsuario(user!!, edad, estatura, peso, sexo)
 
         // Lógica para calcular el porcentaje de salud
         val porcentajeSalud = calcularPorcentajeSalud(peso, estatura)
