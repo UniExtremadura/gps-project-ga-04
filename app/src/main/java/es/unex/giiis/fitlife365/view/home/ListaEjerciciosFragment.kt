@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,7 @@ import es.unex.giiis.fitlife365.utils.FontUtils
 
 class ListaEjerciciosFragment : Fragment() {
     private val viewModel: ListaEjerciciosViewModel by viewModels { ListaEjerciciosViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var _exercise: List<ExerciseModel> = emptyList()
     private lateinit var adapter : ListaEjerciciosAdapter
@@ -52,6 +54,11 @@ class ListaEjerciciosFragment : Fragment() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
 
+        homeViewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.user = user
+        }
+
+
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
             FontUtils.applyFont(requireContext(), view, selectedFont)
@@ -68,11 +75,17 @@ class ListaEjerciciosFragment : Fragment() {
         btnGuardar = view.findViewById(R.id.btnGuardarEnRutina)
         btnConfirmar = view.findViewById(R.id.btnConfirmarEjercicios)
 
-        user = arguments?.getSerializable("user") as User
+        homeViewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.user = user
+
+            user?.let { nonNullUser ->
+                this.user = nonNullUser
+            }
+        }
+
         rutina = arguments?.getSerializable("rutina") as Routine
         difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
-        viewModel.user = user
 
         viewModel.routine = rutina
         viewModel.dificultad = difficulty

@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 
 class MisRutinasFragment : Fragment() {
     private val viewModel: MisRutinasViewModel by viewModels { MisRutinasViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var rutinasAdapter: RoutineAdapter
@@ -53,7 +55,6 @@ class MisRutinasFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_myroutines, container, false)
 
-        user = arguments?.getSerializable(LOGIN_USER) as User
         addRoutineButton = view.findViewById(R.id.btnAddRoutine)
 
         // Obtener la fuente seleccionada desde SharedPreferences
@@ -71,10 +72,18 @@ class MisRutinasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+        homeViewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.user = user
+
+            user?.let { nonNullUser ->
+                this.user = nonNullUser
+
+                viewModel.getRoutinesByUser(nonNullUser.userId)
+            }
+        }
 
         val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
 
-        viewModel.getRoutinesByUser(user.userId)
 
         viewModel.rutinasList.observe(viewLifecycleOwner) { routinesList ->
             rutinasAdapter.actualizarListaRutinas(routinesList)
@@ -89,7 +98,7 @@ class MisRutinasFragment : Fragment() {
     private fun setUpListeners(){
         addRoutineButton.setOnClickListener {
             val crearRutinaFragment = CrearRutinaFragment()
-            crearRutinaFragment.setUser(arguments?.getSerializable(LOGIN_USER) as User)
+            crearRutinaFragment.setUser(viewModel.user!!)
 
             val fragmentManager: FragmentManager? = fragmentManager
             fragmentManager?.beginTransaction()
@@ -117,7 +126,7 @@ class MisRutinasFragment : Fragment() {
     private fun verDetallesRutina(rutina: Routine) {
         val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)
         intent.putExtra("RUTINA", rutina)
-        intent.putExtra("USER", arguments?.getSerializable(LOGIN_USER) as User)
+        intent.putExtra("USER",viewModel.user)
         startActivity(intent)
     }
 }

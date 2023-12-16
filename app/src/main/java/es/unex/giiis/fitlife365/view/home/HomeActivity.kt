@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -27,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var misRutinasFragment: MisRutinasFragment
     private lateinit var personalTrainerFragment: PersonalTrainerFragment
     private lateinit var editarPerfilFragment: EditarPerfilFragment
-
+    private val viewModel: HomeViewModel by viewModels()
 
     companion object {
         const val LOGIN_USER = "LOGIN_USER"
@@ -49,8 +50,8 @@ class HomeActivity : AppCompatActivity() {
         imageViewEvS = findViewById(R.id.imageViewEvS)
         usernameTextEvS = findViewById(R.id.usernameTextEvS)
 
-        val user = intent.getSerializableExtra(LOGIN_USER) as User
-        usernameText.text = user.name
+        viewModel.userInSession = intent.getSerializableExtra(LOGIN_USER) as User
+        usernameText.text = viewModel.userInSession!!.name
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -61,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
             FontUtils.applyFont(this, window.decorView, selectedFont)
         }
 
-        setUpUI(user)
+        setUpUI(viewModel.userInSession!!)
         setUpListeners()
     }
 
