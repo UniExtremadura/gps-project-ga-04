@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,8 @@ import kotlinx.coroutines.launch
 
 
 class MisRutinasFragment : Fragment() {
+    private val viewModel: MisRutinasViewModel by viewModels { MisRutinasViewModel.Factory }
+
 
     private var param1: String? = null
     private var param2: String? = null
@@ -32,7 +35,7 @@ class MisRutinasFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var rutinasAdapter: RoutineAdapter
     private var rutinasList: List<Routine> = mutableListOf()
-    private lateinit var repository: Repository
+    //private lateinit var repository: Repository
     private lateinit var addRoutineButton : Button
 
 
@@ -62,8 +65,8 @@ class MisRutinasFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_myroutines, container, false)
 
-        val appContainer = (this.activity?.application as FitLife365Application).appContainer
-        repository = appContainer.repository
+        //val appContainer = (this.activity?.application as FitLife365Application).appContainer
+        //repository = appContainer.repository
 
         val user = arguments?.getSerializable(LOGIN_USER) as User
         addRoutineButton = view.findViewById(R.id.btnAddRoutine)
@@ -86,7 +89,7 @@ class MisRutinasFragment : Fragment() {
         val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
 
         lifecycleScope.launch {
-            rutinasList = repository.getRoutinesByUser(user.userId) ?: emptyList()
+            rutinasList = viewModel.getRoutinesByUser(user.userId) ?: emptyList()
             rutinasAdapter.actualizarListaRutinas(rutinasList)
 
             // Actualiza la visibilidad del TextView según la cantidad de elementos en el RecyclerView

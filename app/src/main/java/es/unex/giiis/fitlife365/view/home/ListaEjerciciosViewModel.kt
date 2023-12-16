@@ -50,7 +50,6 @@ class ListaEjerciciosViewModel (
         launchDataLoad { repository.tryUpdateRecentExercicesCache("biceps", "beginner") }
     }
 
-
     fun onToastShown() {
         _toast.value = null
     }

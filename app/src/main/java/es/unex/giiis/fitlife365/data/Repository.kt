@@ -11,8 +11,8 @@ import es.unex.giiis.fitlife365.model.Routine
 class Repository constructor(
     private val exerciseModelDao: ExerciseModelDao,
     private val networkService: ExerciseAPI,
-    private val routineDao: RoutineDao,
-    private val userDao: UserDao
+    val routineDao: RoutineDao,
+    val userDao: UserDao
 ) {
     private var lastUpdateTimeMillis: Long = 0L
 

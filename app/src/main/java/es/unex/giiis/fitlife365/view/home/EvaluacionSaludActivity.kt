@@ -11,7 +11,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.FitLife365Application
@@ -32,7 +34,8 @@ class EvaluacionSaludActivity : AppCompatActivity() {
     private lateinit var btnAceptar: Button
     private lateinit var imageViewResultado: ImageView
 
-    private lateinit var repository: Repository
+    //private lateinit var repository: Repository
+    private val viewModel: EvaluacionSaludViewModel by viewModels { EvaluacionSaludViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +63,6 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         btnAceptar = findViewById(R.id.btnAceptar)
         imageViewResultado = findViewById(R.id.imageViewResultado)
 
-        //inicia la variable repository
-        val appContainer = (application as FitLife365Application).appContainer
-        repository = appContainer.repository
 
         // Configura el adapter para el spinner
         val adapter = ArrayAdapter.createFromResource(
@@ -131,7 +131,7 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             val database = FitLife365Database.getInstance(this)
             val userDao = database?.userDao()
             lifecycleScope.launch {
-                repository.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
+                viewModel.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
             }
             Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
         } else {
