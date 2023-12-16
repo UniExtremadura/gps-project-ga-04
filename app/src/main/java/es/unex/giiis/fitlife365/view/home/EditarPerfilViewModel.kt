@@ -19,12 +19,13 @@ import kotlinx.coroutines.launch
 
 class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
 
-    var user : User ?= null
+    lateinit var user : User
+
     private val _toastMessage = MutableLiveData<String?>()
     val toastMessage: LiveData<String?>
         get() = _toastMessage
 
-    fun updateUser(user: User) {
+    fun updateUser() {
         viewModelScope.launch {
             try {
                 // Lógica para actualizar el usuario en el repositorio
@@ -39,7 +40,7 @@ class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun deleteUser(user: User) {
+    fun deleteUser() {
         viewModelScope.launch {
             try {
                 // Lógica para eliminar el usuario en el repositorio
@@ -54,24 +55,18 @@ class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-     fun eliminarUsuario(user: User) {
+     fun eliminarUsuario() {
         // Llamar al método deleteUser del UserDao
          viewModelScope.launch(Dispatchers.IO) {
-                deleteUser(user)
+                deleteUser()
         }
     }
 
-     fun actualizarUsuario(user: User) {
+     fun actualizarUsuario() {
 
         // Llamar al método updateUser del UserDao
         viewModelScope.launch(Dispatchers.IO) {
-            val nombre = user.name
-            val sexo = user.sexo
-            val edad = user.edad
-            val altura = user.altura
-            val peso = user.peso
-            updateUser(user.copy(name = nombre, sexo = sexo, edad = edad, altura = altura, peso = peso))
-                    //userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
+            updateUser()
                 }
             }
 

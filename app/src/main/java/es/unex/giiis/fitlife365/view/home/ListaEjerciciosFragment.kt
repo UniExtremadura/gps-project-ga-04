@@ -47,7 +47,6 @@ class ListaEjerciciosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_lista_ejercicios, container, false)
         _binding = FragmentListaEjerciciosBinding.inflate(inflater, container, false)
 
         // Obtener la fuente seleccionada desde SharedPreferences
@@ -61,7 +60,7 @@ class ListaEjerciciosFragment : Fragment() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            FontUtils.applyFont(requireContext(), view, selectedFont)
+            FontUtils.applyFont(requireContext(), binding.root, selectedFont)
         }
         return binding.root
     }
