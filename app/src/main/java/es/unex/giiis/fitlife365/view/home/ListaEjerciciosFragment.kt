@@ -40,14 +40,12 @@ class ListaEjerciciosFragment : Fragment() {
     private lateinit var musculoElegido : String
     private lateinit var btnConfirmar: Button
     private lateinit var user: User
-    private lateinit var rutina: Routine
-    private lateinit var difficulty: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_lista_ejercicios, container, false)
         _binding = FragmentListaEjerciciosBinding.inflate(inflater, container, false)
 
         // Obtener la fuente seleccionada desde SharedPreferences
@@ -58,10 +56,9 @@ class ListaEjerciciosFragment : Fragment() {
             viewModel.user = user
         }
 
-
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            FontUtils.applyFont(requireContext(), view, selectedFont)
+            FontUtils.applyFont(requireContext(), binding.root, selectedFont)
         }
         return binding.root
     }
@@ -83,12 +80,8 @@ class ListaEjerciciosFragment : Fragment() {
             }
         }
 
-        rutina = arguments?.getSerializable("rutina") as Routine
-        difficulty = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
-
-
-        viewModel.routine = rutina
-        viewModel.dificultad = difficulty
+        viewModel.rutina = arguments?.getSerializable("rutina") as Routine
+        viewModel.dificultad = arguments?.getString("difficulty") ?: "Principiante" // Valor predeterminado si no se encuentra
 
         viewModel.toast.observe(viewLifecycleOwner){text ->
             text?.let { Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
@@ -108,9 +101,8 @@ class ListaEjerciciosFragment : Fragment() {
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
                 musculoElegido = selectedMuscle
                 viewModel.musculo = selectedMuscle
-                viewModel.dificultad = difficulty
                 viewModel.adapter = adapter
-                viewModel.filtrarEjerciciosPorMusculo(selectedMuscle, difficulty)
+                viewModel.filtrarEjerciciosPorMusculo(selectedMuscle, viewModel.dificultad)
                 adapter = viewModel.adapter!!
             }
 
@@ -122,9 +114,7 @@ class ListaEjerciciosFragment : Fragment() {
 
     private fun setUpListeners(){
         btnGuardar.setOnClickListener {
-            val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
-
-            viewModel.insertarEjerRutina(rutina, listaEjerciciosSeleccionados)
+            viewModel.insertarEjerRutina()
         }
 
         btnConfirmar.setOnClickListener {

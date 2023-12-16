@@ -28,11 +28,9 @@ class ListaEjerciciosViewModel (
 ): ViewModel(){
     var user: User? = null
 
-    var routine: Routine? = null
+    var rutina: Routine? = null
     var dificultad: String = "beginner"
-
     val exercises = repository.exercices
-
     var musculo: String = "biceps"
 
     private var _exercise: List<ExerciseModel> = emptyList()
@@ -137,11 +135,12 @@ class ListaEjerciciosViewModel (
         }
     }
 
-    fun insertarEjerRutina(rutina : Routine, listaEjerciciosSeleccionados : List<ExerciseModel>){
+    fun insertarEjerRutina(){
+        val listaEjerciciosSeleccionados = adapter.getSelectedExercises()
         viewModelScope.launch {
             // Obtener la rutina actual
             //val routineEntity = rutinaDao?.getRoutineById(rutina.routineId)
-            val routineEntity = getRoutinebyID(rutina.routineId)
+            val routineEntity = getRoutinebyID(rutina!!.routineId)
 
             // Obtener la cadena de ejercicios anterior
             val cadenaEjerciciosAnterior = routineEntity?.ejercicios ?: ""
@@ -152,8 +151,8 @@ class ListaEjerciciosViewModel (
                 val id = insert(ejercicio)
                 ejercicio.exerciseId = id
                 Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
-                addRoutineExercise(id, rutina.routineId)
-                Log.d("Ejercicio añadido a rutina: ", rutina.routineId.toString())
+                addRoutineExercise(id, rutina!!.routineId)
+                Log.d("Ejercicio añadido a rutina: ", rutina!!.routineId.toString())
             }
 
             // Concatenar los ejercicios anteriores con los nuevos
@@ -164,7 +163,7 @@ class ListaEjerciciosViewModel (
             }
 
             // Actualizar la cadena de ejercicios en la rutina
-            updateRoutine(rutina.routineId, cadenaEjerciciosNueva)
+            updateRoutine(rutina!!.routineId, cadenaEjerciciosNueva)
             Log.d("Ejercicios añadidos a rutina: ", cadenaEjerciciosNueva)
         }
     }

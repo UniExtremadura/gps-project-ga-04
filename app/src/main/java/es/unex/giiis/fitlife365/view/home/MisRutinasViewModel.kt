@@ -25,10 +25,10 @@ class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
     val textEmptyVisibility: LiveData<Int>
         get() = _textEmptyVisibility
 
-    fun getRoutinesByUser(userId: Long?) {
+    fun getRoutinesByUser() {
         viewModelScope.launch {
             try {
-                val routines = repository.getRoutinesByUser(userId) ?: emptyList()
+                val routines = repository.getRoutinesByUser(user!!.userId) ?: emptyList()
                 _rutinasList.value = routines
                 _textEmptyVisibility.value = if (routines.isEmpty()) View.VISIBLE else View.GONE
             } catch (error: Throwable) {
