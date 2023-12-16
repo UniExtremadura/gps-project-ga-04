@@ -12,6 +12,9 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import es.unex.giiis.fitlife365.R
+import es.unex.giiis.fitlife365.data.Exercise
+import es.unex.giiis.fitlife365.model.ExerciseModel
+import es.unex.giiis.fitlife365.model.Routine
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -31,8 +34,48 @@ class TestHU8 {
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
+    fun getStaticExerciseList(): List<Exercise> {
+        // Crea y devuelve una lista que contiene el ejercicio estático o mock
+        val staticExercise = Exercise(
+            name = "Static Exercise",
+            muscle = "Biceps",
+            equipment = "Dumbbell",
+            difficulty = "beginner",
+            type = "Strength",
+            instructions = "Instructions for static exercise"
+        )
+
+        return listOf(staticExercise)
+    }
+
+    fun createRoutine() : Routine {
+        val rutina = Routine (
+            routineId = 1,
+            userId = 1,
+            name = "r1",
+            pesoObjetivo = 60,
+            diasEntrenamiento = "Lunes",
+            ejercicios = "1"
+        )
+        val staticExercise = ExerciseModel(
+            exerciseId = 1,
+            name = "Static Exercise",
+            muscle = "Biceps",
+            equipment = "Dumbbell",
+            difficulty = "beginner",
+            type = "Strength",
+            instructions = "Instructions for static exercise",
+            isSelected = true,
+            routineId = 1,
+            isCompleted = false
+        )
+
+        return rutina
+    }
+
     @Test
-    fun testHU8() {
+    fun testHU8_1() {
+
         val materialButton = onView(
             allOf(
                 withId(R.id.registrateButton), withText("Regístrate"),
@@ -76,7 +119,7 @@ class TestHU8 {
                 isDisplayed()
             )
         )
-        appCompatEditText2.perform(replaceText("prueba@gmail.com"), closeSoftKeyboard())
+        appCompatEditText2.perform(replaceText("prueba@gmi.com"), closeSoftKeyboard())
 
         val appCompatEditText3 = onView(
             allOf(
@@ -153,6 +196,20 @@ class TestHU8 {
         )
         appCompatImageView.perform(click())
 
+        val textView = onView(
+            allOf(
+                withId(R.id.textMisRutinas), withText("Mis Rutinas"),
+                withParent(
+                    allOf(
+                        withId(R.id.drawerLayout),
+                        withParent(withId(R.id.fragment_containerHome))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(withText("Mis Rutinas")))
+
         val bottomNavigationItemView = onView(
             allOf(
                 withId(R.id.nav_create_routine), withContentDescription("Crear Rutina"),
@@ -181,7 +238,7 @@ class TestHU8 {
                 isDisplayed()
             )
         )
-        appCompatEditText5.perform(replaceText("rutina 1"), closeSoftKeyboard())
+        appCompatEditText5.perform(replaceText("r1"), closeSoftKeyboard())
 
         val appCompatEditText6 = onView(
             allOf(
@@ -196,7 +253,7 @@ class TestHU8 {
                 isDisplayed()
             )
         )
-        appCompatEditText6.perform(replaceText("80"), closeSoftKeyboard())
+        appCompatEditText6.perform(replaceText("60"), closeSoftKeyboard())
 
         val materialButton4 = onView(
             allOf(
@@ -228,39 +285,22 @@ class TestHU8 {
         )
         appCompatSpinner.perform(click())
 
-        val appCompatCheckedTextView = onData(anything())
+        val staticExerciseList = getStaticExerciseList()
+        val rutina = createRoutine()
+
+
+        val app = onData(anything())
             .inAdapterView(
                 childAtPosition(
                     withClassName(`is`("android.widget.PopupWindow\$PopupBackgroundView")),
                     0
                 )
             )
-            .atPosition(5)
-        appCompatCheckedTextView.perform(click())
+            .atPosition(0)
+            app.perform(click())
 
-        val button = onView(
-            allOf(
-                withId(R.id.btnGuardarEnRutina), withText("Guardar en Rutina"),
-                withParent(withParent(withId(R.id.fragment_containerHome))),
-                isDisplayed()
-            )
-        )
-        button.check(matches(isDisplayed()))
 
-        val materialButton5 = onView(
-            allOf(
-                withId(R.id.btnGuardarEnRutina), withText("Guardar en Rutina"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.fragment_containerHome),
-                        0
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        materialButton5.perform(click())
+        val selectedExercise = staticExerciseList[0]
 
         val materialButton6 = onView(
             allOf(
@@ -277,18 +317,18 @@ class TestHU8 {
         )
         materialButton6.perform(click())
 
-        val button2 = onView(
+        val button = onView(
             allOf(
-                withId(R.id.btnRutina), withText("rutina 1"),
+                withId(R.id.btnRutina), withText("r1"),
                 withParent(withParent(withId(R.id.recyclerView))),
                 isDisplayed()
             )
         )
-        button2.check(matches(isDisplayed()))
+        button.check(matches(isDisplayed()))
 
         val materialButton7 = onView(
             allOf(
-                withId(R.id.btnRutina), withText("rutina 1"),
+                withId(R.id.btnRutina), withText("r1"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.recyclerView),
@@ -301,7 +341,8 @@ class TestHU8 {
         )
         materialButton7.perform(click())
 
-        val button3 = onView(
+
+        val button2 = onView(
             allOf(
                 withId(R.id.btnEliminarRutina), withText("Eliminar Rutina"),
                 withParent(
@@ -313,7 +354,8 @@ class TestHU8 {
                 isDisplayed()
             )
         )
-        button3.check(matches(isDisplayed()))
+        button2.check(matches(isDisplayed()))
+
     }
 
     private fun childAtPosition(
