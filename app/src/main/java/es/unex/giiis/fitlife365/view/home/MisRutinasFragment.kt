@@ -30,10 +30,12 @@ import kotlinx.coroutines.launch
 class MisRutinasFragment : Fragment() {
     private val viewModel: MisRutinasViewModel by viewModels { MisRutinasViewModel.Factory }
     private val homeViewModel: HomeViewModel by activityViewModels()
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var rutinasAdapter: RoutineAdapter
     private var rutinasList: List<Routine> = mutableListOf()
     private lateinit var addRoutineButton : Button
+    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,16 +62,20 @@ class MisRutinasFragment : Fragment() {
         setUpRecyclerView()
         homeViewModel.user.observe(viewLifecycleOwner) { user ->
             viewModel.user = user
-        }
 
-        viewModel.getRoutinesByUser()
+            user?.let { nonNullUser ->
+                this.user = nonNullUser
+
+                viewModel.getRoutinesByUser(nonNullUser.userId)
+            }
+        }
 
         val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
 
         viewModel.rutinasList.observe(viewLifecycleOwner) { routinesList ->
             rutinasAdapter.actualizarListaRutinas(routinesList)
 
-            // Actualiza la visibilidad del TextView según la cantidad de elementos en el RecyclerView
+            // Actualiza la visibilidad del TextView segÃºn la cantidad de elementos en el RecyclerView
             textEmptyRecyclerView.visibility = viewModel.textEmptyVisibility.value ?: View.GONE
         }
         setUpListeners()
@@ -79,6 +85,7 @@ class MisRutinasFragment : Fragment() {
     private fun setUpListeners(){
         addRoutineButton.setOnClickListener {
             val crearRutinaFragment = CrearRutinaFragment()
+            crearRutinaFragment.setUser(viewModel.user!!)
 
             val fragmentManager: FragmentManager? = fragmentManager
             fragmentManager?.beginTransaction()
@@ -91,9 +98,10 @@ class MisRutinasFragment : Fragment() {
     private fun setUpRecyclerView() {
         recyclerView = requireView().findViewById(R.id.recyclerView)
         rutinasAdapter = RoutineAdapter(rutinasList) {
-                homeViewModel.onShowClick(it)
+            homeViewModel.onShowClick(it)
         }
         recyclerView.adapter = rutinasAdapter  // Asigna el adaptador al RecyclerView
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 

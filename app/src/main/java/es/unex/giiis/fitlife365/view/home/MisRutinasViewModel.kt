@@ -25,10 +25,10 @@ class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
     val textEmptyVisibility: LiveData<Int>
         get() = _textEmptyVisibility
 
-    fun getRoutinesByUser() {
+    fun getRoutinesByUser(userId: Long?) {
         viewModelScope.launch {
             try {
-                val routines = repository.getRoutinesByUser(user!!.userId) ?: emptyList()
+                val routines = repository.getRoutinesByUser(userId) ?: emptyList()
                 _rutinasList.value = routines
                 _textEmptyVisibility.value = if (routines.isEmpty()) View.VISIBLE else View.GONE
             } catch (error: Throwable) {
@@ -52,7 +52,7 @@ class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
             val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
             return MisRutinasViewModel(
                 (application as FitLife365Application).appContainer.repository, ) as T }
-        }
+    }
     }
 
 
