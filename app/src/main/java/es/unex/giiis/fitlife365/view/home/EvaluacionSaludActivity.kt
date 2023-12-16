@@ -29,10 +29,11 @@ class EvaluacionSaludActivity : AppCompatActivity() {
     private lateinit var spinnerSexo: Spinner
     private lateinit var btnAceptar: Button
     private lateinit var imageViewResultado: ImageView
+    private lateinit var usuario: User
 
     //private lateinit var repository: Repository
     private val viewModel: EvaluacionSaludViewModel by viewModels { EvaluacionSaludViewModel.Factory }
-
+    private val homeViewModel: HomeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evaluacion_salud)
@@ -45,6 +46,11 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         if (selectedFont != null) {
             FontUtils.applyFont(this, window.decorView, selectedFont)
         }
+
+        homeViewModel.user.observe(this) { user ->
+            viewModel.user = user
+        }
+        usuario = intent?.getSerializableExtra("LOGIN_USER") as User
 
         Toast.makeText(
             this,
@@ -74,13 +80,12 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         editTextEstatura.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         editTextPeso.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
-        val user2 = intent?.getSerializableExtra("LOGIN_USER") as? User
+        cargarInformacionUsuario(usuario)
 
-        if (user2 != null) {
-            cargarInformacionUsuario(user2)
-        }
+        setUpListeners()
+    }
 
-
+    private fun setUpListeners(){
         btnAceptar.setOnClickListener {
             if (camposValidos()) {
                 calcularPorcentajeSalud()
@@ -90,19 +95,12 @@ class EvaluacionSaludActivity : AppCompatActivity() {
         }
 
         imageViewResultado.setOnClickListener {
-            val user = intent?.getSerializableExtra("LOGIN_USER") as? User
-            if (user != null) {
-                Log.d("EvaluacionSalud", "Nombre de usuario: ${user.name}")
-
-                // Resto del código...
-            } else {
-                Log.d("EvaluacionSalud", "El usuario es nulo.")
-            }
+            Log.d("EvaluacionSalud", "Nombre de usuario: ${usuario.name}")
 
             // Abre la pantalla HomeActivity al hacer clic en la imagen
             val intent = Intent(this, HomeActivity::class.java).apply {
                 // Pasa el usuario como parte de los datos del intent
-                putExtra(HomeActivity.LOGIN_USER, user)
+                putExtra(HomeActivity.LOGIN_USER, usuario)
             }
             startActivity(intent)
         }
