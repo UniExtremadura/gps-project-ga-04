@@ -115,6 +115,10 @@ class Repository constructor(
 
     }
 
+   suspend fun getExerciseById(exerciseId: Long): ExerciseModel {
+        return exerciseModelDao.getExerciseById(exerciseId)
+    }
+
     companion object {
         private const val MIN_TIME_FROM_LAST_FETCH_MILLIS: Long = 30000
 

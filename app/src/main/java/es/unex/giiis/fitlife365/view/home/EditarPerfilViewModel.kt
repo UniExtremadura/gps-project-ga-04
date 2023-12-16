@@ -58,8 +58,6 @@ class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
         // Llamar al método deleteUser del UserDao
          viewModelScope.launch(Dispatchers.IO) {
                 deleteUser(user)
-
-
         }
     }
 
