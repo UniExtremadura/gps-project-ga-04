@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
 
+    var user : User ?= null
     private val _toastMessage = MutableLiveData<String?>()
     val toastMessage: LiveData<String?>
         get() = _toastMessage
@@ -53,14 +54,12 @@ class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-
      fun eliminarUsuario(user: User) {
         // Llamar al método deleteUser del UserDao
          viewModelScope.launch(Dispatchers.IO) {
                 deleteUser(user)
         }
     }
-
 
      fun actualizarUsuario(user: User) {
 
@@ -75,7 +74,6 @@ class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {
                     //userDao.updateUser(userId, nombre, sexo, edad, altura, peso)
                 }
             }
-
 
     //haz el companion object
     companion object { val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {

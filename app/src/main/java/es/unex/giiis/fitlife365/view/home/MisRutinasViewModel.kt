@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
 
+    var user: User? = null
     private val _rutinasList = MutableLiveData<List<Routine>>()
     val rutinasList: LiveData<List<Routine>>
         get() = _rutinasList

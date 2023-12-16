@@ -18,7 +18,7 @@ class CrearRutinaViewModel (private val repository: Repository
 ): ViewModel(){
     private lateinit var nombreRutina : EditText
     private lateinit var pesoObjetivoRutina : EditText
-    private lateinit var currentUser : User
+    lateinit var currentUser : User
     fun setUser( user : User){
         currentUser = user
     }
