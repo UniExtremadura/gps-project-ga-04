@@ -112,6 +112,7 @@ class MisRutinasFragment : Fragment() {
 
 
 
+
     private fun verDetallesRutina(rutina: Routine) {
         val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)
         intent.putExtra("RUTINA", rutina)
