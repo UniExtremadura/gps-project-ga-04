@@ -37,18 +37,6 @@ class MisRutinasFragment : Fragment() {
     private lateinit var addRoutineButton : Button
     private lateinit var user: User
 
-    companion object {
-        const val LOGIN_USER = "LOGIN_USER"
-
-        fun newInstance(user: User): MisRutinasFragment {
-            val fragment = MisRutinasFragment()
-            val bundle = Bundle()
-            bundle.putSerializable(LOGIN_USER, user)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -110,7 +98,9 @@ class MisRutinasFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         recyclerView = requireView().findViewById(R.id.recyclerView)
-        rutinasAdapter = RoutineAdapter(rutinasList) { rutina -> verDetallesRutina(rutina) }
+        rutinasAdapter = RoutineAdapter(rutinasList) {
+                homeViewModel.onShowClick(it)
+        }
         recyclerView.adapter = rutinasAdapter  // Asigna el adaptador al RecyclerView
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -121,13 +111,5 @@ class MisRutinasFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             adapter.actualizarListaRutinas(rutinasList)
         }
-    }
-
-
-    private fun verDetallesRutina(rutina: Routine) {
-        val intent = Intent(requireContext(), DetallesRutinaActivity::class.java)
-        intent.putExtra("RUTINA", rutina)
-        intent.putExtra("USER",viewModel.user)
-        startActivity(intent)
     }
 }

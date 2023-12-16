@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.database.FitLife365Database
@@ -20,23 +21,13 @@ import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
 import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import es.unex.giiis.fitlife365.utils.FontUtils
+import es.unex.giiis.fitlife365.view.home.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EditarPerfilFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditarPerfilFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var editTextNombre: EditText
     private lateinit var spinnerSexo: Spinner
     private lateinit var editTextEdad: EditText
@@ -45,30 +36,28 @@ class EditarPerfilFragment : Fragment() {
     private lateinit var btnAceptar: Button
     private lateinit var btnEliminar: Button
     private val viewModel: EditarPerfilViewModel by viewModels { EditarPerfilViewModel.Factory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private val homeViewModel: HomeViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_editar_perfil, container, false)
-        val sexo = listOf("Hombre", "Mujer", "Otro")
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+        val selectedFont =
+            sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
             FontUtils.applyFont(requireContext(), view, selectedFont)
         }
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sexo = listOf("Hombre", "Mujer", "Otro")
 
         // Obtener referencias a las vistas
         editTextNombre = view.findViewById(R.id.et_nombre)
@@ -79,24 +68,23 @@ class EditarPerfilFragment : Fragment() {
         btnAceptar = view.findViewById(R.id.btnAceptar)
         btnEliminar = view.findViewById<Button>(R.id.buttonEliminar)
 
-
         val adapterSexo = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sexo)
         adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSexo.adapter = adapterSexo
 
+        var usuario: User? = null  // Cambia a User?
+
         // Obtener el usuario del Bundle
-        val user = arguments?.getSerializable("LOGIN_USER") as? User
-
-        if (user != null) {
-            editTextNombre.setText(user.name)
-            editTextEdad.setText(user.edad.toString())
-            val sexoIndex = sexo.indexOf(user.sexo)
-            spinnerSexo.setSelection(if (sexoIndex != -1) sexoIndex else 0)
-            editTextAltura.setText(user.altura.toString())
-            editTextPeso.setText(user.peso.toString())
+        homeViewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.user = user
+            user?.let { nonNullUser ->
+                usuario = nonNullUser
+                actualizarInterfazUsuario(usuario)
+            }
         }
+    }
 
-        // Configurar el evento de clic para el botón Aceptar
+    private fun setUpListeners(user : User){
         btnAceptar.setOnClickListener {
             if (user != null) {
                 // Mostrar un cuadro de diálogo de confirmación
@@ -117,10 +105,9 @@ class EditarPerfilFragment : Fragment() {
                         startActivity(intent)
 
                         val nuevoNombreUsuario = editTextNombre.text.toString()
-                        val nombreUsuario = view.findViewById<TextView>(R.id.usernameText)
+                        val nombreUsuario = requireView().findViewById<TextView>(R.id.usernameText)
                         // Actualizar el nombre de usuario en el TextView
                         nombreUsuario.text = nuevoNombreUsuario
-
                     }
                 }
             }
@@ -139,8 +126,18 @@ class EditarPerfilFragment : Fragment() {
                 }
             }
         }
-
-        return view
+    }
+    private fun actualizarInterfazUsuario(usuario: User?) {
+        val sexo = listOf("Hombre", "Mujer", "Otro")
+        usuario?.let {
+            editTextNombre.setText(it.name)
+            editTextEdad.setText(it.edad.toString())
+            val sexoIndex = sexo.indexOf(it.sexo)
+            spinnerSexo.setSelection(if (sexoIndex != -1) sexoIndex else 0)
+            editTextAltura.setText(it.altura.toString())
+            editTextPeso.setText(it.peso.toString())
+            setUpListeners(it)
+        }
     }
 
     private fun mostrarDialogoConfirmacion(user: User, callback: (Boolean) -> Unit) { //tercera subtarea
@@ -197,22 +194,5 @@ class EditarPerfilFragment : Fragment() {
 
         // Mostrar el cuadro de diálogo
         builder.show()
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment EditarPerfilFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(user: User) =
-            EditarPerfilFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("LOGIN_USER", user)
-                }
-            }
     }
 }

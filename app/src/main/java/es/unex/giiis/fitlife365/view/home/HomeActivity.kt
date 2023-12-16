@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.EditarPerfilFragment
 import es.unex.giiis.fitlife365.R
 import es.unex.giiis.fitlife365.databinding.ActivityHomeBinding
+import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
 import es.unex.giiis.fitlife365.view.SettingsActivity
@@ -62,7 +63,14 @@ class HomeActivity : AppCompatActivity() {
             FontUtils.applyFont(this, window.decorView, selectedFont)
         }
 
-        setUpUI(viewModel.userInSession!!)
+        viewModel.navigateToRoutines.observe(this) { rutina ->
+            rutina?.let {
+                mostrarDetallesRutina(rutina)
+            }
+        }
+
+
+        setUpUI()
         setUpListeners()
     }
 
@@ -72,12 +80,11 @@ class HomeActivity : AppCompatActivity() {
             commit()
         }
 
-    private fun setUpUI(user: User) {
+    private fun setUpUI() {
         crearRutinaFragment = CrearRutinaFragment()
-        crearRutinaFragment.setUser(intent.getSerializableExtra(LOGIN_USER) as User)
-        misRutinasFragment = MisRutinasFragment.newInstance(intent.getSerializableExtra(LOGIN_USER) as User)
+        misRutinasFragment = MisRutinasFragment()
         personalTrainerFragment = PersonalTrainerFragment()
-        editarPerfilFragment = EditarPerfilFragment.newInstance(user)
+        editarPerfilFragment = EditarPerfilFragment()
         setCurrentFragment(misRutinasFragment)
     }
 
@@ -108,12 +115,19 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    public fun navigateToEvaluacionSalud() {
+    fun navigateToEvaluacionSalud() {
         val user = intent.getSerializableExtra(LOGIN_USER) as? User
         val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
             // Pasa el usuario como parte de los datos del intent
             putExtra("LOGIN_USER", user)
         }
+        startActivity(intent)
+    }
+
+    private fun mostrarDetallesRutina(rutina: Routine) {
+        val intent = Intent(this, DetallesRutinaActivity::class.java)
+        intent.putExtra("RUTINA", rutina)
+        intent.putExtra("USER",viewModel.userInSession)
         startActivity(intent)
     }
 }
