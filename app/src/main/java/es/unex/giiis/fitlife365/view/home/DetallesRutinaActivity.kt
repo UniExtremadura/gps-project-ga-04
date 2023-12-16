@@ -1,12 +1,15 @@
 package es.unex.giiis.fitlife365.view.home
 
+import DetallesRutinaViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
@@ -41,6 +44,9 @@ class DetallesRutinaActivity : AppCompatActivity() {
     private lateinit var recyclerViewEjercicios: RecyclerView
     private lateinit var ejerciciosAdapter: EjerciciosAdapter
     private lateinit var repository: Repository
+    private val viewModel: DetallesRutinaViewModel by viewModels { DetallesRutinaViewModel.Factory }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +72,6 @@ class DetallesRutinaActivity : AppCompatActivity() {
 
         val appContainer = (application as FitLife365Application).appContainer
         repository = appContainer.repository
-
-
         setUpUI()
         setUpListeners()
     }
@@ -80,11 +84,13 @@ class DetallesRutinaActivity : AppCompatActivity() {
                 mostrarDialogoConfirmacion()
             }
             volverHome.setOnClickListener {
-                updateCompletionStatusForAllExercises()
+                viewModel.updateCompletionStatusForAllExercises(ejerciciosAdapter)
                 navigateToHomeActivity()
             }
         }
     }
+
+
 
     private fun mostrarDialogoConfirmacion() {
         val builder = AlertDialog.Builder(this)
@@ -93,7 +99,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
 
         // Botón Aceptar
         builder.setPositiveButton("Aceptar") { _, _ ->
-            eliminarRutina()
+            viewModel.eliminarRutina(rutina)
             navigateToHomeActivity()
         }
 
@@ -106,14 +112,6 @@ class DetallesRutinaActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun updateCompletionStatusForAllExercises() {
-        val database = FitLife365Database.getInstance(this)
-        val exerciseModelDao = database?.exerciseModelDao()
-        lifecycleScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
-            repository.updateExercise(it)
-        }
-        }
-    }
     private fun setUpUI() {
         nombreRutina = findViewById(R.id.nombreRutina)
         pesoObjetivo = findViewById(R.id.pesoObjetivo)
@@ -129,46 +127,14 @@ class DetallesRutinaActivity : AppCompatActivity() {
         pesoObjetivo.text = (rutina.pesoObjetivo?.toString() + " kg") ?: "No hay peso objetivo en esta rutina"
         diasSemana.text = rutina.diasEntrenamiento ?: "No hay días de entrenamiento en esta rutina"
         detallesSeries.text = "3 x 10 - 90s"
-        mostrarDetallesDeTodosLosEjercicios(rutina.ejercicios)
+        viewModel.mostrarDetallesDeTodosLosEjercicios(rutina.ejercicios, ejerciciosAdapter)
+
     }
-
-    private fun mostrarDetallesDeTodosLosEjercicios(listaEjerciciosIds: String?) {
-        if (listaEjerciciosIds.isNullOrBlank()) {
-            return
-        }
-
-        val listaIds = listaEjerciciosIds.split(",").map { it.trim() }
-
-        lifecycleScope.launch {
-            val ejerciciosList = mutableListOf<ExerciseModel>()
-
-            for (exerciseId in listaIds) {
-                val exerciseModelDao = FitLife365Database.getInstance(this@DetallesRutinaActivity)?.exerciseModelDao()
-                val exercise = exerciseModelDao?.getExerciseById(exerciseId.toLong())
-
-                exercise?.let { ejerciciosList.add(it) }
-            }
-
-            ejerciciosAdapter.updateData(ejerciciosList)
-        }
-    }
-
-
 
     private fun navigateToSettings() {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
     }
-
-    private fun eliminarRutina() {
-        val database = FitLife365Database.getInstance(this)
-        val rutinaDao = database?.routineDao()
-
-        lifecycleScope.launch {
-            repository.deleteRoutine(rutina.routineId)
-        }
-    }
-
 
     private fun navigateToHomeActivity() {
         HomeActivity.start(this, user)
