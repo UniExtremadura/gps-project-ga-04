@@ -61,7 +61,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
 
 
         currentUser = intent.getSerializableExtra("LOGIN_USER") as User
-        rutina = intent.getSerializableExtra("RUTINA") as Routine
+        viewModel.rutina = intent.getSerializableExtra("RUTINA") as Routine
 
         setUpUI()
         setUpListeners()
@@ -82,7 +82,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
                 mostrarDialogoConfirmacion()
             }
             volverHome.setOnClickListener {
-                viewModel.updateCompletionStatusForAllExercises(ejerciciosAdapter)
+                viewModel.updateCompletionStatusForAllExercises()
                 navigateToHomeActivity()
             }
         }
@@ -95,7 +95,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
 
         // Botón Aceptar
         builder.setPositiveButton("Aceptar") { _, _ ->
-            viewModel.eliminarRutina(rutina)
+            viewModel.eliminarRutina()
             navigateToHomeActivity()
         }
 
@@ -119,11 +119,12 @@ class DetallesRutinaActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         usernameText.text = currentUser.name
-        nombreRutina.text = rutina.name ?: "No hay nombre en esta rutina"
-        pesoObjetivo.text = (rutina.pesoObjetivo?.toString() + " kg") ?: "No hay peso objetivo en esta rutina"
-        diasSemana.text = rutina.diasEntrenamiento ?: "No hay días de entrenamiento en esta rutina"
+        nombreRutina.text = viewModel.rutina.name ?: "No hay nombre en esta rutina"
+        pesoObjetivo.text = (viewModel.rutina.pesoObjetivo?.toString() + " kg") ?: "No hay peso objetivo en esta rutina"
+        diasSemana.text = viewModel.rutina.diasEntrenamiento ?: "No hay días de entrenamiento en esta rutina"
         detallesSeries.text = "3 x 10 - 90s"
-        viewModel.mostrarDetallesDeTodosLosEjercicios(rutina.ejercicios, ejerciciosAdapter)
+        viewModel.adapter = ejerciciosAdapter
+        viewModel.mostrarDetallesDeTodosLosEjercicios()
 
     }
 
