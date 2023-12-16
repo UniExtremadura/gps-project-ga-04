@@ -17,6 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.database.FitLife365Database
+import es.unex.giiis.fitlife365.databinding.FragmentEditarPerfilBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
 import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
@@ -37,11 +38,14 @@ class EditarPerfilFragment : Fragment() {
     private lateinit var btnEliminar: Button
     private val viewModel: EditarPerfilViewModel by viewModels { EditarPerfilViewModel.Factory }
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private var _binding: FragmentEditarPerfilBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_editar_perfil, container, false)
+
+        _binding = FragmentEditarPerfilBinding.inflate(inflater, container, false)
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -50,9 +54,9 @@ class EditarPerfilFragment : Fragment() {
 
         // Aplicar la fuente seleccionada
         if (selectedFont != null) {
-            FontUtils.applyFont(requireContext(), view, selectedFont)
+            FontUtils.applyFont(requireContext(), binding.root, selectedFont)
         }
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,7 +95,7 @@ class EditarPerfilFragment : Fragment() {
                 mostrarDialogoConfirmacion(user) { confirmed ->
                     if (confirmed) {
                         // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-                        viewModel.actualizarUsuario(user)
+                        viewModel.actualizarUsuario()
                         // Ir a la pantalla de MainActivity
                         val nombre = editTextNombre.text.toString()
                         val sexo = spinnerSexo.selectedItem.toString()
@@ -117,7 +121,7 @@ class EditarPerfilFragment : Fragment() {
             if (user != null) {
                 mostrarDialogoConfirmacionEliminacion(user) { confirmed ->
                     if (confirmed) {
-                        viewModel.eliminarUsuario(user)
+                        viewModel.eliminarUsuario()
                         // Ir a la pantalla de MainActivity
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
@@ -148,7 +152,7 @@ class EditarPerfilFragment : Fragment() {
         // Configurar el botón de aceptar
         builder.setPositiveButton("Aceptar") { _, _ ->
             // El usuario ha confirmado, ejecutar el módulo actualizarUsuario
-            viewModel.actualizarUsuario(user)
+            viewModel.actualizarUsuario()
             // Ir a la pantalla de MainActivity
 
             val nombre = editTextNombre.text.toString()

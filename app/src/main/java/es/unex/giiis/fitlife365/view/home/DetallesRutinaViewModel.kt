@@ -15,25 +15,28 @@ import kotlinx.coroutines.launch
 
 class DetallesRutinaViewModel(private val repository: Repository) : ViewModel() {
 
-    //private lateinit var ejerciciosAdapter: EjerciciosAdapter
-    //private lateinit var rutina : Routine
-    //lateinit var user : User
+    private lateinit var ejerciciosAdapter: EjerciciosAdapter
+    lateinit var rutina : Routine
+    lateinit var adapter: EjerciciosAdapter
+    private lateinit var listaEjerciciosIds: String
 
 
-    fun eliminarRutina(rutina: Routine){
+
+    fun eliminarRutina(){
         viewModelScope.launch {
             repository.deleteRoutine(rutina.routineId)
         }
     }
 
-     fun updateCompletionStatusForAllExercises(ejerciciosAdapter: EjerciciosAdapter) {
+     fun updateCompletionStatusForAllExercises() {
         viewModelScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
             repository.updateExercise(it)
             }
         }
     }
 
-    fun mostrarDetallesDeTodosLosEjercicios(listaEjerciciosIds: String?, adapter: EjerciciosAdapter) {
+    fun mostrarDetallesDeTodosLosEjercicios() {
+        listaEjerciciosIds = rutina.ejercicios
         if (listaEjerciciosIds.isNullOrBlank()) {
             return
         }
