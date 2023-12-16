@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_screen)
-
         // Obtener la fuente seleccionada desde SharedPreferences
         val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
 
@@ -39,6 +35,13 @@ class MainActivity : AppCompatActivity() {
             FontUtils.applyFont(this, window.decorView, selectedFont)
         }
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_screen)
+
+        setUpListeners()
+    }
+
+    private fun setUpListeners() {
         val btnIniciarSesion = findViewById<Button>(R.id.iniciarSesionButton)
         val btnRegistrarse = findViewById<Button>(R.id.registrateButton)
 

@@ -40,18 +40,15 @@ class DetallesRutinaActivity : AppCompatActivity() {
     private lateinit var volverHome: Button
     private lateinit var binding : ActivityDetallesRutinaBinding
     private lateinit var rutina : Routine
-    private lateinit var user : User
     private lateinit var recyclerViewEjercicios: RecyclerView
     private lateinit var ejerciciosAdapter: EjerciciosAdapter
-    private lateinit var repository: Repository
     private val viewModel: DetallesRutinaViewModel by viewModels { DetallesRutinaViewModel.Factory }
-
-
-
+    private lateinit var currentUser : User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetallesRutinaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpRecyclerView()
 
         // Obtener la fuente seleccionada desde SharedPreferences
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -62,18 +59,19 @@ class DetallesRutinaActivity : AppCompatActivity() {
             FontUtils.applyFont(this, window.decorView, selectedFont)
         }
 
-        rutina = intent.getSerializableExtra("RUTINA") as Routine
-        user = intent.getSerializableExtra("USER") as User
 
+        currentUser = intent.getSerializableExtra("LOGIN_USER") as User
+        rutina = intent.getSerializableExtra("RUTINA") as Routine
+
+        setUpUI()
+        setUpListeners()
+    }
+
+    private fun setUpRecyclerView() {
         recyclerViewEjercicios = findViewById(R.id.recyclerViewEjercicios)
         ejerciciosAdapter = EjerciciosAdapter() // Puedes crear un adaptador personalizado para tus ejercicios
         recyclerViewEjercicios.adapter = ejerciciosAdapter
         recyclerViewEjercicios.layoutManager = LinearLayoutManager(this)
-
-        val appContainer = (application as FitLife365Application).appContainer
-        repository = appContainer.repository
-        setUpUI()
-        setUpListeners()
     }
     private fun setUpListeners() {
         with(binding) {
@@ -89,8 +87,6 @@ class DetallesRutinaActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun mostrarDialogoConfirmacion() {
         val builder = AlertDialog.Builder(this)
@@ -122,7 +118,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
         volverHome = findViewById(R.id.btnVolverHome)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        usernameText.text = user.name
+        usernameText.text = currentUser.name
         nombreRutina.text = rutina.name ?: "No hay nombre en esta rutina"
         pesoObjetivo.text = (rutina.pesoObjetivo?.toString() + " kg") ?: "No hay peso objetivo en esta rutina"
         diasSemana.text = rutina.diasEntrenamiento ?: "No hay días de entrenamiento en esta rutina"
@@ -137,7 +133,7 @@ class DetallesRutinaActivity : AppCompatActivity() {
     }
 
     private fun navigateToHomeActivity() {
-        HomeActivity.start(this, user)
+        HomeActivity.start(this, currentUser)
     }
 
 }

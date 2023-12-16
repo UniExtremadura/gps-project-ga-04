@@ -63,6 +63,11 @@ class PersonalTrainerFragment : Fragment() {
             "Haz clic en la foto del entrenador para ver la lista de entrenadores",
             Toast.LENGTH_LONG
         ).show()
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         timePicker = view.findViewById(R.id.timePicker)
         datePicker = view.findViewById(R.id.datePicker)
@@ -80,6 +85,10 @@ class PersonalTrainerFragment : Fragment() {
         telefonosArray = resources.getStringArray(R.array.telefonos_entrenadores)
         imagenesEntrenadoresArray = resources.obtainTypedArray(R.array.imagenes_entrenadores)
 
+        setUpListeners()
+    }
+
+    private fun setUpListeners(){
         buttonConsejos.setOnClickListener {
             // Abre la actividad de Consejos aquí
             val intent = Intent(requireContext(), ConsejosActivity::class.java)
@@ -163,10 +172,6 @@ class PersonalTrainerFragment : Fragment() {
             timePicker.visibility = View.GONE
             showTrainerDetails()
         }
-
-
-        // Configura el evento para realizar alguna acción al contactar al entrenador personal
-        return view
     }
    private fun hideTrainerDetails() {
         imageView.visibility = View.GONE

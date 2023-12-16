@@ -72,7 +72,6 @@ class MisRutinasFragment : Fragment() {
 
         val textEmptyRecyclerView: TextView = view.findViewById(R.id.textEmptyRecyclerView)
 
-
         viewModel.rutinasList.observe(viewLifecycleOwner) { routinesList ->
             rutinasAdapter.actualizarListaRutinas(routinesList)
 

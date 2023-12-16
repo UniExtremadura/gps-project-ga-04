@@ -15,6 +15,8 @@ import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
 
 class EvaluacionSaludViewModel (private val repository: Repository) : ViewModel() {
+
+    var  user : User? = null
     suspend fun update(sexo: String, edad: Int, altura: Int, peso: Int, userId: Long?) {
         return repository.update(sexo, edad, altura, peso, userId)
     }

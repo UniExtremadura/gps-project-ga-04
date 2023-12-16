@@ -17,7 +17,7 @@ class DetallesRutinaViewModel(private val repository: Repository) : ViewModel() 
 
     //private lateinit var ejerciciosAdapter: EjerciciosAdapter
     //private lateinit var rutina : Routine
-
+    //lateinit var user : User
 
 
     fun eliminarRutina(rutina: Routine){
@@ -29,7 +29,7 @@ class DetallesRutinaViewModel(private val repository: Repository) : ViewModel() 
      fun updateCompletionStatusForAllExercises(ejerciciosAdapter: EjerciciosAdapter) {
         viewModelScope.launch { val updatedExerciseList = ejerciciosAdapter.obtenerEjercicios().map {
             repository.updateExercise(it)
-        }
+            }
         }
     }
 
