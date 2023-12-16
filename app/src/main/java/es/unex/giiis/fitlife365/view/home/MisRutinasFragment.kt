@@ -66,7 +66,7 @@ class MisRutinasFragment : Fragment() {
             user?.let { nonNullUser ->
                 this.user = nonNullUser
 
-                viewModel.getRoutinesByUser(nonNullUser.userId)
+                viewModel.getRoutinesByUser()
             }
         }
 
