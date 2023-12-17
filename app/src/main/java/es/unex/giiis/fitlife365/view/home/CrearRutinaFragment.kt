@@ -82,9 +82,10 @@ class CrearRutinaFragment : Fragment() {
     private fun setUpListeners(spinnerDiasEntrenamiento : Spinner, spinnerExperiencia : Spinner){
         btnAceptar.setOnClickListener {
             val diasEntrenamiento = spinnerDiasEntrenamiento.selectedItem.toString()
-
-            viewModel.setUser(currentUser)
-            val routine = viewModel.crearRutina(requireView(), diasEntrenamiento)
+            viewModel.user = currentUser
+            viewModel.view = requireView()
+            viewModel.diasEntrenamiento = diasEntrenamiento
+            val routine = viewModel.crearRutina()
 
             val difficulty = spinnerExperiencia.selectedItem.toString()
             val listaEjerciciosFragment = ListaEjerciciosFragment.newInstance(currentUser, routine, difficulty)
