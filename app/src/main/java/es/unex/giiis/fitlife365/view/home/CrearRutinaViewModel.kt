@@ -18,11 +18,11 @@ class CrearRutinaViewModel (private val repository: Repository
 ): ViewModel(){
     private lateinit var nombreRutina : EditText
     private lateinit var pesoObjetivoRutina : EditText
+    lateinit var view : View
+    lateinit var user : User
     lateinit var currentUser : User
-    fun setUser( user : User){
-        currentUser = user
-    }
-     fun crearRutina(view: View, diasEntrenamiento : String) : Routine {
+    lateinit var diasEntrenamiento : String
+     fun crearRutina() : Routine {
 
          nombreRutina = view.findViewById(R.id.editTextText)
          pesoObjetivoRutina = view.findViewById(R.id.editTextNumber)
