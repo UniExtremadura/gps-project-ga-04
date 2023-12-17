@@ -178,6 +178,6 @@ class ListaEjerciciosViewModel (
             val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
             return ListaEjerciciosViewModel(
                 (application as FitLife365Application).appContainer.repository, ) as T }
-        }
+    }
     }
 }

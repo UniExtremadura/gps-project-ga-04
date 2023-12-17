@@ -17,23 +17,24 @@ import kotlinx.coroutines.launch
 class EvaluacionSaludViewModel (private val repository: Repository) : ViewModel() {
 
     var  user : User? = null
-    suspend fun update(sexo: String, edad: Int, altura: Int, peso: Int, userId: Long?) {
-        return repository.update(sexo, edad, altura, peso, userId)
+    var edad: Int = 0
+    var estatura: Int = 0
+    var peso: Int = 0
+    var sexo: String = ""
+    var userID: Long = 0
+
+    suspend fun update() {
+        return repository.update(sexo, edad, estatura, peso, userID)
     }
 
     private val _toast = MutableLiveData<String?>()
     val toast: LiveData<String?>
         get() = _toast
 
-    fun guardarInformacionUsuario(user: User, edad: Float, estatura: Float, peso: Float, sexo: String) {
-            user.edad = edad.toInt()
-            user.altura = estatura.toInt()
-            user.peso = peso.toInt()
-            user.sexo = sexo
-
-            viewModelScope.launch {
-                repository.update(user.sexo, user.edad, user.altura, user.peso, user.userId)
-            }
+    fun guardarInformacionUsuario() {
+        viewModelScope.launch {
+            repository.update(sexo, edad, estatura, peso, userID)
+        }
     }
 
 

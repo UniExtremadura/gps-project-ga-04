@@ -127,13 +127,16 @@ class EvaluacionSaludActivity : AppCompatActivity() {
     }
 
     private fun calcularPorcentajeSalud() {
-        val user = intent?.getSerializableExtra("LOGIN_USER") as? User
-        val edad = editTextEdad.text.toString().toFloat()
-        val estatura = editTextEstatura.text.toString().toFloat()
-        val peso = editTextPeso.text.toString().toFloat()
-        val sexo = spinnerSexo.selectedItem.toString()
+        viewModel.user = intent?.getSerializableExtra("LOGIN_USER") as? User
+        viewModel.estatura = editTextEstatura.text.toString().toInt()
+        viewModel.peso = editTextPeso.text.toString().toInt()
+        viewModel.sexo = spinnerSexo.selectedItem.toString()
+        viewModel.userID = viewModel.user?.userId ?: 0
 
-        viewModel.guardarInformacionUsuario(user!!, edad, estatura, peso, sexo)
+        val peso = editTextPeso.text.toString().toFloat()
+        val estatura = editTextEstatura.text.toString().toFloat()
+
+        viewModel.guardarInformacionUsuario()
 
         // Lógica para calcular el porcentaje de salud
         val porcentajeSalud = calcularPorcentajeSalud(peso, estatura)
