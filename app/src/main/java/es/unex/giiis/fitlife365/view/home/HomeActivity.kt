@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
         imageViewEvS = findViewById(R.id.imageViewEvS)
         usernameTextEvS = findViewById(R.id.usernameTextEvS)
 
-        viewModel.userInSession = intent.getSerializableExtra(LOGIN_USER) as User
+        viewModel.userInSession = intent.getSerializableExtra("LOGIN_USER") as User
         usernameText.text = viewModel.userInSession!!.name
 
         // Obtener la fuente seleccionada desde SharedPreferences

@@ -99,7 +99,7 @@ class EvaluacionSaludActivity : AppCompatActivity() {
             // Abre la pantalla HomeActivity al hacer clic en la imagen
             val intent = Intent(this, HomeActivity::class.java).apply {
                 // Pasa el usuario como parte de los datos del intent
-                putExtra(HomeActivity.LOGIN_USER, usuario)
+                putExtra("LOGIN_USER", usuario)
             }
             startActivity(intent)
         }
