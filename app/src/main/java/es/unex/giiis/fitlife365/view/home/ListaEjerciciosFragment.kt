@@ -95,14 +95,15 @@ class ListaEjerciciosFragment : Fragment() {
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
                 viewModel.musculo = selectedMuscle
                 viewModel.adapter = adapter
-                viewModel.filtrarEjerciciosPorMusculo(selectedMuscle, viewModel.dificultad)
-                adapter = viewModel.adapter!!
+                viewModel.filtrarEjerciciosPorMusculo()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Lógica que se ejecuta cuando no se selecciona ningún elemento en el Spinner
+
             }
         }
+        setUpListeners()
+
     }
 
     private fun setUpListeners(){
@@ -111,15 +112,14 @@ class ListaEjerciciosFragment : Fragment() {
         }
 
         btnConfirmar.setOnClickListener {
-            // launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
+
             navigateToHome(viewModel.user!!)
         }
     }
 
     private fun subscribeUi(adapter: ListaEjerciciosAdapter) {
-        viewModel.exercises.observe(viewLifecycleOwner) { result ->
+        viewModel.exercises?.observe(viewLifecycleOwner) { result ->
             adapter.updateData(result)
-            setUpListeners()
         }
     }
 

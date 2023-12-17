@@ -11,7 +11,7 @@ import es.unex.giiis.fitlife365.model.ExerciseModel
 @Dao
 interface ExerciseModelDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(exerciseModel: ExerciseModel): Long
 
     @Query("SELECT * FROM ExerciseModel WHERE exerciseId = :exerciseId")
@@ -20,10 +20,14 @@ interface ExerciseModelDao {
     @Query("SELECT * FROM ExerciseModel")
     fun getExercices(): LiveData<List<ExerciseModel>>
 
+    @Query("SELECT * FROM ExerciseModel WHERE muscle = :muscle AND difficulty = :difficulty")
+    fun getExercicesByMuscleAndDifficulty(muscle: String, difficulty:String): LiveData<List<ExerciseModel>>
+
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(exercises: List<ExerciseModel>)
+
     @Query("SELECT count(*) FROM ExerciseModel")
     suspend fun getNumberOfExercices(): Long
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAllExercices(exercise: List<ExerciseModel>)
 
     //añadir rutinaId al ejercicio
     @Query("UPDATE ExerciseModel SET routineId = :routineId WHERE exerciseId = :exerciseId")
@@ -31,5 +35,9 @@ interface ExerciseModelDao {
 
     @Update
     suspend fun updateExercise(exercise: ExerciseModel)
+
+    @Query("SELECT exerciseId FROM ExerciseModel WHERE name = :name")
+    suspend fun getIdByExercise(name: String): Long?
+
 
 }

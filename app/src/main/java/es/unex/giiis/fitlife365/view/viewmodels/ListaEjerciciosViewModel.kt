@@ -25,9 +25,10 @@ class ListaEjerciciosViewModel (
     var user: User? = null
 
     var rutina: Routine? = null
-    var dificultad: String = "beginner"
-    val exercises = repository.exercices
-    var musculo: String = "biceps"
+    var dificultad: String = " "
+    var musculo: String = " "
+    var exercises: LiveData<List<ExerciseModel>> ? = null
+
 
     private var _exercise: List<ExerciseModel> = emptyList()
     lateinit var adapter: ListaEjerciciosAdapter
@@ -42,12 +43,9 @@ class ListaEjerciciosViewModel (
     val toast: LiveData<String?>
         get() = _toast
 
-
-    init {
-        refresh()
-    }
-    fun refresh() {
-        launchDataLoad { repository.tryUpdateRecentExercicesCache(musculo, dificultad) }
+    fun refresh(muscleInEnglish: String, difficultyInEnglish: String) {
+        launchDataLoad {
+            repository.tryUpdateRecentExercicesCache(muscleInEnglish, difficultyInEnglish) }
     }
 
     fun onToastShown() {
@@ -62,7 +60,7 @@ class ListaEjerciciosViewModel (
             } catch (error: APIError) {
                 _toast.value = error.message
             } finally {
-                _spinner.value = true
+                _spinner.value = false
             }
         }
     }
@@ -92,18 +90,23 @@ class ListaEjerciciosViewModel (
         "Avanzado" to "expert"
     )
 
-    fun filtrarEjerciciosPorMusculo(muscle: String, difficulty: String) {
+    fun filtrarEjerciciosPorMusculo() {
         viewModelScope.launch {
             try {
                 // Traducir el nombre del músculo al inglés utilizando el mapeo
-                val muscleInEnglish = muscleMapping[muscle] ?: muscle
+                val muscleInEnglish = muscleMapping[musculo] ?: musculo
 
                 // Traducir la dificultad al inglés utilizando el mapeo
-                val difficultyInEnglish = difficultyMapping[difficulty] ?: difficulty
+                val difficultyInEnglish = difficultyMapping[dificultad] ?: dificultad
 
                 // Filtrar ejercicios por músculo y dificultad (usando el nombre en inglés)
                 _exercise = repository.getExercisesByMuscleAndDifficulty(muscleInEnglish, difficultyInEnglish).toExercise()
+                exercises = repository.getExercisesDaoByMuscleAndDifficulty(muscleInEnglish, difficultyInEnglish)
+                for (exercise in _exercise)
+                    repository.insert(exercise)
                 adapter.updateData(_exercise)
+
+                refresh(muscleInEnglish, difficultyInEnglish)
 
             } catch (error: APIError) {
                 _toast.value = error.message
@@ -144,10 +147,11 @@ class ListaEjerciciosViewModel (
             // Insertar cada ejercicio seleccionado en ExerciseModelDao
             for (ejercicio in listaEjerciciosSeleccionados) {
                 //val id = exerciseModelDao?.insert(ejercicio)
-                val id = insert(ejercicio)
-                ejercicio.exerciseId = id
+                //val id = insert(ejercicio)
+                Log.d("Ejercicio insertado antes: ", ejercicio.name)
+                ejercicio.exerciseId = repository.getIdByExercise(ejercicio.name)
                 Log.d("Ejercicio insertado: ", ejercicio.exerciseId.toString())
-                addRoutineExercise(id, rutina!!.routineId)
+                addRoutineExercise(ejercicio.exerciseId, rutina!!.routineId)
                 Log.d("Ejercicio añadido a rutina: ", rutina!!.routineId.toString())
             }
 

@@ -20,18 +20,7 @@ class Repository constructor(
 ) {
     private var lastUpdateTimeMillis: Long = 0L
 
-    val exercices = exerciseModelDao.getExercices()
-
-    /*
-    private val userFilter = MutableLiveData<Long>()
-
-    val showsInLibrary: LiveData<Routine> =
-        userFilter.switchMap{userid -> routineDao.getRoutinesByUser(userid)}
-
-    fun setUserid(userid: Long) {
-        userFilter.value = userid
-    }
-    */
+    val exercises = exerciseModelDao.getExercices()
 
     suspend fun tryUpdateRecentExercicesCache(selectedMuscle :String, difficulty :String) {
         if (shouldUpdateExercicesCache())
@@ -41,15 +30,18 @@ class Repository constructor(
     private suspend fun fetchRecentExercises(selectedMuscle :String, difficulty :String) {
         try {
             // Obtener ejercicios de la API
-            val exercisesFromApi = getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty).toExercise()
+            val exercisesFromApi =
+                getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty).toExercise()
 
             // Verificar si la lista de ejercicios de la API no está vacía antes de intentar actualizar la base de datos
-           // if (exercisesFromApi.isNotEmpty()) {
-                // Insertar ejercicios en la base de datos local
-                exerciseModelDao.insertAllExercices(exercisesFromApi)
+            // if (exercisesFromApi.isNotEmpty()) {
+            // Insertar ejercicios en la base de datos local
+            for (exercise in exercisesFromApi)
+                exerciseModelDao.insert(exercise)
 
-                // Actualizar el tiempo de la última actualización
-                lastUpdateTimeMillis = System.currentTimeMillis()
+
+            // Actualizar el tiempo de la última actualización
+            lastUpdateTimeMillis = System.currentTimeMillis()
             //}
         } catch (cause: Throwable) {
             throw APIError("Unable to fetch data from API", cause)
@@ -60,6 +52,9 @@ class Repository constructor(
         return networkService.getExercisesByMuscleAndDifficulty(selectedMuscle, difficulty)
     }
 
+    fun getExercisesDaoByMuscleAndDifficulty(muscle: String, difficulty: String): LiveData<List<ExerciseModel>> {
+        return exerciseModelDao.getExercicesByMuscleAndDifficulty(muscle, difficulty)
+    }
 
     private suspend fun shouldUpdateExercicesCache(): Boolean {
         val lastFetchTimeMillis = lastUpdateTimeMillis
@@ -117,6 +112,10 @@ class Repository constructor(
 
    suspend fun getExerciseById(exerciseId: Long): ExerciseModel {
         return exerciseModelDao.getExerciseById(exerciseId)
+    }
+
+    suspend fun getIdByExercise(ejercicio: String): Long? {
+        return exerciseModelDao.getIdByExercise(ejercicio)
     }
 
     companion object {

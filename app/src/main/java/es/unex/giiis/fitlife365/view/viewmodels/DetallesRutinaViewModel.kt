@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class DetallesRutinaViewModel(private val repository: Repository) : ViewModel() {
 
-    private lateinit var ejerciciosAdapter: EjerciciosAdapter
+    private var ejerciciosAdapter: EjerciciosAdapter = EjerciciosAdapter()
     lateinit var rutina : Routine
     lateinit var adapter: EjerciciosAdapter
     private lateinit var listaEjerciciosIds: String
