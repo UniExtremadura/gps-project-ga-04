@@ -1,7 +1,5 @@
-package es.unex.giiis.fitlife365.view.home
+package es.unex.giiis.fitlife365.view.viewmodels
 
-import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,36 +8,31 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.data.Repository
-import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import kotlinx.coroutines.launch
 
-class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
+class EvaluacionSaludViewModel (private val repository: Repository) : ViewModel() {
 
-    var user: User? = null
-    private val _rutinasList = MutableLiveData<List<Routine>>()
-    val rutinasList: LiveData<List<Routine>>
-        get() = _rutinasList
+    var  user : User? = null
+    var edad: Int = 0
+    var estatura: Int = 0
+    var peso: Int = 0
+    var sexo: String = ""
+    var userID: Long = 0
 
-    private val _textEmptyVisibility = MutableLiveData<Int>()
-    val textEmptyVisibility: LiveData<Int>
-        get() = _textEmptyVisibility
-
-    fun getRoutinesByUser() {
-        viewModelScope.launch {
-            try {
-                val routines = repository.getRoutinesByUser(user!!.userId) ?: emptyList()
-                _rutinasList.value = routines
-                _textEmptyVisibility.value = if (routines.isEmpty()) View.VISIBLE else View.GONE
-            } catch (error: Throwable) {
-                _toast.value = error.message
-            }
-        }
+    suspend fun update() {
+        return repository.update(sexo, edad, estatura, peso, userID)
     }
 
     private val _toast = MutableLiveData<String?>()
     val toast: LiveData<String?>
         get() = _toast
+
+    fun guardarInformacionUsuario() {
+        viewModelScope.launch {
+            repository.update(sexo, edad, estatura, peso, userID)
+        }
+    }
 
 
 
@@ -50,11 +43,8 @@ class MisRutinasViewModel (private val repository: Repository) : ViewModel() {
             extras: CreationExtras
         ): T {
             val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-            return MisRutinasViewModel(
+            return EvaluacionSaludViewModel(
                 (application as FitLife365Application).appContainer.repository, ) as T }
     }
     }
-
-
-
 }

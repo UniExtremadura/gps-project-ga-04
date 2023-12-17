@@ -2,7 +2,6 @@ package es.unex.giiis.fitlife365.view.home
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.unex.giiis.fitlife365.R
@@ -25,6 +22,9 @@ import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
+import es.unex.giiis.fitlife365.view.adapters.ListaEjerciciosAdapter
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.ListaEjerciciosViewModel
 
 
 class ListaEjerciciosFragment : Fragment() {
@@ -37,9 +37,7 @@ class ListaEjerciciosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var btnGuardar : Button
-    private lateinit var musculoElegido : String
     private lateinit var btnConfirmar: Button
-    private lateinit var user: User
 
 
     override fun onCreateView(
@@ -74,10 +72,6 @@ class ListaEjerciciosFragment : Fragment() {
 
         homeViewModel.user.observe(viewLifecycleOwner) { user ->
             viewModel.user = user
-
-            user?.let { nonNullUser ->
-                this.user = nonNullUser
-            }
         }
 
         viewModel.rutina = arguments?.getSerializable("rutina") as Routine
@@ -99,7 +93,6 @@ class ListaEjerciciosFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 // Lógica que se ejecuta cuando se selecciona un elemento en el Spinner
                 val selectedMuscle = parent?.getItemAtPosition(position).toString()
-                musculoElegido = selectedMuscle
                 viewModel.musculo = selectedMuscle
                 viewModel.adapter = adapter
                 viewModel.filtrarEjerciciosPorMusculo(selectedMuscle, viewModel.dificultad)
@@ -119,7 +112,7 @@ class ListaEjerciciosFragment : Fragment() {
 
         btnConfirmar.setOnClickListener {
             // launchDataLoad { repository.tryUpdateRecentExercicesCache(musculoElegido, difficulty) }
-            navigateToHome(user)
+            navigateToHome(viewModel.user!!)
         }
     }
 

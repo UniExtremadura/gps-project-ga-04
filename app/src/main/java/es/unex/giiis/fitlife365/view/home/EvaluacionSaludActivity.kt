@@ -13,13 +13,12 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
-import kotlinx.coroutines.launch
+import es.unex.giiis.fitlife365.view.viewmodels.EvaluacionSaludViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
 
 class EvaluacionSaludActivity : AppCompatActivity() {
 

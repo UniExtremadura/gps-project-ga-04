@@ -1,24 +1,20 @@
-package es.unex.giiis.fitlife365.view.home
+package es.unex.giiis.fitlife365.view.viewmodels
 
-import android.text.Spannable.Factory
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.api.APIError
-import es.unex.giiis.fitlife365.api.getNetworkService
 import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.data.toExercise
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
+import es.unex.giiis.fitlife365.view.adapters.ListaEjerciciosAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

@@ -1,16 +1,14 @@
+package es.unex.giiis.fitlife365.view.viewmodels
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.data.Repository
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
-import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.home.EjerciciosAdapter
-import es.unex.giiis.fitlife365.view.home.ListaEjerciciosViewModel
+import es.unex.giiis.fitlife365.view.adapters.EjerciciosAdapter
 import kotlinx.coroutines.launch
 
 class DetallesRutinaViewModel(private val repository: Repository) : ViewModel() {

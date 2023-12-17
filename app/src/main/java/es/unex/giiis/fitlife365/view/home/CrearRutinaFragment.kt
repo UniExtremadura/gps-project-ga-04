@@ -6,24 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Spinner
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.api.getNetworkService
-import es.unex.giiis.fitlife365.data.Repository
-import es.unex.giiis.fitlife365.database.FitLife365Database
-import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
-import kotlinx.coroutines.launch
+import es.unex.giiis.fitlife365.view.viewmodels.CrearRutinaViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
 
 class CrearRutinaFragment : Fragment() {
     private val viewModel: CrearRutinaViewModel by viewModels { CrearRutinaViewModel.Factory }

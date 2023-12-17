@@ -17,6 +17,7 @@ import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
 import es.unex.giiis.fitlife365.view.SettingsActivity
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
 
 class HomeActivity : AppCompatActivity() {
 

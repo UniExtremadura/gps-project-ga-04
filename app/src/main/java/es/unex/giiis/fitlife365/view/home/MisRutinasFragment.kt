@@ -1,6 +1,5 @@
 package es.unex.giiis.fitlife365.view.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.api.getNetworkService
-import es.unex.giiis.fitlife365.data.Repository
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.utils.FontUtils
-import kotlinx.coroutines.launch
+import es.unex.giiis.fitlife365.view.adapters.RoutineAdapter
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.MisRutinasViewModel
 
 
 class MisRutinasFragment : Fragment() {

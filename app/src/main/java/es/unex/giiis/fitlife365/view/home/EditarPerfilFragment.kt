@@ -1,6 +1,6 @@
 package es.unex.giiis.fitlife365
 
-import EditarPerfilViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.EditarPerfilViewModel
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
@@ -16,16 +16,12 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.FragmentEditarPerfilBinding
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.MainActivity
 import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
 import es.unex.giiis.fitlife365.utils.FontUtils
-import es.unex.giiis.fitlife365.view.home.HomeViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import es.unex.giiis.fitlife365.view.viewmodels.HomeViewModel
 
 
 class EditarPerfilFragment : Fragment() {

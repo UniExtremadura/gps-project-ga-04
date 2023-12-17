@@ -1,8 +1,7 @@
-package es.unex.giiis.fitlife365.view.home
+package es.unex.giiis.fitlife365.view.viewmodels
 
 import android.view.View
 import android.widget.EditText
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope

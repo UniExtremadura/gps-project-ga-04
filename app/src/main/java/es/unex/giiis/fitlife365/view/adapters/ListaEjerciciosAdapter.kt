@@ -1,4 +1,4 @@
-package es.unex.giiis.fitlife365.view.home
+package es.unex.giiis.fitlife365.view.adapters
 
 import android.util.Log
 import android.view.LayoutInflater

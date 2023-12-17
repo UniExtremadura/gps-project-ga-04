@@ -1,5 +1,5 @@
-import android.content.Intent
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
+package es.unex.giiis.fitlife365.view.viewmodels
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,13 +8,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import es.unex.giiis.fitlife365.FitLife365Application
 import es.unex.giiis.fitlife365.data.Repository
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.MainActivity
-import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
-import es.unex.giiis.fitlife365.view.home.ListaEjerciciosViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class EditarPerfilViewModel(private val repository: Repository) : ViewModel() {

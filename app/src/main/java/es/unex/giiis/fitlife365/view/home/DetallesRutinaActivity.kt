@@ -1,6 +1,6 @@
 package es.unex.giiis.fitlife365.view.home
 
-import DetallesRutinaViewModel
+import es.unex.giiis.fitlife365.view.viewmodels.DetallesRutinaViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -9,23 +9,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityDetallesRutinaBinding
-import es.unex.giiis.fitlife365.model.ExerciseModel
 import es.unex.giiis.fitlife365.model.Routine
 import es.unex.giiis.fitlife365.model.User
 import es.unex.giiis.fitlife365.view.SettingsActivity
-import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
-import es.unex.giiis.fitlife365.FitLife365Application
-import es.unex.giiis.fitlife365.api.getNetworkService
-import es.unex.giiis.fitlife365.data.Repository
 import es.unex.giiis.fitlife365.utils.FontUtils
+import es.unex.giiis.fitlife365.view.adapters.EjerciciosAdapter
 
 
 class DetallesRutinaActivity : AppCompatActivity() {

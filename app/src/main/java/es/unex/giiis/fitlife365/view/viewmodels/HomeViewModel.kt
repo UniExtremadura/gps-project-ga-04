@@ -1,4 +1,4 @@
-package es.unex.giiis.fitlife365.view.home
+package es.unex.giiis.fitlife365.view.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
