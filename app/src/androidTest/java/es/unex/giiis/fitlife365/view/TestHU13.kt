@@ -3,7 +3,6 @@ package es.unex.giiis.fitlife365.view
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -17,9 +16,7 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.anything
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -231,12 +228,10 @@ class TestHU13 {
 
         onView(withId(R.id.spinnerMusculo)).perform(click())
 
-        // Seleccionar el primer músculo en el Spinner
         onData(anything()).atPosition(1).perform(click())
 
         Thread.sleep(2500)
 
-        // Verificar que se carga al menos un elemento en la lista de ejercicios
         onView(withId(R.id.rvListaEjercicios)).check(matches(hasMinimumChildCount(1)))
     }
 
@@ -257,22 +252,4 @@ class TestHU13 {
             }
         }
     }
-
-
-    private fun atPosition(position: Int, itemMatcher: Matcher<View>): Matcher<View> {
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("at position $position: ")
-                itemMatcher.describeTo(description)
-            }
-
-            override fun matchesSafely(view: View): Boolean {
-                val recyclerView = view.parent as RecyclerView
-                val viewHolder = recyclerView.findViewHolderForAdapterPosition(position)
-                return itemMatcher.matches(viewHolder?.itemView)
-            }
-        }
-    }
-
-
 }
