@@ -72,7 +72,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
     debugImplementation("androidx.tracing:tracing:1.1.0")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0-alpha02")
@@ -90,6 +90,8 @@ dependencies {
 
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:$room_version")
+
+    debugImplementation("androidx.tracing:tracing:1.1.0")
 
     testImplementation("org.mockito:mockito-core:4.6.1")
     androidTestImplementation("org.mockito:mockito-android:4.6.1")
