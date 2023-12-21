@@ -1,24 +1,32 @@
 package es.unex.giiis.fitlife365.view.LoginRegister
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import es.unex.giiis.fitlife365.R
-import es.unex.giiis.fitlife365.databinding.ActivityLoginBinding
+import es.unex.giiis.fitlife365.database.FitLife365Database
 import es.unex.giiis.fitlife365.databinding.ActivityRegisterBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import es.unex.giiis.fitlife365.model.User
-import es.unex.giiis.fitlife365.view.home.MisRutinasActivity
+import es.unex.giiis.fitlife365.view.home.EvaluacionSaludActivity
+import kotlinx.coroutines.launch
 
-class RegistroActivity : Activity() {
+class RegistroActivity : AppCompatActivity() {
+
+    private lateinit var db: FitLife365Database
 
     private lateinit var btnContinuar: Button
     private lateinit var registerUsername: EditText
@@ -27,6 +35,9 @@ class RegistroActivity : Activity() {
     private lateinit var registerConfirmPassword: EditText
     private lateinit var checkBoxPassword: CheckBox
     private lateinit var binding: ActivityRegisterBinding
+
+
+
 
     companion object {
         const val USERNAME = "USERNAME"
@@ -44,6 +55,17 @@ class RegistroActivity : Activity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obtener la fuente seleccionada desde SharedPreferences
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val selectedFont = sharedPreferences.getString("font_preference", "openSans") // Valor predeterminado
+
+        // Aplicar la fuente seleccionada
+        if (selectedFont != null) {
+            applyFont(window.decorView, selectedFont)
+        }
+
+        db = FitLife365Database.getInstance(applicationContext)!!
+
         btnContinuar = findViewById(R.id.idContinuarRegistro)
         registerUsername = findViewById(R.id.registerUsername)
         registerPassword = findViewById(R.id.registerPassword)
@@ -51,7 +73,82 @@ class RegistroActivity : Activity() {
         registerConfirmPassword = findViewById(R.id.registerConfirmPassword)
         checkBoxPassword = findViewById(R.id.checkBoxPassword)
 
+
+
         setUpListeners()
+    }
+
+    private fun applyFont(view: View, fontName: String) {
+        when (view) {
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    applyFont(view.getChildAt(i), fontName)
+                }
+            }
+            is TextView -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is EditText -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente a la barra de edición de texto
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            is Button -> {
+                try {
+                    // Obtener el identificador del recurso de fuente
+                    val fontResId = when (fontName) {
+                        "openSans" -> R.font.opensans
+                        "Roboto" -> R.font.roboto
+                        "Ubuntu" -> R.font.ubuntu
+                        "Ephesis" -> R.font.ephesis
+                        else -> R.font.opensans // Valor predeterminado
+                    }
+
+                    // Crear el objeto Typeface con la fuente seleccionada
+                    val typeface = resources.getFont(fontResId)
+
+                    // Aplicar la fuente al botón
+                    view.typeface = typeface
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun validateFields() : Boolean {
@@ -104,22 +201,39 @@ class RegistroActivity : Activity() {
             }
 
             btnContinuar.setOnClickListener {
-                // Realizar la validación de los campos antes de continuar
-                if (!validateFields()) {
-                    showToast("Por favor, completa todos los campos correctamente.")
-                    return@setOnClickListener
-                }
-                navigateToLogin(User(registerUsername.text.toString(), registerPassword.text.toString()))
+                join()
             }
         }
     }
 
-    private fun navigateToLogin(user: User) {
-        val intent = Intent(this, IniciarSesionActivity::class.java).apply {
-            putExtra(USERNAME, user.name)
-            putExtra(PASSWORD, user.password)
+    private fun join() {
+        with(binding) {
+            val check = validateFields()
+            if (check) {
+                lifecycleScope.launch{
+                    val user = User(
+                        null,
+                        registerUsername.text.toString(),
+                        registerPassword.text.toString(),
+                        registerEmail.text.toString()
+                    )
+                    val id =  db?.userDao()?.insert(user)
+                    if (id != null) {
+                        user.userId = id
+                        navigateToEvaluacionSalud(user)
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun navigateToEvaluacionSalud(user: User) {
+        val intent = Intent(this, EvaluacionSaludActivity::class.java).apply {
+            putExtra("LOGIN_USER", user)
         }
         startActivity(intent)
     }
+
 
 }
